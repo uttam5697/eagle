@@ -7,3 +7,50 @@
 body {
   @apply  font-body;
 }
+.white-btn {
+  @apply bg-white text-black font-semibold gap-10 items-center md:px-6 px-4 md:py-[18px] py-3 hover:bg-gray-100 transition-colors duration-300 rounded-full border border-white hover:bg-transparent hover:text-white;
+}
+.navbar{
+  a {
+    position: relative;
+    width: fit-content;
+    &::before,&::after{
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background-color: white;
+        transition: width .3s ease, left .3s ease, right .3s ease;
+        bottom: -10px;
+        @media screen and (min-width: 768px) {
+            bottom: -125%;
+        }
+    }
+    &::before {
+        left: 50%;
+    }
+    &::after {
+        right: 50%;
+    }
+    &:hover {
+        &::before {
+            width: 50%;
+            left: 0;
+        }
+        &::after {
+            width: 50%;
+            right: 0;
+        }
+    }
+    &.active {
+      &::before {
+          width: 50%;
+          left: 0;
+      }
+      &::after {
+          width: 50%;
+          right: 0;
+      }
+    }
+  }
+}
