@@ -1,4 +1,3 @@
-import './index.css'
 import AppProvider from './provider'
 
 function App() {
@@ -6,6 +5,7 @@ function App() {
   return (
     <>
       <div>
+        
          <AppProvider />
       </div>
     </>
