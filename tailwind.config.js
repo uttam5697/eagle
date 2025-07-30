@@ -11,7 +11,7 @@ export default {
       base: ["1.25rem"], // 20px
       xl: ["1.5rem"], // 24px
       "2xl": ["1.875rem"], // 30px
-      "3xl": ["3.375rem"], // 32px
+      "3xl": ["2rem"], // 32px
       "4xl": ["2.125rem"], // 34px
       "4.5xl": ["3.375rem"], // 54px
       "5xl": ["5.25rem"], // 84px
@@ -58,10 +58,10 @@ export default {
       },
       screens: {
         "3xl": "1700px",
-        'md': '769px',
-        '2md': '896px',
-        '2lg': '1152px',
-        '3lg':'1280px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1152px',
+        '2xl':'1280px',
       },
     },
   plugins: [],
