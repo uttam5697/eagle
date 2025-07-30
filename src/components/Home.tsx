@@ -1,11 +1,6 @@
+import SpsFlooring from "./spsflooring/SpsFlooring";
 
 export default function Home() {
-  return (
-    <div className="flex  flex-col items-center justify-center">
-      <h1 className="">
-        Home Page
-      </h1>
-    </div>
-  );
+  return <SpsFlooring />;
 }
 

@@ -1,4 +1,4 @@
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
-
-export { Header, Footer };
+import SpsFlooring from "./spsflooring/SpsFlooring";
+export { Header, Footer,SpsFlooring };

@@ -1,7 +1,7 @@
 import Logo from "./logo/logo.png";
-import FooterLogo from "./logo/footer-logo.png";
+import FlooringImg from "./images/sps-flooring/flooring-img.png";
 
 export { 
-    Logo,
-    FooterLogo
+Logo,
+    FlooringImg,
 };

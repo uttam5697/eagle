@@ -11,8 +11,8 @@ export default {
       base: ["1.25rem"], // 20px
       xl: ["1.5rem"], // 24px
       "2xl": ["1.875rem"], // 30px
-      "3xl": ["2rem"], // 32px
-      "4xl": ["2.125rem"], // 34px
+      "3xl": ["2.125rem"], // 34px
+      "4xl": ["2.75rem"], // 44px
       "4.5xl": ["3.375rem"], // 54px
       "5xl": ["5.25rem"], // 84px
     },
@@ -29,7 +29,7 @@ export default {
         playfairDisplay: ['Playfair Display', 'sans-serif'],
       },
       colors: {
-        primary: "#B08D40",
+        primary: "#C41A2C",
         "light-white": "#FBFAF7",
         black: "#000000",
         white: "#FFFFFF",
@@ -43,26 +43,28 @@ export default {
         "2xl": "1.25rem",
         xl: "0.938rem",
       },
-      "primary-gradient": "linear-gradient(180deg, #D9B45D 0%, #9E7D34 100%)",
-      
-      },
-      maxWidth: {
-        "screen-5xl": "1600px",
-        "screen-4xl": "1350px",
-        "screen-3xl": "1120px", 
-        "screen-2xl": "1000px",
-        "screen-xl": "900px",
-        "screen-lg": "800px",
-        "screen-md": "700px",
-        "screen-sm": "580px",
-      },
-      screens: {
-        "3xl": "1700px",
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1152px',
-        '2xl':'1280px',
+      backgroundImage: {
+        "primary-gradient": "linear-gradient(119.63deg, #C41A2C -28%, #000000 68.13%)",
+        "black-gradient": "linear-gradient(180deg, #00000000 43.33%, #000000b3 100%)",
       },
     },
+    maxWidth: {
+      "screen-5xl": "1600px",
+      "screen-4xl": "1350px",
+      "screen-3xl": "1120px", 
+      "screen-2xl": "1000px",
+      "screen-xl": "900px",
+      "screen-lg": "800px",
+      "screen-md": "700px",
+      "screen-sm": "580px",
+    },
+    screens: {
+      "3xl": "1700px",
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1152px',
+      '2xl':'1280px',
+    },
+  },
   plugins: [],
 };

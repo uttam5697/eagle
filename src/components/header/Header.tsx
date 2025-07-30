@@ -6,12 +6,12 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-gray-900 md:border-b border-white/30 py-[18px]">
+    <header className="bg-gray-900 md:border-b border-white/30 py-3">
       <div className="container">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src={Logo} alt="Eagle Logo" className="h-[58px]" />
+            <img src={Logo} alt="Eagle Logo" className="xl:h-[74px] lg:h-[64px] md:h-[54px] h-[44px]" />
           </div>
 
           {/* Desktop Navigation */}
@@ -22,10 +22,10 @@ export default function Header() {
           </nav>
 
           {/* Desktop CTA Button */}
-          <button className="hidden md:flex white-btn group">
+          <a href="#" className="hidden md:flex white-btn group">
             <span className='leading-none'>Get in touch</span>
             <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all'/>
-          </button>
+          </a>
 
           {/* Mobile Menu Button */}
           <button 
@@ -45,9 +45,10 @@ export default function Header() {
               <a href="#" className="text-white transition-colors font-medium active">Home</a>
               <a href="#" className="text-gray-300 transition-colors">About Us</a>
               <a href="#" className="text-gray-300 transition-colors">Contact Us</a>
-              <button className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors font-medium w-fit">
-                Get in touch
-              </button>
+              <a href="#" className="flex white-btn group before:!hidden after:!hidden">
+                <span className='leading-none'>Get in touch</span>
+                <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all'/>
+              </a>
             </nav>
           </div>
         )}

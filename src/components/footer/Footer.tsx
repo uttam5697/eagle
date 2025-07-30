@@ -1,4 +1,4 @@
-import { FooterLogo } from "../../assets/Index";
+import { Logo } from "../../assets/Index";
 
 export default function Footer() {
   return (
@@ -7,19 +7,19 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4 mb-8">
           <div className="md:col-span-2">
             <img
-              src={FooterLogo}
+              src={Logo}
               alt="Eagle Logo"
-              className="lg:h-[100px] md:h-[80px] h-[50px]"
+              className="xl:h-[112px] lg:h-[92px] md:h-[72px] h-[52px]"
             />
           </div>
 
           <div>
-            <h3 className="lg:mb-[34px] md:mb-[24px] mb-[14px] 2xl:text-4xl xl:text-3xl md:text-xl text-base text-primary font-playfairDisplay italic ">Link</h3>
-            <ul className="space-y-2">
+            <h3 className="lg:mb-[34px] md:mb-[24px] mb-[14px] leading-none 2xl:text-3xl xl:text-2xl lg:text-2xl md:text-xl text-base text-white font-playfairDisplay italic ">Link</h3>
+            <ul className="space-y-2 navbar">
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   Home
                 </a>
@@ -27,7 +27,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   About Us
                 </a>
@@ -35,7 +35,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   Contact Us
                 </a>
@@ -43,12 +43,12 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="lg:mb-[34px] md:mb-[24px] mb-[14px] 2xl:text-4xl xl:text-3xl md:text-xl text-base text-primary font-playfairDisplay italic ">Social</h3>
-            <ul className="space-y-2">
+            <h3 className="lg:mb-[34px] md:mb-[24px] mb-[14px] leading-none 2xl:text-3xl xl:text-2xl lg:text-2xl md:text-xl text-base text-white font-playfairDisplay italic ">Social</h3>
+            <ul className="space-y-2 navbar">
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   LinkedIn
                 </a>
@@ -56,7 +56,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   Instagram
                 </a>
@@ -64,7 +64,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   Twitter
                 </a>
@@ -72,12 +72,12 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="lg:mb-[34px] md:mb-[24px] mb-[14px] 2xl:text-4xl xl:text-3xl md:text-xl text-base text-primary font-playfairDisplay italic ">Documents</h3>
-            <ul className="space-y-2">
+            <h3 className="lg:mb-[34px] md:mb-[24px] mb-[14px] leading-none 2xl:text-3xl xl:text-2xl lg:text-2xl md:text-xl text-base text-white font-playfairDisplay italic ">Documents</h3>
+            <ul className="space-y-2 navbar">
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   Privacy Policy
                 </a>
@@ -85,7 +85,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   Terms & Conditions
                 </a>
@@ -93,7 +93,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-primary transition-colors text-sm"
+                  className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                 >
                   Contact Us
                 </a>
