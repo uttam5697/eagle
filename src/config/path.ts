@@ -1,7 +1,11 @@
 export const paths = {
     home: {
         path: "/",
-        getHref: () => "/dashboard",
+        getHref: () => "/",
     },
+    product:{
+        path: "/product",
+        getHref: () => "/product",
+    }
 
 } as const;
