@@ -97,7 +97,7 @@ const ProductList: React.FC = () => {
         console.log('Sorting by:', value);
     };
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 mt-10">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-4 py-6 ">
                 <h1 className="text-[54px] md:text-[65px] lg:text-[84px] font-playfairDisplay italic text-primary">
                     Alpine 2.2
@@ -107,11 +107,11 @@ const ProductList: React.FC = () => {
                     <span className="text-sm font-regular text-[18px] md:mr-[5px] lg:mr-[45px]">
                         Showing all 12 results
                     </span>
-                    <SortDropdown options={sortOptions} onChange={handleSortChange} />
+                    <SortDropdown width="w-[300px]" sortbytext={true} options={sortOptions} onChange={handleSortChange} />
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 my-8 ">
                 {products.map((product) => (
                     <ProductCard
                         key={product.id}
