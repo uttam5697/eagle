@@ -47,7 +47,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   return (
     <div
       ref={dropdownRef}
-      className={`w-full lg:text-sm md:text-[14px] text-[12px] ${width}`}
+      className={`w-full relative lg:text-sm md:text-[14px] text-[12px] ${width}`}
     >
       <button
         onClick={() => setIsOpen((prev) => !prev)}

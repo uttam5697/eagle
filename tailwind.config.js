@@ -34,6 +34,7 @@ export default {
         "light-white": "#FBFAF7",
         black: "#000000",
         white: "#FFFFFF",
+        peru: "#B08D40",
       },
       spacing: {
         "8xl": "96rem",
