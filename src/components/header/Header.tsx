@@ -6,9 +6,11 @@ import { HiMenuAlt3 } from 'react-icons/hi';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = window.location.pathname
+  console.log("🚀 ~ Header ~ pathname:", pathname)
 
   return (
-    <header className={`md:border-b border-white/30 py-3 absolute top-0 w-full z-20 header-navbar ${isMenuOpen ? 'nav-active before:bg-[#00000080] before:h-full before:w-full before:fixed before:top-0' : ''}`}>
+    <header className={`md:border-b border-white/30 py-3  ${pathname === '/' ? 'bg-transparent' : 'bg-black'} absolute top-0 w-full z-20 header-navbar ${isMenuOpen ? 'nav-active before:bg-[#00000080] before:h-full before:w-full before:fixed before:top-0' : ''}`}>
       <div className="container">
         <div className="flex items-center justify-between">
           {/* Logo */}
