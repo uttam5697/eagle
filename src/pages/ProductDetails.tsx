@@ -57,9 +57,9 @@ export default function ProductDetailPage() {
     };
 
     return (
-        <div className="container mt-[137px]">
+        <div className="container xl:my-[60px] lg:my-[50px] md:my-[40px] my-[30px]">
             <Breadcrumbs items={breadcrumbData} />
-            <div className="grid grid-cols-1 mt-[31px] md:grid-cols-2 gap-6 px-4 py-6 ">
+            <div className="grid grid-cols-1 xl:mt-[30px] lg:mt-6 md:mt-5 mt-4 md:grid-cols-2 gap-6 ">
                 <div className="">
                     <div className="border   w-full  rounded-2xl bg-[#f6f6f6]  overflow-hidden">
                         {mainImage.endsWith(".mp4") ? (
@@ -82,7 +82,7 @@ export default function ProductDetailPage() {
                         <div className="">
                             <Swiper
                                 // spaceBetween={20}
-                                slidesPerView={4}
+                                slidesPerView={3}
                                 loop={false}
                                 modules={[Navigation]}
 
@@ -91,6 +91,25 @@ export default function ProductDetailPage() {
                                     prevEl: ".swiper-button-prev-custom",
                                 }}
                                 className="pb-8"
+                                spaceBetween={12}
+                                breakpoints={{
+                                    540: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 12,
+                                    },
+                                    768: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 12,
+                                    },
+                                    1024: {
+                                    slidesPerView: 3,
+                                    spaceBetween: 16,
+                                    },
+                                    1300: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 20,
+                                    },
+                                }}
                             >
                                 {productGallery.map((img, index) => (
                                     <SwiperSlide key={index} className="">
@@ -158,30 +177,28 @@ export default function ProductDetailPage() {
 
                     </div>
                 </div>
-                <div className="  text-[#1a1a1a]">
+                <div className="  text-black">
                     {/* Title */}
-                    <h1 className="md:text-4.5xl sm:text-3xl md:text-4xl font-playfairDisplay italic mb-4">
+                    <h1 className="2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-playfairDisplay italic mb-4">
                         Alpine 22mil Barry OAK
                     </h1>
-
-                    {/* Price */}
-                    <div className="md:text-4xl text-2xl  font-bold mb-1">
-                        $1.99 / sqft
-                        <p className="font-light text-xs mb-6">
+                    <div className='xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]'>
+                        <h5 className='xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-bold'>$1.99 / sqft</h5>
+                        <p className="font-light md:text-[14px] text-[12px] mt-1 leading-none">
                             Shipping calculated at checkout
                         </p>
                     </div>
-
+                    
                     {/* Shipping note */}
 
 
                     {/* Description */}
-                    <p className="text-base font-light leading-relaxed mb-6">
+                    <p className="md:text-sm text-[12px] font-light xl:mb-6 lg:mb-5 mb-4">
                         Introducing Alpine Barry Oak, a flooring plank that epitomizes the beauty of nature with its elegant gray tones and striking wood-like grains. This flooring option offers a perfect blend of sophistication and natural charm, adding a touch of timeless elegance to any space. The graceful gray hues of Alpine Barry Oak create a serene and inviting atmosphere, evoking the tranquility of a forest retreat.
                     </p>
 
                     {/* Features List */}
-                    <ul className="list-disc list-inside md:text-sm text-xs leading-relaxed font-semibold">
+                    <ul className="list-disc list-inside lg:text-sm md:text-xs text-[12px] leading-relaxed font-semibold xl:mb-[60px] lg:mb-[50px] md:mb-[40px] mb-[30px]">
                         <li>%100 Waterproof</li>
                         <li>Scratch Resistant Crystalux Wear Layer</li>
                         <li>Pet Friendly</li>

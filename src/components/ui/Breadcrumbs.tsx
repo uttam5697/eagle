@@ -16,8 +16,8 @@ type BreadcrumbsProps = {
 
 const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
   return (
-    <nav className="text-sm md:text-base px-4 py-2 text-[#1a1a1a]">
-      <ol className="flex items-center flex-wrap gap-x-2 gap-y-1">
+    <nav className="text-sm md:text-base leading-none text-black">
+      <ol className="flex items-center flex-wrap md:gap-x-2 gap-x-1 lg:text-[16px] md:text-[14px] text-[12px]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (

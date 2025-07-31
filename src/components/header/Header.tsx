@@ -10,7 +10,7 @@ export default function Header() {
   console.log("🚀 ~ Header ~ pathname:", pathname)
 
   return (
-    <header className={`md:border-b border-white/30 py-3  ${pathname === '/' ? 'bg-transparent' : 'bg-black'} absolute top-0 w-full z-20 header-navbar ${isMenuOpen ? 'nav-active before:bg-[#00000080] before:h-full before:w-full before:fixed before:top-0' : ''}`}>
+    <header className={`md:border-b border-white/30 py-3  ${pathname === '/' ? 'bg-transparent absolute top-0' : 'bg-black '} w-full z-20 header-navbar ${isMenuOpen ? 'nav-active before:bg-[#00000080] before:h-full before:w-full before:fixed before:top-0' : ''}`}>
       <div className="container">
         <div className="flex items-center justify-between">
           {/* Logo */}
