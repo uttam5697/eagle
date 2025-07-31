@@ -1,9 +1,10 @@
-import {SpsFlooring, HeroSlider} from "./index.js";
+import {SpsFlooring, HeroSlider,WeeklyBestsellers } from "./index.js";
 
 export default function Home() {
   return <>
   <HeroSlider />
-  <SpsFlooring />;
+  <SpsFlooring />
+  <WeeklyBestsellers />
   </>
 }
 
