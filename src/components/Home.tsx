@@ -1,6 +1,9 @@
-import SpsFlooring from "./spsflooring/SpsFlooring";
+import {SpsFlooring, HeroSlider} from "./index.js";
 
 export default function Home() {
-  return <SpsFlooring />;
+  return <>
+  <HeroSlider />
+  <SpsFlooring />;
+  </>
 }
 

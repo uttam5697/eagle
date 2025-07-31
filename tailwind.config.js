@@ -27,6 +27,7 @@ export default {
       fontFamily: {
         body: ['Outfit', 'sans-serif'],
         playfairDisplay: ['Playfair Display', 'sans-serif'],
+        quicksand: ['Quicksand', 'sans-serif'],
       },
       colors: {
         primary: "#C41A2C",
@@ -46,17 +47,9 @@ export default {
       backgroundImage: {
         "primary-gradient": "linear-gradient(119.63deg, #C41A2C -28%, #000000 68.13%)",
         "black-gradient": "linear-gradient(180deg, #00000000 43.33%, #000000b3 100%)",
+        "black-light-gradient": "linear-gradient(180deg, #0000001a 13.85%, #00000099 100%)",
+        "black-dark-light-gradient": "linear-gradient(0deg, #00000000 70.11%, #00000080 100%)",
       },
-    },
-    maxWidth: {
-      "screen-5xl": "1600px",
-      "screen-4xl": "1350px",
-      "screen-3xl": "1120px", 
-      "screen-2xl": "1000px",
-      "screen-xl": "900px",
-      "screen-lg": "800px",
-      "screen-md": "700px",
-      "screen-sm": "580px",
     },
     screens: {
       "3xl": "1700px",

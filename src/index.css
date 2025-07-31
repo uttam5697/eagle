@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,8 +8,21 @@ body {
   @apply  font-body;
   @apply bg-light-white;
 }
-.white-btn {
-  @apply bg-white text-black font-semibold gap-10 items-center md:px-6 px-4 md:py-[18px] py-3 hover:bg-gray-100 transition-colors duration-300 rounded-full border border-white hover:bg-transparent hover:text-white;
+@layer components {
+  .white-btn {
+    @apply bg-white text-black font-semibold gap-10 items-center md:px-6 px-4 md:py-[18px] py-3 hover:bg-gray-100 transition-colors duration-300 rounded-full border border-white hover:bg-transparent hover:text-white;
+  }
+}
+.header-navbar {
+  .mobile-nemu {
+    transform: translateX(110%);
+    transition: 0.6s;
+  }
+  &.nav-active {
+    .mobile-nemu {
+      transform: translateX(0%);
+    }
+  }
 }
 .navbar{
   a {
@@ -22,7 +35,7 @@ body {
         height: 2px;
         background-color: white;
         transition: width .3s ease, left .3s ease, right .3s ease;
-        bottom: -10px;
+        bottom: 0px;
         @media screen and (min-width: 768px) {
             bottom: -158%;
         }
@@ -44,6 +57,7 @@ body {
         }
     }
     &.active {
+      font-weight: 600;
       &::before {
           width: 50%;
           left: 0;
@@ -52,6 +66,53 @@ body {
           width: 50%;
           right: 0;
       }
+    }
+  }
+}
+.swiper-card {
+  a {
+      position: relative;
+      width: fit-content;
+      &::before,&::after{
+          content: "";
+          position: absolute;
+          width: 0;
+          height: 2px;
+          background-color: black;
+          transition: width .3s ease, left .3s ease, right .3s ease;
+          bottom: 0;
+      }
+      &::before {
+          left: 50%;
+      }
+      &::after {
+          right: 50%;
+      }
+    }
+  &:hover {
+    a {
+      &::before {
+          width: 50%;
+          left: 0;
+      }
+      &::after {
+          width: 50%;
+          right: 0;
+      }
+    }
+  }
+}
+
+.custom-pagination {
+  .swiper-pagination-bullet {
+    width: 42px;
+    height: 3px;
+    background-color: #ffffff4d;
+    border-radius: 3px;
+    opacity: 1;
+    margin-left: 8px;
+    &.swiper-pagination-bullet-active {
+      background-color: white;
     }
   }
 }
