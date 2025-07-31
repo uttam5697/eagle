@@ -1,12 +1,9 @@
-'use client';
-
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { FiArrowUpRight } from "react-icons/fi";
 import { FlooringImg } from "../../assets/Index";
 
 export default function SpsFlooring() {

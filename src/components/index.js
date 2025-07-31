@@ -3,5 +3,7 @@ import Footer from "./footer/Footer";
 import SpsFlooring from "./spsflooring/SpsFlooring";
 import HeroSlider from "./heroslider/HeroSlider";
 import WeeklyBestsellers from "./weeklybestsellers/WeeklyBestsellers";
+import ShoppingBrand from "./shoppingbrand/ShoppingBrand";
+import WhatOurClients from "./whatourclients/WhatOurClients";
 
-export { Header, Footer,SpsFlooring,HeroSlider,WeeklyBestsellers };
+export { Header, Footer,SpsFlooring,HeroSlider,WeeklyBestsellers,ShoppingBrand,WhatOurClients };
