@@ -4,6 +4,7 @@ import NotFound from "./components/Notfound";
 import MainLayouts from "./components/layouts/MainLayouts";
 import ProductListing from "./pages/ProductListing";
 import Home from "./components/Home";
+import ProductDetails from "./pages/ProductDetails";
 
 export const createAppRouter = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const createAppRouter = createBrowserRouter([
       {
         path: paths.product.path,
         element: <ProductListing />,
+      },
+      {
+        path: paths.product.details.path,
+        element: <ProductDetails />,
       },
       {
         path: "*",

@@ -22,7 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title, price }) => 
       </div>
 
       <div className="mt-3 text-center">
-        <h3 className="text-sm font-medium text-gray-800">{title}</h3>
+        <h3 className="text-sm font-medium text-black">{title}</h3>
         <p className="mt-1 text-xl font-bold text-black">
           ${price.toFixed(2)} <span className="text-xl font-bold">/ sqft</span>
         </p>

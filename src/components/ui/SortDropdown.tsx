@@ -10,10 +10,14 @@ type SortDropdownProps = {
   options: Option[];
   onChange: (value: string) => void;
   defaultValue?: string;
+  width?: string;
+  sortbytext?: boolean;
 };
 
 const SortDropdown: React.FC<SortDropdownProps> = ({
   options,
+  width,
+  sortbytext,
   onChange,
   defaultValue,
 }) => {
@@ -43,14 +47,14 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   return (
     <div
       ref={dropdownRef}
-      className="relative inline-block text-left text-sm w-[300px]"
+      className={`relative inline-block text-left text-sm ${width}`}
     >
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center justify-between w-full rounded-full border-[1px] border-black px-5 py-[18px] bg-white text-black"
       >
         <span className='font-light text-sm'>
-          Sort by:{' '}
+         {sortbytext ? "Sort by:" : ""} 
           <span className='font-semibold text-sm'>{selectedLabel}</span>
         </span>
         <ChevronDown size={16} className="ml-2" />
