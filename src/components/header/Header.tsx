@@ -8,7 +8,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className={`md:border-b border-white/30 py-3 absolute top-0 w-full z-20 header-navbar ${isMenuOpen ? 'nav-active' : ''}`}>
+    <header className={`md:border-b border-white/30 py-3 absolute top-0 w-full z-20 header-navbar ${isMenuOpen ? 'nav-active before:bg-[#00000080] before:h-full before:w-full before:fixed before:top-0' : ''}`}>
       <div className="container">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -39,7 +39,7 @@ export default function Header() {
         </div>
 
         {/* Mobile Navigation */}
-          <div className="md:hidden border-t border-white/30 mobile-nemu fixed top-0 left-0 w-full bg-black h-full">
+          <div className="md:hidden border-t border-white/30 mobile-nemu fixed top-0 right-0 max-w-[300px] w-full bg-black h-full">
             <div className='container'>
               <div className='flex items-start pt-4 justify-between mb-4'>
                 <a href='/' className="space-x-2">
