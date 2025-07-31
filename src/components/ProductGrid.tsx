@@ -97,32 +97,34 @@ const ProductList: React.FC = () => {
         console.log('Sorting by:', value);
     };
     return (
-        <div className="container mx-auto p-4 mt-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-4 py-6 ">
-                <h1 className="text-[54px] md:text-[65px] lg:text-[84px] font-playfairDisplay italic text-primary">
-                    Alpine 2.2
-                </h1>
+        <section className='xl:mb-[140px] lg:mb-[120px] md:mb-[100px] mb-[80px] mt-[160px]'>
+            <div className="container">
+                <div className="flex items-center gap-2 md:flex-nowrap flex-wrap justify-between 2xl:mb-[60px] xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]">
+                    <h1 className="text-primary flex-none italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay">
+                        Alpine 2.2
+                    </h1>
 
-                <div className="flex flex-col md:flex-row items-center md:justify-end gap-4">
-                    <span className="text-sm font-regular text-[18px] md:mr-[5px] lg:mr-[45px]">
-                        Showing all 12 results
-                    </span>
-                    <SortDropdown width="w-[300px]" sortbytext={true} options={sortOptions} onChange={handleSortChange} />
+                    <div className="flex items-center gap-4 w-full">
+                        <span className="lg:text-2sm md:text-sm text-[12px] ml-auto flex-none">
+                            Showing all 12 results
+                        </span>
+                        <SortDropdown width="max-w-[300px]" sortbytext={true} options={sortOptions} onChange={handleSortChange} />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6 lg:gap-5 md:gap-4 gap-3">
+                    {products.map((product) => (
+                        <ProductCard
+                            key={product.id}
+                            title={product.title}
+                            price={product.price}
+                            imageUrl={product.imageUrl}
+                        />
+                    ))}
+
                 </div>
             </div>
-
-            <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 my-8 ">
-                {products.map((product) => (
-                    <ProductCard
-                        key={product.id}
-                        title={product.title}
-                        price={product.price}
-                        imageUrl={product.imageUrl}
-                    />
-                ))}
-
-            </div>
-        </div>
+        </section>
     );
 };
 

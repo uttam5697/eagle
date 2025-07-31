@@ -14,6 +14,9 @@ import BrandLogo from "./images/brand-logo/brand-logo.png";
 import BrandLogo2 from "./images/brand-logo/brand-logo2.png";
 import BrandLogo3 from "./images/brand-logo/brand-logo3.png";
 import BrandLogo4 from "./images/brand-logo/brand-logo4.png";
+import ClientImg from "./images/client-img/client-img.png";
+import ClientImg2 from "./images/client-img/client-img2.png";
+import ClientImg3 from "./images/client-img/client-img3.png";
 
 export {
   Logo,
@@ -32,4 +35,7 @@ export {
   BrandLogo2,
   BrandLogo3,
   BrandLogo4,
+  ClientImg,
+  ClientImg2,
+  ClientImg3
 };

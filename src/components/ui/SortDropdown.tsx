@@ -47,15 +47,15 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   return (
     <div
       ref={dropdownRef}
-      className={`relative inline-block text-left text-sm ${width}`}
+      className={`w-full lg:text-sm md:text-[14px] text-[12px] ${width}`}
     >
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex items-center justify-between w-full rounded-full border-[1px] border-black px-5 py-[18px] bg-white text-black"
+        className="flex items-center justify-between w-full rounded-full border-[1px] border-black lg:px-5 md:px-4 px-3 lg:py-[18px] md:py-4 py-3 bg-white text-black"
       >
-        <span className='font-light text-sm'>
+        <span className='font-light leading-none'>
          {sortbytext ? "Sort by:" : ""} 
-          <span className='font-semibold text-sm'>{selectedLabel}</span>
+          <span className='font-semibold'>{selectedLabel}</span>
         </span>
         <ChevronDown size={16} className="ml-2" />
       </button>
