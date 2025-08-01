@@ -1,7 +1,5 @@
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { product1, product2, product3, product4 } from "../../assets/images";
@@ -115,8 +113,8 @@ export default function WeeklyBestsellers() {
                             Bestsellers
                         </h1>
                     </div>
-                    <div className="flex items-center gap-10">
-                        <SortDropdown sortbytext={false} width={"xl:w-[200px] lg:w-[180px] md:w-[160px] w-[140px]"} options={sortOptions} onChange={handleSortChange} />
+                    <div className="flex items-center xl:gap-10 lg:gap-8 md:gap-6 gap-4">
+                        <SortDropdown text="Sort by" sortbytext={false} width={"xl:w-[200px] lg:w-[180px] md:w-[160px] w-[140px]"} options={sortOptions} onChange={handleSortChange} />
                         <div className="flex lg:gap-5 md:gap-3 gap-2 items-center">
                             <button
                                 ref={prevRef}
@@ -146,12 +144,20 @@ export default function WeeklyBestsellers() {
                     modules={[Navigation]}
                     onBeforeInit={(swiper) => {
                         // Bind navigation buttons manually here
-                        if (typeof swiper.params.navigation !== "boolean") {
-                            swiper.params.navigation.prevEl = prevRef.current;
-                            swiper.params.navigation.nextEl = nextRef.current;
+                        if (
+                        swiper.params.navigation &&
+                        typeof swiper.params.navigation !== "boolean"
+                        ) {
+                        swiper.params.navigation.prevEl = prevRef.current;
+                        swiper.params.navigation.nextEl = nextRef.current;
                         }
+
                     }}
                     breakpoints={{
+                        120: {
+                            slidesPerView: 1.5,
+                            spaceBetween: 10,
+                        },
                         540: {
                             slidesPerView: 2.5,
                             spaceBetween: 10,

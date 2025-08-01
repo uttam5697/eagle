@@ -6,5 +6,8 @@ import WeeklyBestsellers from "./weeklybestsellers/WeeklyBestsellers";
 import ShoppingBrand from "./shoppingbrand/ShoppingBrand";
 import WhatOurClients from "./whatourclients/WhatOurClients";
 import ProductSpecifications from "./productspecifications/ProductSpecifications";
+import Login from "./login/Login";
+import ForgotPassword from "./forgotpassword/ForgotPassword";
+import SignUp from "./signup/SignUp";
 
-export { Header, Footer,SpsFlooring,HeroSlider,WeeklyBestsellers,ShoppingBrand,WhatOurClients,ProductSpecifications };
+export { Header, Footer,SpsFlooring,HeroSlider,WeeklyBestsellers,ShoppingBrand,WhatOurClients,ProductSpecifications,Login,ForgotPassword,SignUp };

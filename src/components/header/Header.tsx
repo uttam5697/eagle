@@ -10,7 +10,7 @@ export default function Header() {
   console.log("🚀 ~ Header ~ pathname:", pathname)
 
   return (
-    <header className={`md:border-b border-white/30 py-3  ${pathname === '/' ? 'bg-transparent absolute top-0' : 'bg-black '} w-full z-20 header-navbar ${isMenuOpen ? 'nav-active before:bg-[#00000080] before:h-full before:w-full before:fixed before:top-0' : ''}`}>
+    <header className={`md:border-b border-white/30 py-3  ${pathname === '/' ? 'bg-transparent absolute top-0' : 'bg-black '} w-full z-20 header-navbar ${isMenuOpen ? 'nav-active before:bg-[#00000080] before:h-full before:w-full before:z-30 before:fixed before:top-0' : ''}`}>
       <div className="container">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -41,7 +41,7 @@ export default function Header() {
         </div>
 
         {/* Mobile Navigation */}
-          <div className="md:hidden border-t border-white/30 mobile-nemu fixed top-0 right-0 max-w-[300px] w-full bg-black h-full">
+          <div className="md:hidden border-t border-white/30 mobile-nemu fixed top-0 right-0 max-w-[300px] w-full bg-black h-full z-30">
             <div className='container'>
               <div className='flex items-start pt-4 justify-between mb-4'>
                 <a href='/' className="space-x-2">
@@ -56,8 +56,8 @@ export default function Header() {
               </div>
               <nav className="flex navbar flex-col space-y-4">
                 <a href="#" className="text-white transition-colors font-medium active">Home</a>
-                <a href="#" className="text-gray-300 transition-colors">About Us</a>
-                <a href="#" className="text-gray-300 transition-colors">Contact Us</a>
+                <a href="#" className="text-white transition-colors">About Us</a>
+                <a href="#" className="text-white transition-colors">Contact Us</a>
                 <a href="#" className="flex white-btn group before:!hidden after:!hidden">
                   <span className='leading-none'>Get in touch</span>
                   <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all'/>

@@ -1,9 +1,10 @@
-import {SpsFlooring, HeroSlider,WeeklyBestsellers } from "./index.js";
+import SpsFlooring from "./spsflooring/SpsFlooring.js";
+import WeeklyBestsellers from "./weeklybestsellers/WeeklyBestsellers.js";
+import HeroSlider from "./heroslider/HeroSlider.js";
 import ShoppingBrand from "./shoppingbrand/ShoppingBrand.js";
 import WhatOurClients from "./whatourclients/WhatOurClients.js";
 
-export default function Home() {
-  return <>
+const Home: React.FC = () => {  return <>
   <HeroSlider />
   <SpsFlooring />
   <WeeklyBestsellers />
@@ -11,4 +12,4 @@ export default function Home() {
   <ShoppingBrand />
   </>
 }
-
+export default Home;

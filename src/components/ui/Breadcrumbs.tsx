@@ -1,8 +1,5 @@
 import React from 'react';
-import { BiChevronRight } from 'react-icons/bi';
-import { BsChevronDoubleRight, BsChevronRight } from 'react-icons/bs';
-import { FaAnglesRight } from 'react-icons/fa6';
-import { FiArrowRight } from 'react-icons/fi';
+import { BsChevronDoubleRight } from 'react-icons/bs';
 import { Link } from 'react-router-dom'; // or 'next/link' if you're using Next.js
 
 type BreadcrumbItem = {

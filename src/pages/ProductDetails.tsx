@@ -1,9 +1,5 @@
-import React, { useState } from 'react';
-import { Minus, Plus } from 'lucide-react';
-import PrimaryButton from '../components/ui/Button';
+import  { useState } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { product1, product2, product3, product4 } from '../assets/images';
 import Breadcrumbs from '../components/ui/Breadcrumbs';
@@ -11,12 +7,10 @@ import QuantityInputGroup from '../components/ui/QuantityInputGroup';
 import SortDropdown from '../components/ui/SortDropdown';
 
 export default function ProductDetailPage() {
-    const [coverage, setCoverage] = useState(23.95);
     const [boxes, setBoxes] = useState(1);
     const [sqft, setSqft] = useState(23.95);
     const [isWastageChecked, setIsWastageChecked] = useState(true);
-    const [activeMediaUrl, setActiveMediaUrl] = useState("");
-    const plusIcon = "https://cdn-icons-png.flaticon.com/512/1828/1828817.png";
+    
 
     const productGallery = [
         product1,
@@ -33,19 +27,9 @@ export default function ProductDetailPage() {
     { label: 'Newest', value: 'newest' },
 ];
 
-    const pricePerSqft = 1.99;
 
     const handleGalleryImageClick = (img: string) => setMainImage(img);
-    const handleCoverageChange = (amount: number) => {
-        const newCoverage = Math.max(0, coverage + amount);
-        setCoverage(newCoverage);
-        setBoxes(Math.ceil(newCoverage));
-    };
-    const handleBoxesChange = (amount: number) => {
-        const newBoxes = Math.max(1, boxes + amount);
-        setBoxes(newBoxes);
-        setCoverage(newBoxes * 1);
-    };
+    
 
     const breadcrumbData = [
         { label: 'Home', href: '/' },
@@ -139,42 +123,7 @@ export default function ProductDetailPage() {
                                     </SwiperSlide>
                                 ))}
                             </Swiper>
-                            <div className="swiper-button-prev-custom absolute z-20 top-1/2 -left-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
-                                <svg
-                                    className="w-5 h-5 text-gray-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M15 19l-7-7 7-7"
-                                    />
-                                </svg>
-                            </div>
-                            <div className="swiper-button-next-custom absolute z-20 top-1/2 right-14 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
-                                <svg
-                                    className="w-5 h-5 text-gray-600"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M9 5l7 7-7 7"
-                                    />
-                                </svg>
-                            </div>
-
                         </div>
-
-
                     </div>
                 </div>
                 <div className="  text-black">
@@ -256,9 +205,6 @@ export default function ProductDetailPage() {
 
                 </div>
             </div>
-
-
-
         </div>
     );
 }

@@ -4,7 +4,7 @@ import { PiEnvelopeSimple } from "react-icons/pi";
 
 export default function Footer() {
   return (
-    <footer className="bg-black xl:py-[50px] lg:py-[40px] md:py-[30px] py-[20px]">
+    <footer className="bg-black xl:py-[50px] lg:py-[40px] md:py-[30px] py-[20px] pb-8">
       <div className="container">
         <div className="grid grid-cols-12 gap-4 mb-8">
           <div className="xl:col-span-7 lg:col-span-5 md:col-span-4 sm:col-span-2 col-span-12">
@@ -110,7 +110,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-12 gap-4 xl:mb-[54px] lg:mb-[44px] md:mb-[34px] sm:mb-[24px] mb-[14px]">
+        <div className="grid grid-cols-12 gap-x-4 md:gap-y-8 gap-y-6 xl:mb-[54px] lg:mb-[44px] md:mb-[34px] sm:mb-[24px] mb-[14px]">
           <div className="xl:col-span-7 lg:col-span-5 col-span-12">
             <div className="flex gap-3 items-center lg:mb-6 md:mb-5 sm:mb-4 mb-3">
               <span className="md:w-[38px] md:h-[38px] w-[30px] h-[30px] flex-none border border-white rounded-full text-white flex items-center justify-center">
@@ -143,7 +143,7 @@ export default function Footer() {
             </div>
           </div>
           <div className="xl:col-span-5 lg:col-span-7 col-span-12">
-            <h3 className="text-white lg:text-xl md:text-base text-2sm lg:mb-4 md:mb-3 mb-2">
+            <h3 className="text-white xl:text-xl lg:text-base md:text-2sm text-sm lg:mb-4 md:mb-3 mb-2">
               Sign up for Updates
             </h3>
             <form className="flex items-center border border-white rounded-full overflow-hidden mb-[10px]">

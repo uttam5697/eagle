@@ -1,11 +1,9 @@
 
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { BrandImg, BrandImg2, BrandImg3, BrandImg4, BrandLogo, BrandLogo2, BrandLogo3, BrandLogo4, FlooringImg } from "../../assets/Index";
+import { BrandImg, BrandImg2, BrandImg3, BrandImg4, BrandLogo, BrandLogo2, BrandLogo3, BrandLogo4 } from "../../assets/Index";
 
 export default function ShoppingBrand() {
     const prevRef = useRef<HTMLButtonElement>(null);
@@ -48,12 +46,20 @@ export default function ShoppingBrand() {
           modules={[Navigation]}
           onBeforeInit={(swiper) => {
             // Bind navigation buttons manually here
-            if (typeof swiper.params.navigation !== "boolean") {
+            if (
+              swiper.params.navigation &&
+              typeof swiper.params.navigation !== "boolean"
+            ) {
               swiper.params.navigation.prevEl = prevRef.current;
               swiper.params.navigation.nextEl = nextRef.current;
             }
+
           }}
           breakpoints={{
+            120: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
             540: {
               slidesPerView: 2,
               spaceBetween: 10,

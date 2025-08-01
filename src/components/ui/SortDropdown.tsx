@@ -12,6 +12,7 @@ type SortDropdownProps = {
   defaultValue?: string;
   width?: string;
   sortbytext?: boolean;
+  text: string;
 };
 
 const SortDropdown: React.FC<SortDropdownProps> = ({

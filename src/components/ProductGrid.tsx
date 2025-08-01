@@ -108,7 +108,7 @@ const ProductList: React.FC = () => {
                         <span className="lg:text-2sm md:text-sm text-[12px] ml-auto flex-none">
                             Showing all 12 results
                         </span>
-                        <SortDropdown width="max-w-[300px]" sortbytext={true} options={sortOptions} onChange={handleSortChange} />
+                        <SortDropdown text="Sort by" width="max-w-[300px]" sortbytext={true} options={sortOptions} onChange={handleSortChange} />
                     </div>
                 </div>
 

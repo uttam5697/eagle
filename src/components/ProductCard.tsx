@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  Heart as HeartOutline, Heart as HeartFilled, ShoppingCart } from 'lucide-react';
+import {   Heart as ShoppingCart } from 'lucide-react';
 import PrimaryButton from './ui/Button';
 import { FaRegHeart } from 'react-icons/fa';
 import { AiFillHeart } from 'react-icons/ai';
