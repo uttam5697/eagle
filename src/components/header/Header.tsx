@@ -23,6 +23,7 @@ export default function Header() {
             <a href="#" className="text-white active">Home</a>
             <a href="#" className="text-white">About Us</a>
             <a href="#" className="text-white">Contact Us</a>
+            <a href="/product" className="text-white">Product</a>
           </nav>
 
           {/* Desktop CTA Button */}
@@ -58,6 +59,7 @@ export default function Header() {
                 <a href="#" className="text-white transition-colors font-medium active">Home</a>
                 <a href="#" className="text-white transition-colors">About Us</a>
                 <a href="#" className="text-white transition-colors">Contact Us</a>
+                <a href="/product" className="text-white">Product</a>
                 <a href="#" className="flex white-btn group before:!hidden after:!hidden">
                   <span className='leading-none'>Get in touch</span>
                   <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all'/>

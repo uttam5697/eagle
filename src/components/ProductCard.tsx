@@ -3,15 +3,18 @@ import {   Heart as ShoppingCart } from 'lucide-react';
 import PrimaryButton from './ui/Button';
 import { FaRegHeart } from 'react-icons/fa';
 import { AiFillHeart } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
 
 type ProductCardProps = {
-    imageUrl: string | undefined;
-    title: string;
-    price: number;
+  imageUrl: string | undefined;
+  title: string;
+  price: number;
+  id: number;
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title, price }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title, price,id}) => {
     const [liked, setLiked] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <div className="group rounded-[24px] bg-white md:p-2 p-1 shadow-sm transition-transform duration-300 hover:shadow-md">
@@ -43,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title, price }) => 
                     <PrimaryButton
                         label="Add To Cart"
                         icon={<ShoppingCart size={16} />}
-                        onClick={() => alert('Added to cart!')}
+                        onClick={() => navigate(`/product/${id}`)}
                     />
                 </div>
             </div>
