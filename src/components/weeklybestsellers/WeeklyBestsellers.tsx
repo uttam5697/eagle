@@ -102,7 +102,7 @@ export default function WeeklyBestsellers() {
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
     return (
-        <section className="xl:mb-[140px] overflow-hidden lg:mb-[120px] md:mb-[100px] mb-[80px] bg-primary-gradient xl:pt-[60px] lg:pt-[50px] md:pt-[40px] pt-[30px] xl:pb-[75px] lg:pb-[65px] md:pb-[55px] pb-[45px]">
+        <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px] bg-primary-gradient xl:pt-[60px] lg:pt-[50px] md:pt-[40px] pt-[30px] xl:pb-[75px] lg:pb-[65px] md:pb-[55px] pb-[45px]">
             <div className="container">
                 <div className="2xl:mb-10 xl:mb-8 lg:mb-6 md:mb-4 mb-2 flex justify-between items-center">
                     <div>
@@ -179,7 +179,7 @@ export default function WeeklyBestsellers() {
                     {products.map((product) => (
                         <SwiperSlide key={product.id}>
                             <ProductCard
-                                key={product.id}
+                                id={product.id}
                                 title={product.title}
                                 price={product.price}
                                 imageUrl={product.imageUrl}

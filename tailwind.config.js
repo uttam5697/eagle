@@ -51,6 +51,7 @@ export default {
         "black-gradient": "linear-gradient(180deg, #00000000 43.33%, #000000b3 100%)",
         "black-light-gradient": "linear-gradient(180deg, #0000001a 13.85%, #00000099 100%)",
         "black-dark-light-gradient": "linear-gradient(0deg, #00000000 70.11%, #00000080 100%)",
+        "white-light-gradient": "linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%)",
       },
     },
     screens: {

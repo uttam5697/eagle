@@ -8,6 +8,8 @@ import ProductDetails from "./pages/ProductDetails";
 import Login from "./components/login/Login";
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import SignUp from "./components/signup/SignUp";
+import ContactUs from "./components/contactus/ContactUs";
+import HtmlPage from "./components/HtmlPage";
 
 export const createAppRouter = createBrowserRouter([
   {
@@ -22,6 +24,10 @@ export const createAppRouter = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: paths.htmlpage.path,
+        element: <HtmlPage />,
+      },
+      {
         path: paths.login.path,
         element: <Login />,
       },
@@ -32,6 +38,10 @@ export const createAppRouter = createBrowserRouter([
       {
         path: paths.signup.path,
         element: <SignUp />,
+      },
+      {
+        path: paths.contactus.path,
+        element: <ContactUs />,
       },
       {
         path: paths.product.path,

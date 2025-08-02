@@ -3,6 +3,10 @@ export const paths = {
         path: "/",
         getHref: () => "/",
     },
+    htmlpage: {
+        path: "/html-page",
+        getHref: () => "/html-page",
+    },
     login: {
         path: "/login",
         getHref: () => "/login",
@@ -14,6 +18,10 @@ export const paths = {
     signup: {
         path: "/sign-up",
         getHref: () => "/sign-up",
+    },
+    contactus: {
+        path: "/contact-us",
+        getHref: () => "/contact-us",
     },
     product: {
         path: "/product",

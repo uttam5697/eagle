@@ -9,7 +9,7 @@ export default function SpsFlooring() {
   const nextRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <section className="xl:mb-[140px] overflow-hidden lg:mb-[120px] md:mb-[100px] mb-[80px] xl:mt-[140px] lg:mt-[120px] md:mt-[100px] mt-[80px]">
+    <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px] xl:mt-[100px] lg:mt-[80px] md:mt-[60px] mt-[40px]">
       <div className="container">
         {/* Header */}
         <div className="2xl:mb-10 xl:mb-8 lg:mb-6 md:mb-4 mb-2 flex justify-between items-center">

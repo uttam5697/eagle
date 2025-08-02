@@ -8,7 +8,7 @@ export default function WhatOurClients() {
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
   return (
-    <section className="xl:mb-[140px] overflow-hidden lg:mb-[120px] md:mb-[100px] mb-[80px]">
+    <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px]">
       <div className="container">
         <div className="2xl:mb-[60px] xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px] flex justify-between items-center">
           <div>
@@ -78,8 +78,8 @@ export default function WhatOurClients() {
             },
           }}
         >
-          <SwiperSlide>
-            <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px]">
+          <SwiperSlide className="pb-4">
+            <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px] group hover:shadow-md transition-all duration-300 ease-in-out">
               <h4 className="text-black mb-[14px] font-playfairDisplay 2xl:text-[32px] xl:text-2xl lg:text-xl md:text-base text-2sm leading-none">
                 Mark Cope
               </h4>
@@ -92,11 +92,13 @@ export default function WhatOurClients() {
                 Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </p>
-              <img src={ClientImg} alt="ClientImg" />
+              <div className="w-[90px] h-[90px] rounded-[24px] overflow-hidden">
+                <img src={ClientImg} alt="ClientImg" className="w-[90px] h-[90px] rounded-[24px] transition-all duration-300 ease-in-out group-hover:scale-105 object-cover" />
+              </div>
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px]">
+          <SwiperSlide className="pb-4">
+            <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px] group hover:shadow-md transition-all duration-300 ease-in-out">
               <h4 className="text-black mb-[14px] font-playfairDisplay 2xl:text-[32px] xl:text-2xl lg:text-xl md:text-base text-2sm leading-none">
                 Jenny Tom
               </h4>
@@ -104,11 +106,13 @@ export default function WhatOurClients() {
               <p className="font-extralight xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
               </p>
-              <img src={ClientImg2} alt="ClientImg" />
+              <div className="w-[90px] h-[90px] rounded-[24px] overflow-hidden">
+                <img src={ClientImg2} alt="ClientImg" className="w-[90px] h-[90px] rounded-[24px] transition-all duration-300 ease-in-out group-hover:scale-105 object-cover" />
+              </div>
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px]">
+          <SwiperSlide className="pb-4">
+            <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px] group hover:shadow-md transition-all duration-300 ease-in-out">
               <h4 className="text-black mb-[14px] font-playfairDisplay 2xl:text-[32px] xl:text-2xl lg:text-xl md:text-base text-2sm leading-none">
                 Pitter Horn
               </h4>
@@ -116,7 +120,9 @@ export default function WhatOurClients() {
               <p className="font-extralight xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4">
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
               </p>
-              <img src={ClientImg3} alt="ClientImg" />
+              <div className="w-[90px] h-[90px] rounded-[24px] overflow-hidden">
+                <img src={ClientImg3} alt="ClientImg" className="w-[90px] h-[90px] rounded-[24px] transition-all duration-300 ease-in-out group-hover:scale-105 object-cover" />
+              </div>
             </div>
           </SwiperSlide>
         </Swiper>

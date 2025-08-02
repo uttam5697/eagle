@@ -1,4 +1,5 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
+import type { ChangeEvent } from "react";
 import { FiChevronLeft, FiChevronRight, FiMinus, FiPlus } from "react-icons/fi";
 
 type Props = {

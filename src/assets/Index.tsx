@@ -17,8 +17,10 @@ import BrandLogo4 from "./images/brand-logo/brand-logo4.png";
 import ClientImg from "./images/client-img/client-img.png";
 import ClientImg2 from "./images/client-img/client-img2.png";
 import ClientImg3 from "./images/client-img/client-img3.png";
+import ContactUsImg from "./images/contact-us-img.png";
 
 export {
+  ContactUsImg,
   Logo,
   FlooringImg,
   HeroBanner,

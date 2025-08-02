@@ -24,7 +24,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="w-full lg:min-h-screen bg-gray-f6">
+    <div className="w-full lg:min-h-screen">
       <div className="flex w-full overflow-hidden lg:flex lg:flex-wrap justify-between aligns-center lg:min-h-screen py-10 lg:py-0">
         {/* Left: Forgot Password Form */}
         <div className="w-full md:w-1/2 px-3 flex flex-col justify-center">

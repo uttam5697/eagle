@@ -29,7 +29,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="w-full lg:min-h-screen bg-gray-f6">
+    <div className="w-full lg:min-h-screen">
       <div className="flex w-full overflow-hidden lg:flex lg:flex-wrap justify-between aligns-center lg:min-h-screen py-10 lg:py-0">
         {/* Left: Sign Up Form */}
         <div className="w-full md:w-1/2 px-3 flex flex-col justify-center">
@@ -149,7 +149,7 @@ export default function SignUp() {
                   required
                   id="agreeToTerms"
                 />
-                <label htmlFor="agreeToTerms" className="text-sm text-black leading-none">
+                <label htmlFor="agreeToTerms" className="text-sm text-black leading-none accent-black">
                   I agree to the{" "}
                   <a href="#" className="text-primary hover:underline">
                     Terms of Service

@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { product1, product2, product3, product4 } from '../assets/images';
 import Breadcrumbs from '../components/ui/Breadcrumbs';
 import QuantityInputGroup from '../components/ui/QuantityInputGroup';
-import SortDropdown from '../components/ui/SortDropdown';
-import PrimaryButton from '../components/ui/Button';
-import { ArrowBigLeft, ShoppingCart } from 'lucide-react';
 import { FiArrowUpRight, FiShoppingCart } from 'react-icons/fi';
-import { ProductSpecifications, ShoppingBrand } from '../components';
+import { ProductSpecifications } from '../components';
 
 const COVERAGE_PER_BOX = 23.75;
 
@@ -53,26 +50,13 @@ export default function ProductDetailPage() {
     ];
 
     const [mainImage, setMainImage] = useState(productGallery[0]);
-    const sortOptions = [
-        { label: 'Popularity', value: 'popularity' },
-        { label: 'Price: Low to High', value: 'low-high' },
-        { label: 'Price: High to Low', value: 'high-low' },
-        { label: 'Newest', value: 'newest' },
-    ];
-
 
     const handleGalleryImageClick = (img: string) => setMainImage(img);
-
-
     const breadcrumbData = [
         { label: 'Home', href: '/' },
         { label: 'Alpine 2.2', href: '/' },
         { label: 'Alpine 22mil Barry OAK' }
     ];
-    const handleSortChange = (value: string) => {
-        console.log('Sorting by:', value);
-    };
-
     return (
         <div className="container xl:my-[60px] lg:my-[50px] md:my-[40px] my-[30px]">
             <Breadcrumbs items={breadcrumbData} />
@@ -132,7 +116,7 @@ export default function ProductDetailPage() {
                                     <SwiperSlide key={index} className="">
                                         <div
                                             onClick={() => handleGalleryImageClick(img)}
-                                            className={` mt-5  rounded-lg overflow-hidden cursor-pointer border-3  rounded-xl transition-all duration-200 ${mainImage === img
+                                            className={` mt-5 overflow-hidden cursor-pointer border-3 rounded-[16px] transition-all duration-200 ${mainImage === img
                                                 ? "border-[#C41A2C]  border-[3px] rounded-xl"
                                                 : " hover:border-[#C41A2C] border-transparent border-[3px] rounded-xl"
                                                 }`}
@@ -189,7 +173,7 @@ export default function ProductDetailPage() {
                         <li>Attached IXPE backing for comfort and quiet</li>
                     </ul>
 
-                    <div className="grid grid-cols-1 grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md">
+                    <div className="grid grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md">
                         {/* SQFT Input */}
                         <div className="col-span-2 ">
                             <QuantityInputGroup
@@ -220,7 +204,7 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 grid-cols-1 gap-4 mt-4 items-start">
+                    <div className="grid grid-cols-1 gap-4 mt-4 items-start">
                         {/* Add Wastage Section */}
                         <div>
                             <label className="inline-flex items-start gap-2">
@@ -237,7 +221,7 @@ export default function ProductDetailPage() {
                             </label>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 grid-cols-2 gap-4 mt-4 items-start mt-[84px]">
+                    <div className="grid grid-cols-2 gap-4 items-start mt-[84px]">
                         <a href="#" className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black">
                             <span className='leading-none'> Add to Cart</span>
                             <FiShoppingCart className='text-2sm  duration-300 transition-all' />
@@ -253,7 +237,7 @@ export default function ProductDetailPage() {
             </div>
         
         <ProductSpecifications />
-  <ShoppingBrand />
+        {/* <ShoppingBrand /> */}
 
         </div>
     );

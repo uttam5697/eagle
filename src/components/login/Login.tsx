@@ -6,7 +6,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="w-full lg:min-h-screen bg-gray-f6">
+    <div className="w-full lg:min-h-screen">
       <div className="flex w-full overflow-hidden lg:flex lg:flex-wrap justify-between aligns-center lg:min-h-screen py-10 lg:py-0">
         {/* Left: Login Form */}
         <div className="w-full md:w-1/2  px-3 flex flex-col justify-center">
@@ -49,7 +49,7 @@ export default function Login() {
               </div>
 
               <div className="flex items-center justify-between">
-                <label className="flex items-center text-sm">
+                <label className="flex items-center text-sm accent-black">
                   <input type="checkbox" className="mr-2" />
                   Remember me
                 </label>

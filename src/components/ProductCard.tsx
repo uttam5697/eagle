@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
 import {   Heart as ShoppingCart } from 'lucide-react';
 import PrimaryButton from './ui/Button';
-import { FaRegHeart } from 'react-icons/fa';
-import { AiFillHeart } from 'react-icons/ai';
+// import { FaRegHeart } from 'react-icons/fa';
+// import { AiFillHeart } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 type ProductCardProps = {
@@ -13,7 +12,7 @@ type ProductCardProps = {
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title, price,id}) => {
-    const [liked, setLiked] = useState(false);
+    // const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
 
     return (
@@ -24,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title, price,id}) =
                     alt={title}
                     className="w-full object-cover transition-transform duration-300 group-hover:scale-105 rounded-[16px]"
                 />
-                <button
+                {/* <button
                     onClick={() => setLiked(!liked)}
                     className="absolute top-2 right-2 bg-white lg:p-[11px] md:p-2 p-1 rounded-full shadow transition-transform duration-200 hover:bg-gray-100 hover:scale-110"
                 >
@@ -33,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title, price,id}) =
                     ) : (
                         <FaRegHeart className="text-black lg:text-[18px] md:text-[16px] text-[14px]" />
                     )}
-                </button>
+                </button> */}
             </div>
 
             <div className="mt-4 text-center">
