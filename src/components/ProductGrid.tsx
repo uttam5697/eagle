@@ -2,6 +2,7 @@ import React from 'react';
 import ProductCard from './ProductCard';
 import { product1, product2, product3, product4 } from "../assets/images"
 import SortDropdown from './ui/SortDropdown';
+import ProductSpecifications from './productspecifications/ProductSpecifications';
 
 const products = [
     {
@@ -124,6 +125,7 @@ const ProductList: React.FC = () => {
 
                 </div>
             </div>
+
         </section>
     );
 };

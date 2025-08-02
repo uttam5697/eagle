@@ -6,7 +6,6 @@ import ProductSpecifications from "../components/productspecifications/ProductSp
 const ProductListing: React.FC = () => (
     <div >
         <ProductGrid />
-        <ProductSpecifications />
     </div>
 );
 

@@ -1,7 +1,7 @@
 
 export default function ProductSpecifications() {
   return (
-    <section className="xl:mb-[140px] lg:mb-[120px] md:mb-[100px] mb-[80px]">
+    <section className="xl:mb-[140px] lg:mb-[120px] md:mb-[100px] mb-[80px] mt-[60px]">
       <div className="container">
         <div className="bg-white rounded-[24px] xl:p-[30px] lg:p-6 md:p-5 p-4">
           <div className="2xl:mb-[60px] xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]">
