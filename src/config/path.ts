@@ -3,9 +3,9 @@ export const paths = {
         path: "/",
         getHref: () => "/",
     },
-    htmlpage: {
-        path: "/html-page",
-        getHref: () => "/html-page",
+    aboutus: {
+        path: "/about-us",
+        getHref: () => "/about-us",
     },
     login: {
         path: "/login",

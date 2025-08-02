@@ -18,8 +18,10 @@ import ClientImg from "./images/client-img/client-img.png";
 import ClientImg2 from "./images/client-img/client-img2.png";
 import ClientImg3 from "./images/client-img/client-img3.png";
 import ContactUsImg from "./images/contact-us-img.png";
+import AboutUsImg from "./images/about-us-img.png";
 
 export {
+  AboutUsImg,
   ContactUsImg,
   Logo,
   FlooringImg,
@@ -39,5 +41,5 @@ export {
   BrandLogo4,
   ClientImg,
   ClientImg2,
-  ClientImg3
+  ClientImg3,
 };

@@ -38,7 +38,7 @@ export default function ContactUs() {
     };
   return (
     <section className="w-full lg:min-h-screen">
-      <div className="flex w-full overflow-hidden lg:flex lg:flex-wrap justify-between aligns-center lg:min-h-screen py-10 lg:py-0">
+      <div className="flex w-full overflow-hidden lg:flex lg:flex-wrap justify-between aligns-center lg:min-h-screen py-6 md:py-0">
         {/* Right: Image */}
         <div className="hidden md:block w-full md:w-1/2">
           <div
@@ -47,7 +47,7 @@ export default function ContactUs() {
           ></div>
         </div>
         {/* Left: Contact Form */}
-        <div className="w-full md:w-1/2  px-3 flex flex-col justify-center py-[140px]">
+        <div className="w-full md:w-1/2  px-3 flex flex-col justify-center xl:py-[100px] lg:py-[80px] md:py-[40px]">
           <form
             onSubmit={handleSubmit}
             className="max-w-[600px] mx-auto bg-[#fdfcfb] rounded-md xl:space-y-6 lg:space-y-5 md:space-y-4 space-y-3"

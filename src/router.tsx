@@ -9,7 +9,7 @@ import Login from "./components/login/Login";
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import SignUp from "./components/signup/SignUp";
 import ContactUs from "./components/contactus/ContactUs";
-import HtmlPage from "./components/HtmlPage";
+import AboutUs from "./components/aboutus/AboutUs";
 
 export const createAppRouter = createBrowserRouter([
   {
@@ -24,8 +24,8 @@ export const createAppRouter = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: paths.htmlpage.path,
-        element: <HtmlPage />,
+        path: paths.aboutus.path,
+        element: <AboutUs />,
       },
       {
         path: paths.login.path,
