@@ -2,10 +2,8 @@ import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { FlooringImg } from "../../assets/Index";
 
 export default function SpsFlooring({ productCategory }: any) {
-  console.log("🚀 ~ SpsFlooring ~ productCategory:", productCategory)
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
 
@@ -83,7 +81,7 @@ export default function SpsFlooring({ productCategory }: any) {
           }}
         >
           {
-            productCategory?.map((item: any, index: number) => (
+            productCategory?.map((item: any) => (
               <>
               <SwiperSlide>
                 <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">

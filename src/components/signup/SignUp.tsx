@@ -3,7 +3,6 @@ import { Logo } from "../../assets/Index";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import api from "../../lib/api";
-import toast from "react-hot-toast";
 import { showToast } from "../../utils/toastUtils";
 
 export default function SignUp() {

@@ -6,6 +6,8 @@ import ProductCard from "../ProductCard";
 import SortDropdown from "../ui/SortDropdown";
 import api from "../../lib/api";
 import { useQuery, type QueryFunctionContext } from "@tanstack/react-query";
+import { is } from "zod/v4/locales";
+import ProductSkeleton from "../ui/ProductSkeleton";
 
 
 
@@ -21,7 +23,7 @@ export default function WeeklyBestsellers() {
         return data
     };
 
-    const { data: productDataById, refetch } = useQuery({
+    const { data: productDataById, isLoading, refetch } = useQuery({
         queryKey: ["product", category],
         queryFn: () => fetchProductById(category as string),
         enabled: !!category,
@@ -126,17 +128,25 @@ export default function WeeklyBestsellers() {
                         },
                     }}
                 >
-                    {productDataById?.map((product: any) => (
-                        <SwiperSlide key={product.id}>
-                            <ProductCard
-                                id={product.product_id}
-                                title={product.title}
-                                price={product.price}
-                                imageUrl={product.image}
-                            />
-                        </SwiperSlide>
-                    ))
-                    }
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6 lg:gap-5 md:gap-4 gap-3">
+                        {
+                            isLoading
+                                ? Array.from({ length:2  }).map((_, index) => (
+                                    <ProductSkeleton key={index} />
+                                ))
+                                :
+                                productDataById?.map((product: any) => (
+                                    <SwiperSlide key={product.id}>
+                                        <ProductCard
+                                            id={product.product_id}
+                                            title={product.title}
+                                            price={product.price}
+                                            imageUrl={product.image}
+                                        />
+                                    </SwiperSlide>
+                                ))
+                        }
+                    </div>
                 </Swiper>
             </div>
         </section>

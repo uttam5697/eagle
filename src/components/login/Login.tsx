@@ -5,8 +5,29 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../../lib/api";
 import { showToast } from "../../utils/toastUtils";
 import { paths } from "../../config/path";
+import { useUser } from "../context/UserContext";
+
+// Utility to generate UUID-like device token
+const generateDeviceToken = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
+// Retrieve or create a device token
+const getDeviceToken = () => {
+  let token = localStorage.getItem("deviceToken");
+  if (!token) {
+    token = generateDeviceToken();
+    localStorage.setItem("deviceToken", token);
+  }
+  return token;
+};
 
 export default function Login() {
+  const { login } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,10 +39,13 @@ export default function Login() {
     const formData = new FormData();
     formData.append("Appuser[email]", email);
     formData.append("Appuser[password]", password);
+
     formData.append("Appuser[devices_type]", "Web");
     formData.append("Appuser[devices_name]", "mi y1");
-    formData.append("Appuser[devices_id]", "erfrrdfjjweksh123464758nbvbdshjasdwarfe");
     formData.append("Appuser[app_version]", "1");
+
+    const deviceToken = getDeviceToken();
+    formData.append("Appuser[devices_id]", deviceToken);
 
     try {
       const response = await api.post("/beforeauth/login", formData, {
@@ -30,23 +54,30 @@ export default function Login() {
         },
       });
 
-      // const { token } = response.data;
-      // localStorage.setItem("token", token);
+      if (response?.data?.auth_key) {
+        localStorage.setItem("authKey", response?.data?.auth_key);
+        login({
+          firstName: response?.data?.first_name,
+          lastName: response?.data?.first_name,
+          fullName: response?.data?.full_name,
+          authKey: response?.data?.auth_key,
+        });
+        showToast("Logged in successfully!", "success");
+        navigate(`${paths.home.path}`);
+      } else {
+        showToast("Login failed", "error");
+      }
 
-      showToast("Logged in successfully!" ,"success");
-      navigate(`${paths.home.path}`);
     } catch (error: any) {
       console.error("Login error:", error);
       showToast(error?.response?.data?.message || "Login failed");
     }
   };
 
-
   return (
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">
-      <div className="w-full md:w-1/2  px-3 flex flex-col justify-center">
+      <div className="w-full md:w-1/2 px-3 flex flex-col justify-center">
         <div className="w-full bg-white rounded-lg md:p-4 p-3 shadow-lg max-w-[500px] mx-auto">
-          {/* Logo */}
           <div className="flex justify-center mb-6">
             <img src={Logo} alt="Eagle Logo" />
           </div>
@@ -65,6 +96,7 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Enter your email"
+                required
               />
             </div>
 
@@ -78,6 +110,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 py-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Enter your password"
+                required
               />
               <div
                 className="absolute right-3 top-10 cursor-pointer text-blacks"

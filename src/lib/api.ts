@@ -1,6 +1,5 @@
 import axios from "axios";
 import { env } from "../config/env";
-import { paths } from "../config/path";
 
 // Axios instance
 const api = axios.create({
@@ -46,8 +45,6 @@ api.interceptors.response.use(
         return api(original);
       } catch (refreshError) {
         console.error("[Token refresh failed]", refreshError);
-        const redirectTo = window.location.pathname;
-        window.location.href = paths.auth.login.getHref(redirectTo);
         return Promise.reject(refreshError);
       }
     }

@@ -59,8 +59,22 @@ export default {
       'md': '768px',
       'lg': '1024px',
       'xl': '1152px',
-      '2xl':'1280px',
+      '2xl': '1280px',
     },
+    theme: {
+      extend: {
+        animation: {
+          fadeIn: 'fadeIn 0.6s ease-in-out',
+        },
+        keyframes: {
+          fadeIn: {
+            from: { opacity: 0 },
+            to: { opacity: 1 },
+          },
+        },
+      },
+    }
+
   },
   plugins: [],
 };

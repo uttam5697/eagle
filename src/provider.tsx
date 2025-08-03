@@ -14,9 +14,11 @@ const AppProvider = () => {
         <React.Suspense >
             <ErrorBoundary FallbackComponent={MainErrorFallback}>
                 <QueryClientProvider client={queryClient}>
+                    {/* <SmoothScrollbar> */}
                     <UserProvider>
                     <RouterProvider router={createAppRouter} />
                     </UserProvider>
+                    {/* </SmoothScrollbar> */}
                 </QueryClientProvider>
             </ErrorBoundary>
         </React.Suspense>

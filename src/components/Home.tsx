@@ -1,20 +1,32 @@
-import SpsFlooring from "./spsflooring/SpsFlooring.js";
-import WeeklyBestsellers from "./weeklybestsellers/WeeklyBestsellers.js";
-import HeroSlider from "./heroslider/HeroSlider.js";
-// import ShoppingBrand from "./shoppingbrand/ShoppingBrand.js";
-import WhatOurClients from "./whatourclients/WhatOurClients.js";
-import { useHome } from "../api/home.js";
+import React from "react";
+import SpsFlooring from "./spsflooring/SpsFlooring";
+import WeeklyBestsellers from "./weeklybestsellers/WeeklyBestsellers";
+import HeroSlider from "./heroslider/HeroSlider";
+import WhatOurClients from "./whatourclients/WhatOurClients";
+import { useHome } from "../api/home";
+import AnimatedSection from "./ui/AnimatedSection";
 
 const Home: React.FC = () => {
-  const { data: articleData } = useHome(false);
+  const { data: homescreenData } = useHome(false);
 
-  return <>
-    <HeroSlider homedatabanner={articleData?.banner} />
-    <SpsFlooring productCategory={articleData?.product_category
-    } />
-    <WeeklyBestsellers />
-    <WhatOurClients />
-    {/* <ShoppingBrand /> */}
-  </>
-}
+  return (
+    <>
+      <AnimatedSection direction="up" delay={0.2}>
+        <HeroSlider homedatabanner={homescreenData?.banner} />
+      </AnimatedSection>
+      <AnimatedSection direction="up" delay={0.3}>
+        <SpsFlooring productCategory={homescreenData?.product_category} />
+      </AnimatedSection>
+
+      <AnimatedSection direction="up" delay={0.3}>
+        <WeeklyBestsellers />
+      </AnimatedSection>
+
+      <AnimatedSection direction="up" delay={0.3}>
+        <WhatOurClients />
+      </AnimatedSection>
+    </>
+  );
+};
+
 export default Home;

@@ -1,15 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-type Option = {
-  product_category_id: string;
-  title: string;
-  display_order: number;
-  status: string;
-};
+
 
 type SortDropdownProps = {
-  options: Option[];
+  options: any;
   onChange: (value: string) => void;
   defaultValue?: string;
   width?: string;
@@ -48,7 +43,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   const selectedLabel =
     selected === 'ALL'
       ? 'All'
-      : options.find((opt) => opt.product_category_id === selected)?.title || '';
+      : options.find((opt: any) => opt.product_category_id === selected)?.title || '';
 
   return (
     <div
@@ -76,7 +71,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
           >
             All
           </div>
-          {options.map((option) => (
+          {options.map((option: any) => (
             <div
               key={option.product_category_id}
               onClick={() => handleSelect(option.product_category_id)}

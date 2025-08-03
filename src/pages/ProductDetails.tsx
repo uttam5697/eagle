@@ -6,10 +6,14 @@ import Breadcrumbs from '../components/ui/Breadcrumbs';
 import QuantityInputGroup from '../components/ui/QuantityInputGroup';
 import { FiArrowUpRight, FiShoppingCart } from 'react-icons/fi';
 import { ProductSpecifications } from '../components';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import api from '../lib/api';
 
 const COVERAGE_PER_BOX = 23.75;
 
 export default function ProductDetailPage() {
+    const {id} = useParams();
     const [boxes, setBoxes] = useState(1);
     const [sqft, setSqft] = useState(COVERAGE_PER_BOX);
     const [isWastageChecked, setIsWastageChecked] = useState(true);
@@ -57,6 +61,22 @@ export default function ProductDetailPage() {
         { label: 'Alpine 2.2', href: '/' },
         { label: 'Alpine 22mil Barry OAK' }
     ];
+
+    const fetchProductById = async (id: string) => {
+        const formData = new FormData();
+        formData.append('product_category_id', id);
+        const { data } = await api.post(`/beforeauth/getproduct`, formData);
+        return data
+    };
+
+    const { data: productDataById, refetch } = useQuery    ({
+        queryKey: ["product", id],
+        queryFn: () => fetchProductById( id as string),
+        enabled: false,
+    });
+    useEffect(() => {
+        refetch();
+    }, [id])
     return (
         <div className="container xl:my-[60px] lg:my-[50px] md:my-[40px] my-[30px]">
             <Breadcrumbs items={breadcrumbData} />

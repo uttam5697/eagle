@@ -2,8 +2,10 @@ import { FiArrowUpRight, FiMapPin, FiPhoneCall } from "react-icons/fi";
 import { Logo, PayCard, PayCard2, PayCard3, PayCard4, PayCard5 } from "../../assets/Index";
 import { PiEnvelopeSimple } from "react-icons/pi";
 import { Link } from "react-router-dom";
+import { useFooter } from "../../api/home";
 
 export default function Footer() {
+   const { data: generaldata } = useFooter(false);
   return (
     <footer className="bg-black xl:py-[50px] lg:py-[40px] md:py-[30px] py-[20px] pb-8">
       <div className="container">
@@ -54,7 +56,7 @@ export default function Footer() {
               <ul className="space-y-2 navbar">
                 <li>
                   <Link
-                    to={"/"}
+                    to={generaldata?.linkedin}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
                     LinkedIn
@@ -62,7 +64,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to={"/"}
+                   to={generaldata?.instagram}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
                     Instagram
@@ -70,7 +72,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to={"/"}
+                    to={generaldata?.twitter}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
                     Twitter
@@ -118,7 +120,7 @@ export default function Footer() {
                 <FiMapPin className="lg:text-[18px] md:text-[16px] text-[14px]" />
               </span>
               <p className="text-white md:text-sm text-[14px]">
-                Eagle Flooring Depot, 93 Joline ave, Long Branch, NJ 07740
+                {generaldata?.address}
               </p>
             </div>
             <div className="flex xl:gap-10 lg:gap-8 md:gap-6 gap-4 flex-wrap">
@@ -130,7 +132,7 @@ export default function Footer() {
                   className="text-white md:text-sm text-[14px]"
                   href="tel:(732) 693 8078"
                 >
-                  (732) 693 8078
+                  {generaldata?.contact_no}
                 </a>
               </div>
               <div className="flex gap-3 items-center">
@@ -141,7 +143,7 @@ export default function Footer() {
                   className="text-white md:text-sm text-[14px]"
                   href="mailto:info@eagleflooringdepot.com"
                 >
-                  info@eagleflooringdepot.com
+                  {generaldata?.email}
                 </a>
               </div>
             </div>
