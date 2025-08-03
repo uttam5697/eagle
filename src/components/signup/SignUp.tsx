@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Logo } from "../../assets/Index";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import api from "../../lib/api";
+import toast from "react-hot-toast";
+import { showToast } from "../../utils/toastUtils";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,11 +26,34 @@ export default function SignUp() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign up logic here
-    console.log('Sign up data:', formData);
+    try {
+      const formattedData = {
+        Appuser: {
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          postal_code: "000000",
+          phone_number: "0000000000",
+          login_type: "Normal",
+          devices_type: "Web",
+          devices_name: "mi y1",
+          devices_id: "erfrrdfjjweksh123464758nbvbdshjasdwarfe",
+          app_version: "1",
+        },
+      };
+
+      const res = await api.post('/beforeauth/usersignup', formattedData);
+      console.log("Signup success:", res.data);
+      showToast("Signup successful!", "success");
+    } catch (error: any) {
+      console.error("Signup error", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
+
 
   return (
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">

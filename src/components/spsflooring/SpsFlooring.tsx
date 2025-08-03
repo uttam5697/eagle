@@ -4,7 +4,8 @@ import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { FlooringImg } from "../../assets/Index";
 
-export default function SpsFlooring() {
+export default function SpsFlooring({ productCategory }: any) {
+  console.log("🚀 ~ SpsFlooring ~ productCategory:", productCategory)
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
 
@@ -81,161 +82,36 @@ export default function SpsFlooring() {
             },
           }}
         >
-          <SwiperSlide>
-            <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
-              <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
-                <img
-                  className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
-                  src={FlooringImg}
-                  alt="FlooringImg"
-                />
-                <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
-                  Alpine+
-                </h2>
-              </div>
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
-                <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
-                  <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
-                    Explore all
-                  </a>
+          {
+            productCategory?.map((item: any, index: number) => (
+              <>
+              <SwiperSlide>
+                <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
+                  <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
+                    <img
+                      className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
+                      src={item.image}
+                      alt="FlooringImg"
+                    />
+                    <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
+                      {item.title}
+                    </h2>
+                  </div>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
+                    <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
+                      <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
+                        Explore all
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
-              <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
-                <img
-                  className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
-                  src={FlooringImg}
-                  alt="FlooringImg"
-                />
-                <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
-                  Alpine+
-                </h2>
-              </div>
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
-                <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
-                  <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
-                    Explore all
-                  </a>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
-              <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
-                <img
-                  className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
-                  src={FlooringImg}
-                  alt="FlooringImg"
-                />
-                <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
-                  Alpine+
-                </h2>
-              </div>
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
-                <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
-                  <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
-                    Explore all
-                  </a>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
-              <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
-                <img
-                  className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
-                  src={FlooringImg}
-                  alt="FlooringImg"
-                />
-                <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
-                  Alpine+
-                </h2>
-              </div>
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
-                <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
-                  <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
-                    Explore all
-                  </a>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
-              <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
-                <img
-                  className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
-                  src={FlooringImg}
-                  alt="FlooringImg"
-                />
-                <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
-                  Alpine+
-                </h2>
-              </div>
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
-                <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
-                  <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
-                    Explore all
-                  </a>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
-              <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
-                <img
-                  className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
-                  src={FlooringImg}
-                  alt="FlooringImg"
-                />
-                <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
-                  Alpine+
-                </h2>
-              </div>
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
-                <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
-                  <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
-                    Explore all
-                  </a>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
-              <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
-                <img
-                  className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
-                  src={FlooringImg}
-                  alt="FlooringImg"
-                />
-                <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
-                  Alpine+
-                </h2>
-              </div>
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
-                <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
-                  <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
-                    Explore all
-                  </a>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-          
+              </SwiperSlide>
+              </>
+            ))
+          }
+
+
         </Swiper>
       </div>
     </section>

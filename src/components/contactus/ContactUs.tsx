@@ -2,40 +2,65 @@ import { useState } from "react";
 import { ContactUsImg } from "../../assets/Index";
 import { PiChatDots, PiEnvelopeSimple, PiUserLight } from "react-icons/pi";
 import { FiArrowUpRight } from "react-icons/fi";
+import api from "../../lib/api";
+import { showToast } from "../../utils/toastUtils";
 
 export default function ContactUs() {
-      const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: "",
+    subscribe: false,
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
+
+    if (type === "checkbox") {
+      // Safe cast to HTMLInputElement for checkbox
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: checked,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const formattedData = {
+        Contactus: {
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          message: formData.message,
+        },
+      };
+
+      await api.post('/beforeauth/contactus', formattedData);
+      setFormData({
         firstName: "",
         lastName: "",
         email: "",
         message: "",
-        subscribe: false,
-    });
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => {
-        const { name, value, type } = e.target;
-
-        if (type === "checkbox") {
-            // Safe cast to HTMLInputElement for checkbox
-            const checked = (e.target as HTMLInputElement).checked;
-            setFormData((prevData) => ({
-            ...prevData,
-            [name]: checked,
-            }));
-        } else {
-            setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-            }));
-        }
-        };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log(formData);
-    };
+        subscribe: false
+      })
+      showToast("Contact us successful!", "success");
+      
+    } catch (error: any) {
+      console.error("Contact us error", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
   return (
     <section className="w-full lg:min-h-screen">
       <div className="flex w-full overflow-hidden lg:flex lg:flex-wrap justify-between aligns-center lg:min-h-screen py-6 md:py-0">
@@ -120,8 +145,8 @@ export default function ContactUs() {
               </div>
               <div className="flex justify-end">
                 <button className="flex justify-between black-btn group before:!hidden after:!hidden">
-                    <span className='leading-none'>Submit</span>
-                    <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
+                  <span className='leading-none'>Submit</span>
+                  <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
                 </button>
               </div>
             </div>

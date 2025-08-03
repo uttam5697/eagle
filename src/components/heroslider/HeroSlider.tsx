@@ -4,7 +4,7 @@ import 'swiper/css/pagination';
 import { Parallax, Pagination,Autoplay } from 'swiper/modules';
 import { HeroBanner } from '../../assets/Index';
 
-export default function HeroSlider() {
+export default function HeroSlider({homedatabanner}:any) {
   return (
     <section className="relative">
         <Swiper
@@ -21,7 +21,7 @@ export default function HeroSlider() {
           modules={[Parallax, Pagination,Autoplay]}
           className="hero-banner"
         >
-          {[1, 2,3,4,].map((_, index) => (
+          {homedatabanner?.map((item:any, index:number) => (
             <SwiperSlide
               key={index}
               className="bg-cover bg-center h-full 2xl:min-h-[990px] xl:min-h-[890px] lg:min-h-[790px] md:min-h-[690px] sm:min-h-[590px] min-h-[490px] relative before:bg-black-light-gradient before:absolute before:w-full before:h-full before:z-1 after:bg-black-dark-light-gradient after:absolute after:w-full after:h-full after:top-0 after:z-1"
@@ -35,13 +35,13 @@ export default function HeroSlider() {
                     className="text-white -tracking-[0.48px] 2xl:text-5xl xl:text-4.5xl 2xl:leading-[90px] xl:leading-[60px] leading-none lg:text-4xl md:text-3xl text-2xl font-light"
                     data-swiper-parallax="-1000"
                   >
-                    Discover durable, waterproof SPC flooring
+                    {item.title}
                   </h1>
                   <div
                     className="text-white italic -tracking-[0.48px] 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay"
                     data-swiper-parallax="-1000"
                   >
-                    fit for any room.
+                    {item.subtitle}
                   </div>
                 </div>
               </div>

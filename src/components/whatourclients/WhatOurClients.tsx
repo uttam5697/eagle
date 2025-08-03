@@ -2,11 +2,12 @@ import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { ClientImg, ClientImg2, ClientImg3 } from "../../assets/Index";
+import { useHome } from "../../api/home";
 
 export default function WhatOurClients() {
-    const prevRef = useRef<HTMLButtonElement>(null);
-    const nextRef = useRef<HTMLButtonElement>(null);
+  const { data: homedata } = useHome(false);
+  const prevRef = useRef<HTMLButtonElement>(null);
+  const nextRef = useRef<HTMLButtonElement>(null);
   return (
     <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px]">
       <div className="container">
@@ -78,7 +79,7 @@ export default function WhatOurClients() {
             },
           }}
         >
-          <SwiperSlide className="pb-4">
+          {/* <SwiperSlide className="pb-4">
             <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px] group hover:shadow-md transition-all duration-300 ease-in-out">
               <h4 className="text-black mb-[14px] font-playfairDisplay 2xl:text-[32px] xl:text-2xl lg:text-xl md:text-base text-2sm leading-none">
                 Mark Cope
@@ -110,21 +111,26 @@ export default function WhatOurClients() {
                 <img src={ClientImg2} alt="ClientImg" className="w-[90px] h-[90px] rounded-[24px] transition-all duration-300 ease-in-out group-hover:scale-105 object-cover" />
               </div>
             </div>
-          </SwiperSlide>
-          <SwiperSlide className="pb-4">
-            <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px] group hover:shadow-md transition-all duration-300 ease-in-out">
-              <h4 className="text-black mb-[14px] font-playfairDisplay 2xl:text-[32px] xl:text-2xl lg:text-xl md:text-base text-2sm leading-none">
-                Pitter Horn
-              </h4>
-              <p className="text-primary font-light xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4 leading-none lg:text-[16px] md:text-[14px] text-[12px]">Co-Founder Of Steel</p>
-              <p className="font-extralight xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-              </p>
-              <div className="w-[90px] h-[90px] rounded-[24px] overflow-hidden">
-                <img src={ClientImg3} alt="ClientImg" className="w-[90px] h-[90px] rounded-[24px] transition-all duration-300 ease-in-out group-hover:scale-105 object-cover" />
-              </div>
-            </div>
-          </SwiperSlide>
+          </SwiperSlide> */}
+          {
+            homedata?.client_say
+              ?.map((client: any) => (
+                <SwiperSlide className="pb-4">
+                  <div className="bg-white xl:p-10 lg:p-8 md:p-6 p-4 rounded-[34px] group hover:shadow-md transition-all duration-300 ease-in-out">
+                    <h4 className="text-black mb-[14px] font-playfairDisplay 2xl:text-[32px] xl:text-2xl lg:text-xl md:text-base text-2sm leading-none">
+                      {client.name}
+                    </h4>
+                    <p className="text-primary font-light xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4 leading-none lg:text-[16px] md:text-[14px] text-[12px]">Co-Founder Of Steel</p>
+                    <p className="font-extralight xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4">
+                      {client.description}
+                    </p>
+                    <div className="w-[90px] h-[90px] rounded-[24px] overflow-hidden">
+                      <img src={client.image} alt="ClientImg" className="w-[90px] h-[90px] rounded-[24px] transition-all duration-300 ease-in-out group-hover:scale-105 object-cover" />
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))
+          }
         </Swiper>
       </div>
     </section>

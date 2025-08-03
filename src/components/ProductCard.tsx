@@ -38,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title, price,id}) =
             <div className="mt-4 text-center">
                 <h3 className="xl:text-2sm lg:text-sm md:text-[14px] text-[12px] font-regular text-black leading-none lg:mb-[18px] md:mb-[16px] mb-[14px]">{title}</h3>
                 <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
-                    ${price.toFixed(2)} <span className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold">/ sqft</span>
+                    {/* ${price?.toFixed(2)} <span className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold">/ sqft</span> */}
                 </p>
 
                 <div className="lg:mb-[18px] md:mb-4 mb-3 lg:mt-5 md:mt-4 mt-3">

@@ -1,10 +1,46 @@
 import { useState } from "react";
 import { Logo } from "../../assets/Index";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../lib/api";
+import { showToast } from "../../utils/toastUtils";
+import { paths } from "../../config/path";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("Appuser[email]", email);
+    formData.append("Appuser[password]", password);
+    formData.append("Appuser[devices_type]", "Web");
+    formData.append("Appuser[devices_name]", "mi y1");
+    formData.append("Appuser[devices_id]", "erfrrdfjjweksh123464758nbvbdshjasdwarfe");
+    formData.append("Appuser[app_version]", "1");
+
+    try {
+      const response = await api.post("/beforeauth/login", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // const { token } = response.data;
+      // localStorage.setItem("token", token);
+
+      showToast("Logged in successfully!" ,"success");
+      navigate(`${paths.home.path}`);
+    } catch (error: any) {
+      console.error("Login error:", error);
+      showToast(error?.response?.data?.message || "Login failed");
+    }
+  };
+
 
   return (
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">
@@ -18,13 +54,15 @@ export default function Login() {
             Sign in to your account
           </h2>
 
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block md:text-sm text-xs font-medium text-black mb-1">
                 Email address
               </label>
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Enter your email"
               />
@@ -36,6 +74,8 @@ export default function Login() {
               </label>
               <input
                 type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 py-2 pr-10 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Enter your password"
               />

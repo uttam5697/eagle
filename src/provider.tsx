@@ -5,6 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import "./index.css";
 import { MainErrorFallback } from "./components/error/main";
 import { createAppRouter } from "./router";
+import { UserProvider } from "./components/context/UserContext";
 
 const queryClient = new QueryClient();
 
@@ -13,7 +14,9 @@ const AppProvider = () => {
         <React.Suspense >
             <ErrorBoundary FallbackComponent={MainErrorFallback}>
                 <QueryClientProvider client={queryClient}>
+                    <UserProvider>
                     <RouterProvider router={createAppRouter} />
+                    </UserProvider>
                 </QueryClientProvider>
             </ErrorBoundary>
         </React.Suspense>

@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 type Option = {
-  label: string;
-  value: string;
+  product_category_id: string;
+  title: string;
+  display_order: number;
+  status: string;
 };
 
 type SortDropdownProps = {
@@ -20,10 +22,10 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
   width,
   sortbytext,
   onChange,
-  defaultValue,
+  defaultValue = "ALL", // default to ALL
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<string>(defaultValue || options[0].value);
+  const [selected, setSelected] = useState<string>(defaultValue);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -43,7 +45,10 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
     setIsOpen(false);
   };
 
-  const selectedLabel = options.find((opt) => opt.value === selected)?.label;
+  const selectedLabel =
+    selected === 'ALL'
+      ? 'All'
+      : options.find((opt) => opt.product_category_id === selected)?.title || '';
 
   return (
     <div
@@ -54,24 +59,34 @@ const SortDropdown: React.FC<SortDropdownProps> = ({
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center justify-between w-full rounded-full border-[1px] border-black lg:px-5 md:px-4 px-3 lg:py-[18px] md:py-4 py-3 bg-white text-black"
       >
-        <span className='font-light leading-none'>
-         {sortbytext ? "Sort by:" : ""} 
-          <span className='font-semibold'>{selectedLabel}</span>
+        <span className="font-light leading-none">
+          {sortbytext ? 'Sort by: ' : ''}
+          <span className="font-semibold">{selectedLabel}</span>
         </span>
         <ChevronDown size={16} className="ml-2" />
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-full rounded-md border border-gray-200 bg-white shadow-md">
+        <div className="absolute z-10 mt-2 w-full rounded-md border border-gray-200 bg-white shadow-md max-h-60 overflow-y-auto">
+          <div
+            onClick={() => handleSelect('ALL')}
+            className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
+              selected === 'ALL' ? 'font-semibold text-black' : 'text-gray-700'
+            }`}
+          >
+            All
+          </div>
           {options.map((option) => (
             <div
-              key={option.value}
-              onClick={() => handleSelect(option.value)}
+              key={option.product_category_id}
+              onClick={() => handleSelect(option.product_category_id)}
               className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
-                option.value === selected ? 'font-semibold text-black' : 'text-gray-700'
+                option.product_category_id === selected
+                  ? 'font-semibold text-black'
+                  : 'text-gray-700'
               }`}
             >
-              {option.label}
+              {option.title}
             </div>
           ))}
         </div>

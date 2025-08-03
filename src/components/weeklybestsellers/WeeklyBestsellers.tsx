@@ -1,106 +1,56 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { product1, product2, product3, product4 } from "../../assets/images";
 import ProductCard from "../ProductCard";
 import SortDropdown from "../ui/SortDropdown";
+import api from "../../lib/api";
+import { useQuery, type QueryFunctionContext } from "@tanstack/react-query";
 
 
-const products = [
-    {
-        id: 1,
-        title: 'Alpine 22mil Rivawood Oak',
-        price: 1.99,
-        imageUrl: product1,
-    },
-    {
-        id: 2,
-        title: 'Alpine 22mil Palermo Valley',
-        price: 1.99,
-        imageUrl: product2,
-    },
-    {
-        id: 3,
-        title: 'Alpine 22mil Napa Oak',
-        price: 1.99,
-        imageUrl: product3,
-    },
-    {
-        id: 4,
-        title: 'Alpine 22mil Berry Oak',
-        price: 1.99,
-        imageUrl: product4,
 
-    },
-    // Duplicate for 8 items
-    {
-        id: 5,
-        title: 'Alpine 22mil Rivawood Oak',
-        price: 1.99,
-        imageUrl: product1,
-
-    },
-    {
-        id: 6,
-        title: 'Alpine 22mil Palermo Valley',
-        price: 1.99,
-        imageUrl: product2,
-
-    },
-    {
-        id: 7,
-        title: 'Alpine 22mil Napa Oak',
-        price: 1.99,
-        imageUrl: product3,
-
-    },
-    {
-        id: 8,
-        title: 'Alpine 22mil Berry Oak',
-        price: 1.99,
-        imageUrl: product4,
-
-    },
-    {
-        id: 1,
-        title: 'Alpine 22mil Rivawood Oak',
-        price: 1.99,
-        imageUrl: product1,
-    },
-    {
-        id: 2,
-        title: 'Alpine 22mil Palermo Valley',
-        price: 1.99,
-        imageUrl: product2,
-    },
-    {
-        id: 3,
-        title: 'Alpine 22mil Napa Oak',
-        price: 1.99,
-        imageUrl: product3,
-    },
-    {
-        id: 4,
-        title: 'Alpine 22mil Berry Oak',
-        price: 1.99,
-        imageUrl: product4,
-
-    },
-];
-const sortOptions = [
-    { label: 'Alpine 2.2', value: 'popularity' },
-    { label: 'Alpine 2.3', value: 'low-high' },
-    { label: 'Alpine 2.4', value: 'high-low' },
-    { label: 'Alpine 2.5', value: 'newest' },
-];
-
-const handleSortChange = (value: string) => {
-    console.log('Sorting by:', value);
-};
 export default function WeeklyBestsellers() {
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
+    const [category, setCategory] = useState('');
+
+    const fetchProductById = async (category: string) => {
+        const formData = new FormData();
+        formData.append('product_category_id', category);
+        const { data } = await api.post(`/beforeauth/getproduct`, category === 'ALL' ? {} : formData);
+        return data
+    };
+
+    const { data: productDataById, refetch } = useQuery({
+        queryKey: ["product", category],
+        queryFn: () => fetchProductById(category as string),
+        enabled: !!category,
+    });
+
+    // 3. Fetch product categories
+    const getProductCategory = async (
+        _ctx: QueryFunctionContext<[string]>
+    ) => {
+        const { data } = await api.post('/beforeauth/getproductcategory');
+        return data;
+    };
+
+    const { data: productCategoryData } = useQuery({
+        queryKey: ['productCategory'],
+        queryFn: getProductCategory,
+        refetchOnWindowFocus: false,
+    });
+
+    // 4. Sorting handler
+    const handleSortChange = (value: string) => {
+        console.log('Sorting by:', value);
+        setCategory(value);
+    };
+
+    useEffect(() => {
+        refetch()
+    }, [category]);
+
     return (
         <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px] bg-primary-gradient xl:pt-[60px] lg:pt-[50px] md:pt-[40px] pt-[30px] xl:pb-[75px] lg:pb-[65px] md:pb-[55px] pb-[45px]">
             <div className="container">
@@ -114,7 +64,7 @@ export default function WeeklyBestsellers() {
                         </h1>
                     </div>
                     <div className="flex items-center xl:gap-10 lg:gap-8 md:gap-6 gap-4">
-                        <SortDropdown text="Sort by" sortbytext={false} width={"xl:w-[200px] lg:w-[180px] md:w-[160px] w-[140px]"} options={sortOptions} onChange={handleSortChange} />
+                        <SortDropdown text="Sort by" sortbytext={false} width={"xl:w-[200px] lg:w-[180px] md:w-[160px] w-[140px]"} options={productCategoryData} onChange={handleSortChange} />
                         <div className="flex lg:gap-5 md:gap-3 gap-2 items-center">
                             <button
                                 ref={prevRef}
@@ -145,11 +95,11 @@ export default function WeeklyBestsellers() {
                     onBeforeInit={(swiper) => {
                         // Bind navigation buttons manually here
                         if (
-                        swiper.params.navigation &&
-                        typeof swiper.params.navigation !== "boolean"
+                            swiper.params.navigation &&
+                            typeof swiper.params.navigation !== "boolean"
                         ) {
-                        swiper.params.navigation.prevEl = prevRef.current;
-                        swiper.params.navigation.nextEl = nextRef.current;
+                            swiper.params.navigation.prevEl = prevRef.current;
+                            swiper.params.navigation.nextEl = nextRef.current;
                         }
 
                     }}
@@ -176,13 +126,13 @@ export default function WeeklyBestsellers() {
                         },
                     }}
                 >
-                    {products.map((product) => (
+                    {productDataById?.map((product: any) => (
                         <SwiperSlide key={product.id}>
                             <ProductCard
-                                id={product.id}
+                                id={product.product_id}
                                 title={product.title}
                                 price={product.price}
-                                imageUrl={product.imageUrl}
+                                imageUrl={product.image}
                             />
                         </SwiperSlide>
                     ))
