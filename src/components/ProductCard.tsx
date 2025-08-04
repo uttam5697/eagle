@@ -9,10 +9,10 @@ type ProductCardProps = {
   title: string;
   price: number;
   id: number;
-  slug: string
+  slug: any
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title,id ,slug}) => {
+const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug}) => {
     // const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
 

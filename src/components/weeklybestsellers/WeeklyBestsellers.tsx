@@ -6,7 +6,6 @@ import ProductCard from "../ProductCard";
 import SortDropdown from "../ui/SortDropdown";
 import api from "../../lib/api";
 import { useQuery, type QueryFunctionContext } from "@tanstack/react-query";
-import { is } from "zod/v4/locales";
 import ProductSkeleton from "../ui/ProductSkeleton";
 
 
@@ -142,6 +141,7 @@ export default function WeeklyBestsellers() {
                                             title={product.title}
                                             price={product.price}
                                             imageUrl={product.image}
+                                            slug={product.slug}
                                         />
                                     </SwiperSlide>
                                 ))

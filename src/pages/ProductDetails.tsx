@@ -51,7 +51,7 @@ export default function ProductDetailPage() {
 
 
 
-    const [mainImage, setMainImage] = useState();
+    const [mainImage, setMainImage] = useState<string | undefined>();
 
     const handleGalleryImageClick = (img: any) => setMainImage(img);
     const breadcrumbData = [
