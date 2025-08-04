@@ -1,7 +1,7 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { product1, product2, product3, product4 } from '../assets/images';
+
 import Breadcrumbs from '../components/ui/Breadcrumbs';
 import QuantityInputGroup from '../components/ui/QuantityInputGroup';
 import { FiArrowUpRight, FiShoppingCart } from 'react-icons/fi';
@@ -13,14 +13,16 @@ import api from '../lib/api';
 const COVERAGE_PER_BOX = 23.75;
 
 export default function ProductDetailPage() {
-    const {id} = useParams();
+    const { slug } = useParams();
     const [boxes, setBoxes] = useState(1);
+    const [productGallery, setProductGallery] = useState([]);
     const [sqft, setSqft] = useState(COVERAGE_PER_BOX);
     const [isWastageChecked, setIsWastageChecked] = useState(true);
 
     const getBoxesForSqft = (rawSqft: number, wastage: boolean) => {
         const effective = wastage ? rawSqft * 1.1 : rawSqft;
-        return Math.max(1, parseFloat((effective / COVERAGE_PER_BOX).toFixed(2)));
+        setBoxes(Math.max(1, Math.round(effective / COVERAGE_PER_BOX)));
+        return Math.max(1, Math.round(effective / COVERAGE_PER_BOX));
     };
 
     const getSqftFromBoxes = (boxCount: number) => {
@@ -43,47 +45,46 @@ export default function ProductDetailPage() {
 
     // Recalculate boxes when wastage toggle changes
     useEffect(() => {
-        setBoxes(getBoxesForSqft(sqft, isWastageChecked));
+        getBoxesForSqft(sqft, isWastageChecked)
+        
     }, [isWastageChecked, sqft]);
 
-    const productGallery = [
-        product1,
-        product2,
-        product3,
-        product4
-    ];
 
-    const [mainImage, setMainImage] = useState(productGallery[0]);
 
-    const handleGalleryImageClick = (img: string) => setMainImage(img);
+    const [mainImage, setMainImage] = useState();
+
+    const handleGalleryImageClick = (img: any) => setMainImage(img);
     const breadcrumbData = [
         { label: 'Home', href: '/' },
         { label: 'Alpine 2.2', href: '/' },
         { label: 'Alpine 22mil Barry OAK' }
     ];
 
-    const fetchProductById = async (id: string) => {
+    const fetchProductById = async (slug: string) => {
         const formData = new FormData();
-        formData.append('product_category_id', id);
-        const { data } = await api.post(`/beforeauth/getproduct`, formData);
+        formData.append('slug', slug);
+        const { data } = await api.post(`/beforeauth/getproductdetails`, formData);
+        setProductGallery(data?.product_image);
+        setMainImage(data?.product_image[0]?.file);
         return data
     };
 
-    const { data: productDataById, refetch } = useQuery    ({
-        queryKey: ["product", id],
-        queryFn: () => fetchProductById( id as string),
+    const { data: productDataById, refetch } = useQuery({
+        queryKey: ["product", slug],
+        queryFn: () => fetchProductById(slug as string),
         enabled: false,
     });
+
     useEffect(() => {
         refetch();
-    }, [id])
+    }, [slug])
     return (
         <div className="container xl:my-[60px] lg:my-[50px] md:my-[40px] my-[30px]">
             <Breadcrumbs items={breadcrumbData} />
             <div className="grid grid-cols-1 xl:mt-[30px] lg:mt-6 md:mt-5 mt-4 md:grid-cols-2 gap-6 ">
                 <div className="">
                     <div className="border   w-full  rounded-2xl bg-[#f6f6f6]  overflow-hidden">
-                        {mainImage.endsWith(".mp4") ? (
+                        {mainImage?.endsWith(".mp4") ? (
                             <video
                                 src={mainImage}
                                 controls
@@ -132,16 +133,16 @@ export default function ProductDetailPage() {
                                     },
                                 }}
                             >
-                                {productGallery.map((img, index) => (
+                                {productGallery?.map((img: any, index: number) => (
                                     <SwiperSlide key={index} className="">
                                         <div
-                                            onClick={() => handleGalleryImageClick(img)}
+                                            onClick={() => handleGalleryImageClick(img?.file)}
                                             className={` mt-5 overflow-hidden cursor-pointer border-3 rounded-[16px] transition-all duration-200 ${mainImage === img
                                                 ? "border-[#C41A2C]  border-[3px] rounded-xl"
                                                 : " hover:border-[#C41A2C] border-transparent border-[3px] rounded-xl"
                                                 }`}
                                         >
-                                            {img.endsWith(".mp4") ? (
+                                            {img?.file.endsWith(".mp4") ? (
                                                 <video
                                                     src={img}
                                                     className="w-full h-full object-cover"
@@ -151,7 +152,7 @@ export default function ProductDetailPage() {
                                                 />
                                             ) : (
                                                 <img
-                                                    src={img}
+                                                    src={img?.file}
                                                     alt={`thumb-${index}`}
                                                     className=" w-full h-full"
                                                 />
@@ -166,10 +167,10 @@ export default function ProductDetailPage() {
                 <div className="  text-black">
                     {/* Title */}
                     <h1 className="2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-playfairDisplay italic mb-4">
-                        Alpine 22mil Barry OAK
+                        {productDataById?.title}
                     </h1>
                     <div className='xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]'>
-                        <h5 className='xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-bold'>$1.99 / sqft</h5>
+                        <h5 className='xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-bold'>${productDataById?.price} / sqft</h5>
                         <p className="font-light md:text-[14px] text-[12px] mt-1 leading-none">
                             Shipping calculated at checkout
                         </p>
@@ -179,19 +180,10 @@ export default function ProductDetailPage() {
 
 
                     {/* Description */}
-                    <p className="md:text-sm text-[12px] font-light xl:mb-6 lg:mb-5 mb-4">
-                        Introducing Alpine Barry Oak, a flooring plank that epitomizes the beauty of nature with its elegant gray tones and striking wood-like grains. This flooring option offers a perfect blend of sophistication and natural charm, adding a touch of timeless elegance to any space. The graceful gray hues of Alpine Barry Oak create a serene and inviting atmosphere, evoking the tranquility of a forest retreat.
-                    </p>
-
-                    {/* Features List */}
-                    <ul className="list-disc list-inside lg:text-sm md:text-xs text-[12px] leading-relaxed font-semibold xl:mb-[60px] lg:mb-[50px] md:mb-[40px] mb-[30px]">
-                        <li>%100 Waterproof</li>
-                        <li>Scratch Resistant Crystalux Wear Layer</li>
-                        <li>Pet Friendly</li>
-                        <li>Stain Proof</li>
-                        <li>Easy Installation</li>
-                        <li>Attached IXPE backing for comfort and quiet</li>
-                    </ul>
+                    <div
+                        dangerouslySetInnerHTML={{ __html: productDataById?.description }}
+                    >
+                    </div>
 
                     <div className="grid grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md">
                         {/* SQFT Input */}
@@ -250,15 +242,11 @@ export default function ProductDetailPage() {
                             <span className='leading-none'>Buy Now</span>
                             <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
                         </a>
-
                     </div>
-
                 </div>
             </div>
-        
-        <ProductSpecifications />
-        {/* <ShoppingBrand /> */}
 
+            <ProductSpecifications product_specifications={productDataById?.product_specifications} />
         </div>
     );
 }

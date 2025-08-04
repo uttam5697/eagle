@@ -59,6 +59,7 @@ const ProductList: React.FC = () => {
                                       title={product.title}
                                       price={product.price}
                                       imageUrl={product.image}
+                                      slug={product?.slug}
                                   />
                               ))}
                     </div>

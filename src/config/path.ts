@@ -28,8 +28,8 @@ export const paths = {
         getHref: () => "/product",
 
         details: {
-            path: "/product/:id",
-            getHref: (id: string) => `/product/${id}`,
+            path: "/product/:slug",
+            getHref: (slug: string) => `/product/${slug}`,
         },
     }
 

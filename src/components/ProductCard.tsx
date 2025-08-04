@@ -9,9 +9,10 @@ type ProductCardProps = {
   title: string;
   price: number;
   id: number;
+  slug: string
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title,id}) => {
+const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title,id ,slug}) => {
     // const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
 
@@ -45,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title,id}) => {
                     <PrimaryButton
                         label="Add To Cart"
                         icon={<FiShoppingCart size={16} />}
-                        onClick={() => navigate(`/product/${id}`)}
+                        onClick={() => navigate(`/product/${slug}`)}
                     />
                 </div>
             </div>
