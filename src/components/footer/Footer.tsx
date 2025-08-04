@@ -64,7 +64,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                   to={generaldata?.instagram}
+                    to={generaldata?.instagram}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
                     Instagram
@@ -130,7 +130,7 @@ export default function Footer() {
                 </span>
                 <a
                   className="text-white md:text-sm text-[14px]"
-                  href="tel:(732) 693 8078"
+                  href={"tel:" + generaldata?.contact_no}
                 >
                   {generaldata?.contact_no}
                 </a>
@@ -141,7 +141,7 @@ export default function Footer() {
                 </span>
                 <a
                   className="text-white md:text-sm text-[14px]"
-                  href="mailto:info@eagleflooringdepot.com"
+                  href={"mailto:" + generaldata?.email}
                 >
                   {generaldata?.email}
                 </a>
