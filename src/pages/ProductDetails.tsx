@@ -185,7 +185,7 @@ export default function ProductDetailPage() {
                     >
                     </div>
 
-                    <div className="grid grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md">
+                    <div className="grid md:grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md">
                         {/* SQFT Input */}
                         <div className="col-span-2 ">
                             <QuantityInputGroup
@@ -200,7 +200,7 @@ export default function ProductDetailPage() {
                         </div>
 
                         {/* Equals Sign */}
-                        <div className="text-2xl font-bold text-center col-span-1 mt-5">=</div>
+                        <div className="text-2xl font-bold text-center col-span-1 mt-5 md:block hidden">=</div>
 
                         {/* Boxes Input */}
                         <div className="col-span-2">
@@ -222,23 +222,23 @@ export default function ProductDetailPage() {
                             <label className="inline-flex items-start gap-2">
                                 <input
                                     type="checkbox"
-                                    className="mt-1 accent-black border-gray-300 h-[20px] w-[20px]"
+                                    className="mt-[6px] accent-black border-gray-300 h-[16px] w-[16px]"
                                     checked={isWastageChecked}
                                     onChange={(e) => setIsWastageChecked(e.target.checked)}
                                 />
                                 <div>
-                                    <p className="font-semibold text-base">Add wastage (10%)</p>
-                                    <p className="text-base font-light">1 box – No wastage added. Ships in 1 pallet.</p>
+                                    <p className="font-semibold lg:text-base md:text-2sm text-sm">Add wastage (10%)</p>
+                                    <p className="lg:text-base md:text-2sm text-sm font-light">1 box - No wastage added. Ships in 1 pallet.</p>
                                 </div>
                             </label>
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 items-start mt-[84px]">
-                        <a href="#" className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black">
+                        <a href="#" className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black xl:px-6 px-4 xl:py-[18px] py-[14px]">
                             <span className='leading-none'> Add to Cart</span>
                             <FiShoppingCart className='text-2sm  duration-300 transition-all' />
                         </a>
-                        <a href="#" className="flex justify-between black-btn group before:!hidden after:!hidden">
+                        <a href="#" className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
                             <span className='leading-none'>Buy Now</span>
                             <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
                         </a>

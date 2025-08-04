@@ -135,7 +135,7 @@ export default function WeeklyBestsellers() {
                                 ))
                                 :
                                 productDataById?.map((product: any) => (
-                                    <SwiperSlide key={product.id}>
+                                    <SwiperSlide key={product.id} className="!h-auto">
                                         <ProductCard
                                             id={product.product_id}
                                             title={product.title}

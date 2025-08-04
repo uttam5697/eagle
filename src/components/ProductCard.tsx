@@ -17,12 +17,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug}) => {
     const navigate = useNavigate();
 
     return (
-        <div className="group rounded-[24px] bg-white md:p-2 p-1 shadow-sm transition-transform duration-300 hover:shadow-md">
-            <div className="relative overflow-hidden rounded-[16px]">
+        <div className="group rounded-[24px] flex flex-col h-full bg-white md:p-2 p-1 shadow-sm transition-transform duration-300 hover:shadow-md">
+            <div className="relative overflow-hidden h-full rounded-[16px]">
                 <img
                     src={imageUrl}
                     alt={title}
-                    className="w-full object-cover transition-transform duration-300 group-hover:scale-105 rounded-[16px]"
+                    className="w-full object-cover h-full transition-transform duration-300 group-hover:scale-105 rounded-[16px]"
                 />
                 {/* <button
                     onClick={() => setLiked(!liked)}
@@ -45,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug}) => {
                 <div className="lg:mb-[18px] md:mb-4 mb-3 lg:mt-5 md:mt-4 mt-3">
                     <PrimaryButton
                         label="Add To Cart"
-                        icon={<FiShoppingCart size={16} />}
+                        icon={<FiShoppingCart className="lg:text-[22px] md:text-[20px] text-[18px]" />}
                         onClick={() => navigate(`/product/${slug}`)}
                     />
                 </div>

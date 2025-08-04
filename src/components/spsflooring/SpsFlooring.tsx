@@ -81,13 +81,13 @@ export default function SpsFlooring({ productCategory }: any) {
           }}
         >
           {
-            productCategory?.map((item: any) => (
+            productCategory?.map((item: any , index: number) => (
               <>
-              <SwiperSlide>
-                <div className="w-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
-                  <div className="relative before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
+              <SwiperSlide key={index}  className="!h-auto">
+                <div className="w-full h-full relative group cursor-pointer overflow-hidden rounded-[30px] swiper-card">
+                  <div className="relative h-full before:rounded-[30px] before:bg-black-gradient before:absolute before:w-full before:h-full before:z-10">
                     <img
-                      className="rounded-[30px] w-full transition-transform duration-500 group-hover:scale-110"
+                      className="rounded-[30px] h-full object-cover object-center w-full transition-transform duration-500 group-hover:scale-110"
                       src={item.image}
                       alt="FlooringImg"
                     />

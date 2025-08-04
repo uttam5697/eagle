@@ -13,6 +13,18 @@ import AboutUs from "./components/aboutus/AboutUs";
 
 export const createAppRouter = createBrowserRouter([
   {
+    path: paths.login.path,
+    element: <Login />,
+  },
+  {
+    path: paths.forgotpassword.path,
+    element: <ForgotPassword />,
+  },
+  {
+    path: paths.signup.path,
+    element: <SignUp />,
+  },
+  {
     element: (
       <>
         <MainLayouts />
@@ -27,18 +39,7 @@ export const createAppRouter = createBrowserRouter([
         path: paths.aboutus.path,
         element: <AboutUs />,
       },
-      {
-        path: paths.login.path,
-        element: <Login />,
-      },
-      {
-        path: paths.forgotpassword.path,
-        element: <ForgotPassword />,
-      },
-      {
-        path: paths.signup.path,
-        element: <SignUp />,
-      },
+
       {
         path: paths.contactus.path,
         element: <ContactUs />,
@@ -56,5 +57,5 @@ export const createAppRouter = createBrowserRouter([
         element: <NotFound />,
       },
     ],
-  }
+  },
 ]);
