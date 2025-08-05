@@ -6,7 +6,7 @@ import Breadcrumbs from '../components/ui/Breadcrumbs';
 import QuantityInputGroup from '../components/ui/QuantityInputGroup';
 import { FiArrowUpRight, FiShoppingCart } from 'react-icons/fi';
 import { ProductSpecifications } from '../components';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../lib/api';
 
@@ -281,14 +281,14 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 items-start mt-[84px]">
-                        <a href="#" className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black xl:px-6 px-4 xl:py-[18px] py-[14px]">
+                        <Link to="/my-cart" className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black xl:px-6 px-4 xl:py-[18px] py-[14px]">
                             <span className='leading-none'> Add to Cart</span>
                             <FiShoppingCart className='text-2sm  duration-300 transition-all' />
-                        </a>
-                        <a href="#" className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
+                        </Link>
+                        <Link to="#" className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
                             <span className='leading-none'>Buy Now</span>
                             <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

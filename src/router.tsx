@@ -12,6 +12,7 @@ import ContactUs from "./components/contactus/ContactUs";
 import AboutUs from "./components/aboutus/AboutUs";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Termsandconditions from "./components/Terms&Conditions";
+import { MyCart } from "./components";
 
 // Define the routes separately
 const routes = [
@@ -61,6 +62,10 @@ const routes = [
       {
         path: paths.termsandconditions.path,
         element: <Termsandconditions />,
+      },
+      {
+        path: paths.mycart.path,
+        element: <MyCart />,
       },
       {
         path: "*",

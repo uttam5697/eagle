@@ -11,5 +11,21 @@ import ForgotPassword from "./forgotpassword/ForgotPassword";
 import SignUp from "./signup/SignUp";
 import ContactUs from "./contactus/ContactUs";
 import ShoppingCart from "./shoppingcart/ShoppingCart";
+import MyCart from "./mycart/MyCart";
 
-export { Header, Footer,SpsFlooring,HeroSlider,WeeklyBestsellers,ShoppingBrand,WhatOurClients,ProductSpecifications,Login,ForgotPassword,SignUp,ContactUs,ShoppingCart };
+export { 
+    Header, 
+    Footer,
+    SpsFlooring,
+    HeroSlider,
+    WeeklyBestsellers,
+    ShoppingBrand,
+    WhatOurClients,
+    ProductSpecifications,
+    Login,
+    ForgotPassword,
+    SignUp,
+    ContactUs,
+    ShoppingCart,
+    MyCart 
+};
