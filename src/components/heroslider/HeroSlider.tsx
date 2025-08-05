@@ -10,10 +10,10 @@ export default function HeroSlider({homedatabanner}:any) {
       <Swiper
         speed={600}
         parallax={true}
-        // autoplay={{
-        //   delay: 3000,
-        //   disableOnInteraction: false,
-        // }}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
         pagination={{
           el: ".custom-pagination", // connect to custom container
           clickable: true,
