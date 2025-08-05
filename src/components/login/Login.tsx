@@ -53,6 +53,7 @@ export default function Login() {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log("🚀 ~ handleSubmit ~ response:", response)
 
       if (response?.data?.auth_key) {
         localStorage.setItem("authKey", response?.data?.auth_key);
@@ -65,7 +66,8 @@ export default function Login() {
         showToast("Logged in successfully!", "success");
         navigate(`${paths.home.path}`);
       } else {
-        showToast("Login failed", "error");
+        showToast("Invalid email or password please try again", "error");
+        
       }
 
     } catch (error: any) {

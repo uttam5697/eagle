@@ -15,14 +15,24 @@ const COVERAGE_PER_BOX = 23.75;
 export default function ProductDetailPage() {
     const { slug } = useParams();
     const [boxes, setBoxes] = useState(1);
+    console.log("🚀 ~ ProductDetailPage ~ boxes:", boxes)
     const [productGallery, setProductGallery] = useState([]);
     const [sqft, setSqft] = useState(COVERAGE_PER_BOX);
     const [isWastageChecked, setIsWastageChecked] = useState(true);
 
     const getBoxesForSqft = (rawSqft: number, wastage: boolean) => {
+        console.log("🏗️ Input raw square feet:", rawSqft);
+        console.log("📦 Wastage applied?", wastage);
+
         const effective = wastage ? rawSqft * 1.1 : rawSqft;
-        setBoxes(Math.max(1, Math.round(effective / COVERAGE_PER_BOX)));
-        return Math.max(1, Math.round(effective / COVERAGE_PER_BOX));
+        console.log("📐 Effective square feet (after wastage if any):", effective);
+
+        const boxesNeeded = Math.max(1, Math.ceil(effective / COVERAGE_PER_BOX));
+        console.log("📦 COVERAGE_PER_BOX:", COVERAGE_PER_BOX);
+        console.log("🔢 Boxes Needed (rounded up):", boxesNeeded);
+
+        setBoxes(boxesNeeded);
+        return boxesNeeded;
     };
 
     const getSqftFromBoxes = (boxCount: number) => {
@@ -46,7 +56,7 @@ export default function ProductDetailPage() {
     // Recalculate boxes when wastage toggle changes
     useEffect(() => {
         getBoxesForSqft(sqft, isWastageChecked)
-        
+
     }, [isWastageChecked, sqft]);
 
 
@@ -54,11 +64,7 @@ export default function ProductDetailPage() {
     const [mainImage, setMainImage] = useState<string | undefined>();
 
     const handleGalleryImageClick = (img: any) => setMainImage(img);
-    const breadcrumbData = [
-        { label: 'Home', href: '/' },
-        { label: 'Alpine 2.2', href: '/' },
-        { label: 'Alpine 22mil Barry OAK' }
-    ];
+
 
     const fetchProductById = async (slug: string) => {
         const formData = new FormData();
@@ -74,6 +80,13 @@ export default function ProductDetailPage() {
         queryFn: () => fetchProductById(slug as string),
         enabled: false,
     });
+    console.log("🚀 ~ ProductDetailPage ~ productDataById:", productDataById)
+
+    const breadcrumbData = [
+        { label: 'Home', href: '/' },
+        { label: `${productDataById?.title}`, href: '/products' },
+        { label: `${productDataById?.slug}` }
+    ];
 
     useEffect(() => {
         refetch();
@@ -159,8 +172,42 @@ export default function ProductDetailPage() {
                                             )}
                                         </div>
                                     </SwiperSlide>
+
                                 ))}
                             </Swiper>
+                        </div>
+                        {<div className="swiper-button-prev-custom absolute z-20 top-1/2 -left-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
+                            <svg
+                                className="w-5 h-5 text-gray-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M15 19l-7-7 7-7"
+                                />
+                            </svg>
+                        </div>}
+                        
+                        <div className="swiper-button-next-custom absolute z-20 top-1/2 right-14 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
+                            <svg
+                                className="w-5 h-5 text-gray-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M9 5l7 7-7 7"
+                                />
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -245,8 +292,8 @@ export default function ProductDetailPage() {
                     </div>
                 </div>
             </div>
-
-            <ProductSpecifications product_specifications={productDataById?.product_specifications} />
+            {productDataById?.product_specifications.length > 0 &&
+                <ProductSpecifications product_specifications={productDataById?.product_specifications} />}
         </div>
     );
 }

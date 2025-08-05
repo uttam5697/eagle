@@ -1,4 +1,4 @@
-import { FiArrowUpRight, FiMapPin, FiPhoneCall } from "react-icons/fi";
+import { FiMapPin, FiPhoneCall } from "react-icons/fi";
 import { Logo, PayCard, PayCard2, PayCard3, PayCard4, PayCard5 } from "../../assets/Index";
 import { PiEnvelopeSimple } from "react-icons/pi";
 import { Link } from "react-router-dom";
@@ -87,7 +87,7 @@ export default function Footer() {
               <ul className="space-y-2 navbar">
                 <li>
                   <Link
-                    to={"/"}
+                    to={"/privacy-policy"}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
                     Privacy Policy
@@ -95,7 +95,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to={"/"}
+                    to={"/terms-and-conditions"}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
                     Terms & Conditions
@@ -103,7 +103,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    to={"/"}
+                    to={"/contact-us"}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
                     Contact Us
@@ -149,10 +149,10 @@ export default function Footer() {
             </div>
           </div>
           <div className="xl:col-span-5 lg:col-span-7 col-span-12">
-            <h3 className="text-white xl:text-xl lg:text-base md:text-2sm text-sm lg:mb-4 md:mb-3 mb-2">
+            {/* <h3 className="text-white xl:text-xl lg:text-base md:text-2sm text-sm lg:mb-4 md:mb-3 mb-2">
               Sign up for Updates
-            </h3>
-            <form className="flex items-center border border-white rounded-full overflow-hidden mb-[10px]">
+            </h3> */}
+            {/* <form className="flex items-center border border-white rounded-full overflow-hidden mb-[10px]">
               <input
                 type="email"
                 placeholder="Email Address"
@@ -166,14 +166,14 @@ export default function Footer() {
                 <span className="leading-none">Submit</span>
                 <FiArrowUpRight className="text-2sm group-hover:rotate-45 duration-300 transition-all" />
               </button>
-            </form>
+            </form> */}
             <p className="text-white font-light text-[14px]">
               By submitting, you agree to our{" "}
-              <Link to={"/"} className="font-semibold underline">
+              <Link to={"/privacy-policy"} className="font-semibold underline">
                 Terms & Conditions
               </Link>{" "}
               and{" "}
-              <Link to={"/"} className="font-semibold underline">
+              <Link to={"/terms-and-conditions"} className="font-semibold underline">
                 Privacy Policy
               </Link>
               .

@@ -135,26 +135,13 @@ export default function ContactUs() {
                   onChange={handleChange}
                 />
               </div>
-              <div className="grid lg:grid-cols-2 gap-4 mt-4">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="subscribe"
-                    onChange={handleChange}
-                    className="accent-black"
-                    id="subscribe"
-                  />
-                  <label htmlFor="subscribe" className="text-sm leading-none">
-                    Sign up for our email list for updates, promotions, and more.
-                  </label>
-                </div>
+
                 <div className="flex justify-end">
                   <button className="flex justify-between black-btn group before:!hidden after:!hidden">
                     <span className='leading-none'>Submit</span>
                     <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
                   </button>
                 </div>
-              </div>
             </form>
           </div>
         </div>

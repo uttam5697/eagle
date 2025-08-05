@@ -1,64 +1,79 @@
 import { useState } from "react";
 import { Logo } from "../../assets/Index";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../lib/api";
 import { showToast } from "../../utils/toastUtils";
 
+type FormFields = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  agreeToTerms: boolean;
+};
+
 export default function SignUp() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormFields>({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
-    agreeToTerms: false
+    agreeToTerms: false,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const formattedData = {
-        Appuser: {
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          email: formData.email,
-          password: formData.password,
-          postal_code: "000000",
-          phone_number: "0000000000",
-          login_type: "Normal",
-          devices_type: "Web",
-          devices_name: "mi y1",
-          devices_id: "erfrrdfjjweksh123464758nbvbdshjasdwarfe",
-          app_version: "1",
-        },
-      };
 
-      const res = await api.post('/beforeauth/usersignup', formattedData);
-      console.log("Signup success:", res.data);
-      showToast("Signup successful!", "success");
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const payload = new FormData();
+      payload.append("Appuser[first_name]", formData.firstName);
+      payload.append("Appuser[last_name]", formData.lastName);
+      payload.append("Appuser[email]", formData.email);
+      payload.append("Appuser[password]", formData.password);
+      payload.append("Appuser[postal_code]", "000000");
+      payload.append("Appuser[phone_number]", "0000000000");
+      payload.append("Appuser[login_type]", "Normal");
+      payload.append("Appuser[devices_type]", "Web");
+      payload.append("Appuser[devices_name]", "mi y1");
+      payload.append("Appuser[devices_id]", "erfrrdfjjweksh123464758nbvbdshjasdwarfe");
+      payload.append("Appuser[app_version]", "1");
+
+      const res = await api.post("/beforeauth/usersignup", payload);
+      if (res.status === 1) {
+        navigate("/login");
+        localStorage.setItem("authKey", res.data.auth_key);
+        showToast("Signup successful!", "success");
+      }
+
     } catch (error: any) {
       console.error("Signup error", error);
       alert("Something went wrong. Please try again.");
     }
   };
 
-
   return (
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">
       <div className="w-full md:w-1/2  px-3 flex flex-col justify-center">
         <div className="w-full bg-white rounded-lg md:p-4 p-3 shadow-lg max-w-[500px] mx-auto">
-          {/* Logo */}
           <div className="flex justify-center mb-6">
             <img src={Logo} alt="Eagle Logo" />
           </div>
@@ -70,7 +85,6 @@ export default function SignUp() {
           </p>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Name Fields */}
             <div className="grid md:grid-cols-2 grid-cols-1 gap-3">
               <div>
                 <label className="block md:text-sm text-xs font-medium text-black mb-1">
@@ -102,7 +116,6 @@ export default function SignUp() {
               </div>
             </div>
 
-            {/* Email */}
             <div>
               <label className="block md:text-sm text-xs font-medium text-black mb-1">
                 Email address
@@ -118,7 +131,6 @@ export default function SignUp() {
               />
             </div>
 
-            {/* Password */}
             <div className="relative">
               <label className="block md:text-sm text-xs font-medium text-black mb-1">
                 Password
@@ -140,7 +152,6 @@ export default function SignUp() {
               </div>
             </div>
 
-            {/* Confirm Password */}
             <div className="relative">
               <label className="block md:text-sm text-xs font-medium text-black mb-1">
                 Confirm Password
@@ -162,7 +173,6 @@ export default function SignUp() {
               </div>
             </div>
 
-            {/* Terms Agreement */}
             <div className="flex items-start">
               <input
                 type="checkbox"
@@ -173,7 +183,10 @@ export default function SignUp() {
                 required
                 id="agreeToTerms"
               />
-              <label htmlFor="agreeToTerms" className="text-sm text-black leading-none accent-black">
+              <label
+                htmlFor="agreeToTerms"
+                className="text-sm text-black leading-none accent-black"
+              >
                 I agree to the{" "}
                 <Link to={"/"} className="text-primary hover:underline">
                   Terms of Service
@@ -193,7 +206,6 @@ export default function SignUp() {
             </button>
           </form>
 
-          {/* Sign In Link */}
           <div className="text-center mt-4">
             <span className="text-gray-600 text-sm">
               Already have an account?{" "}

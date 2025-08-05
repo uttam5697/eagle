@@ -37,7 +37,7 @@ export default function Header() {
               <Link to="/" className={`text-white ${pathname === '/' ? 'active' : ''}`}>Home</Link>
               <Link to="/about-us" className={`text-white ${pathname === '/about-us' ? 'active' : ''}`}>About Us</Link>
               <Link to="/contact-us" className={`text-white ${pathname === '/contact-us' ? 'active' : ''}`}>Contact Us</Link>
-              <Link to="/product" className={`text-white ${pathname === '/product' ? 'active' : ''}`}>Product</Link>
+              {/* <Link to="/products/category" className={`text-white ${pathname === '/productss' ? 'active' : ''}`}>Product</Link> */}
             </nav>
 
             <button
@@ -81,9 +81,9 @@ export default function Header() {
                 <Link to="/contact-us" onClick={() => setIsMenuOpen(false)} className={`text-white transition-colors ${pathname === '/contact-us' ? 'active' : ''}`}>
                   Contact Us
                 </Link>
-                <Link to="/product" onClick={() => setIsMenuOpen(false)} className={`text-white transition-colors ${pathname === '/product' ? 'active' : ''}`}>
+                {/* <Link to="/products" onClick={() => setIsMenuOpen(false)} className={`text-white transition-colors ${pathname === '/products' ? 'active' : ''}`}>
                   Product
-                </Link>
+                </Link> */}
               </nav>
             </div>
           </div>

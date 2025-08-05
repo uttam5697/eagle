@@ -1,4 +1,3 @@
-import { FiShoppingCart } from 'react-icons/fi';
 import PrimaryButton from './ui/Button';
 // import { FaRegHeart } from 'react-icons/fa';
 // import { AiFillHeart } from 'react-icons/ai';
@@ -17,7 +16,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug}) => {
     const navigate = useNavigate();
 
     return (
-        <div className="group rounded-[24px] flex flex-col h-full bg-white md:p-2 p-1 shadow-sm transition-transform duration-300 hover:shadow-md">
+        <div  onClick={() => navigate(`/products/${slug}`)} className="group rounded-[24px] flex flex-col h-full bg-white md:p-2 p-1 shadow-sm transition-transform duration-300 hover:shadow-md">
             <div className="relative overflow-hidden h-full rounded-[16px]">
                 <img
                     src={imageUrl}
@@ -44,9 +43,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug}) => {
 
                 <div className="lg:mb-[18px] md:mb-4 mb-3 lg:mt-5 md:mt-4 mt-3">
                     <PrimaryButton
-                        label="Add To Cart"
-                        icon={<FiShoppingCart className="lg:text-[22px] md:text-[20px] text-[18px]" />}
-                        onClick={() => navigate(`/product/${slug}`)}
+                        label="See Details"
+                        onClick={() => navigate(`/products/${slug}`)}
                     />
                 </div>
             </div>

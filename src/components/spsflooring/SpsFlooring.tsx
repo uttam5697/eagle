@@ -2,10 +2,13 @@ import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 export default function SpsFlooring({ productCategory }: any) {
+  console.log("🚀 ~ SpsFlooring ~ productCategory:", productCategory)
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
+  const navigate = useNavigate();
 
   return (
     <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px] xl:mt-[100px] lg:mt-[80px] md:mt-[60px] mt-[40px]">
@@ -96,7 +99,9 @@ export default function SpsFlooring({ productCategory }: any) {
                     </h2>
                   </div>
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
+                  <div 
+                  onClick={() => navigate(`/products/category/${item.product_category_id}`)}
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 rounded-[30px]">
                     <div className="text-center xl:w-[168px] xl:h-[168px] lg:w-[148px] lg:h-[148px] md:w-[138px] md:h-[138px] w-[128px] h-[128px] bg-white rounded-full flex flex-col justify-center items-center gap-4">
                       <a href="#" className="text-black lg:text-base md:text-2sm text-sm font-quicksand font-medium mb-2">
                         Explore all

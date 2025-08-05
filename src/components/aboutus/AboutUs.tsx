@@ -1,6 +1,4 @@
 import { useAbout } from "../../api/home";
-import { AboutUsImg } from "../../assets/Index";
-import ShoppingBrand from "../shoppingbrand/ShoppingBrand";
 import AnimatedSection from "../ui/AnimatedSection";
 import WhatOurClients from "../whatourclients/WhatOurClients";
 
@@ -32,26 +30,24 @@ export default function AboutUs() {
           </div>
         </div>
       </AnimatedSection>
-      <AnimatedSection direction="up" delay={0.2}>
-        <section className="xl:mb-[100px] lg:mb-[80px] md:mb-[60px] mb-[40px]">
-          <div className="container">
+     
+     <AnimatedSection direction="up" delay={0.2}>
+      <section className="xl:mb-[100px] lg:mb-[80px] md:mb-[60px] mb-[40px]">
+        <div className="container">
             <div className="xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]">
-              <h1 className="font-extralight 2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base xl:leading-none leading-normal">{aboutdata?.sub_title}</h1>
-              <h1 className="text-black italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay -mt-3">{aboutdata?.sub_title}</h1>
+                <h1 className="font-extralight 2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base xl:leading-none leading-normal">{aboutdata?.sub_title}</h1>
+                <h1 className="text-black italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay -mt-3">{aboutdata?.sub_title}</h1>
             </div>
             <div className="flex flex-col gap-4">
-              <div dangerouslySetInnerHTML={{ __html: aboutdata?.description }} />
-              <img src={AboutUsImg} alt="about us" />
+                <div dangerouslySetInnerHTML={{ __html: aboutdata?.description }} />
             </div>
-          </div>
-        </section>
-      </AnimatedSection>
+        </div>
+    </section>
+    </AnimatedSection>
       <AnimatedSection direction="up" delay={0.2}>
         <WhatOurClients />
       </AnimatedSection>
-      <AnimatedSection direction="up" delay={0.2}>
-        <ShoppingBrand />
-      </AnimatedSection>
+      
     </>
   )
 }

@@ -1,3 +1,4 @@
+
 export const paths = {
     home: {
         path: "/",
@@ -24,13 +25,27 @@ export const paths = {
         getHref: () => "/contact-us",
     },
     product: {
-        path: "/product",
-        getHref: () => "/product",
+        path: "/products",
+        getHref: () => "/products", 
+
+        category: {
+            path: "/products/category/:id",
+            getHref: (id: string) => `/products/category/${id}`,
+        },
 
         details: {
-            path: "/product/:slug",
-            getHref: (slug: string) => `/product/${slug}`,
+            path: "/products/:slug",
+            getHref: (slug: string) => `/products/${slug}`,
         },
-    }
+    },
+
+    privacyPolicy: {
+        path: "/privacy-policy",
+        getHref: () => "/privacy-policy",
+    },
+    termsandconditions: {
+        path: "/terms-and-conditions",
+        getHref: () => "/terms-and-conditions",
+    },
 
 } as const;

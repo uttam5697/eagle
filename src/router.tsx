@@ -10,8 +10,11 @@ import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 import SignUp from "./components/signup/SignUp";
 import ContactUs from "./components/contactus/ContactUs";
 import AboutUs from "./components/aboutus/AboutUs";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import Termsandconditions from "./components/Terms&Conditions";
 
-export const createAppRouter = createBrowserRouter([
+// Define the routes separately
+const routes = [
   {
     path: paths.login.path,
     element: <Login />,
@@ -39,13 +42,12 @@ export const createAppRouter = createBrowserRouter([
         path: paths.aboutus.path,
         element: <AboutUs />,
       },
-
       {
         path: paths.contactus.path,
         element: <ContactUs />,
       },
       {
-        path: paths.product.path,
+        path: paths.product.category.path,
         element: <ProductListing />,
       },
       {
@@ -53,9 +55,22 @@ export const createAppRouter = createBrowserRouter([
         element: <ProductDetails />,
       },
       {
+        path: paths.privacyPolicy.path,
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: paths.termsandconditions.path,
+        element: <Termsandconditions />,
+      },
+      {
         path: "*",
         element: <NotFound />,
       },
     ],
   },
-]);
+];
+
+// Pass basename option
+export const createAppRouter = createBrowserRouter(routes, {
+  basename: "/buckeyefloors-web",
+});
