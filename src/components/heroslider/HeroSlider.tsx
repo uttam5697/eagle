@@ -5,16 +5,15 @@ import { Parallax, Pagination,Autoplay } from 'swiper/modules';
 import { ScrollDown } from '../../assets/Index';
 
 export default function HeroSlider({homedatabanner}:any) {
-  console.log("🚀 ~ HeroSlider ~ homedatabanner:", homedatabanner)
   return (
     <section className="relative">
       <Swiper
         speed={600}
         parallax={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
+        // autoplay={{
+        //   delay: 3000,
+        //   disableOnInteraction: false,
+        // }}
         pagination={{
           el: ".custom-pagination", // connect to custom container
           clickable: true,
@@ -25,10 +24,28 @@ export default function HeroSlider({homedatabanner}:any) {
         {homedatabanner?.map((item: any, index: number) => (
           <SwiperSlide
             key={index}
-            className="bg-cover bg-center h-full 2xl:min-h-[990px] xl:min-h-[890px] lg:min-h-[790px] md:min-h-[690px] sm:min-h-[590px] min-h-[490px] relative before:bg-black-light-gradient before:absolute before:w-full before:h-full before:z-1 after:bg-black-dark-light-gradient after:absolute after:w-full after:h-full after:top-0 after:z-1"
-            style={{ backgroundImage: `url(${item?.image})` }}
+            className="bg-cover bg-center 2xl-h-[990px] xl-h-[890px] lg-h-[790px] md-h-[690px] sm-h-[590px] h-[490px] relative before:bg-black-light-gradient before:absolute before:w-full before:h-full before:z-1 after:bg-black-dark-light-gradient after:absolute after:w-full after:h-full after:top-0 after:z-1"
           >
-            <div className="container relative z-10">
+            {item.type === "Image" && (
+              <img
+                className="w-full 2xl:h-[990px] xl:h-[890px] lg:h-[790px] md:h-[690px] sm:h-[590px] h-[490px] object-cover object-center"
+                src={item?.image}
+                alt="Hero Banner"
+              />
+            )}
+            {item.type === "Video" && (
+              <video
+                className="w-full 2xl:h-[990px] xl:h-[890px] lg:h-[790px] md:h-[690px] sm:h-[590px] h-[490px] object-cover object-center"
+                autoPlay={true}
+                loop
+                muted
+                preload="none"
+                poster={item.image}
+              >
+                <source src={item.video} type="video/mp4" />
+              </video>
+            )}
+            <div className="container absolute left-0 right-0 top-0 z-10">
               <div className="mt-[191px]">
                 <div className="max-w-[901px]">
                   <h1
@@ -51,7 +68,7 @@ export default function HeroSlider({homedatabanner}:any) {
       </Swiper>
       <div className="custom-pagination container absolute left-0 right-10 xl:!bottom-[60px] lg:!bottom-[50px] md:!bottom-[40px] sm:!bottom-[30px] !bottom-[20px] z-10 text-right" />
       <div className="container ">
-        <div className="absolute md:right-[20px] right-[0px] bottom-20 z-10 flex flex-col items-center">
+        <div className="absolute right-[20px] md:bottom-20 bottom-12 z-10 flex flex-col items-center">
           <span className="text-white font-quicksand leading-none lg:text-2sm md:text-sm text-xs -rotate-90 absolute bottom-[74px] h-full flex items-center w-[96px]">
             Scroll down
           </span>
