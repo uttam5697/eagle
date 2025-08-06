@@ -228,7 +228,7 @@ export default function ProductDetailPage() {
 
                             </Swiper>
                         </div>
-                        {<div className="swiper-button-prev-custom absolute z-20 top-1/2 -left-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
+                        {<div className="swiper-button-prev-custom absolute z-20 mt-[10px] top-1/2 left-0 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
                             <svg
                                 className="w-5 h-5 text-gray-600"
                                 fill="none"
@@ -245,7 +245,7 @@ export default function ProductDetailPage() {
                             </svg>
                         </div>}
                         
-                        <div className="swiper-button-next-custom absolute z-20 top-1/2 right-14 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
+                        <div className="swiper-button-next-custom absolute z-20 mt-[10px] top-1/2 right-0 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
                             <svg
                                 className="w-5 h-5 text-gray-600"
                                 fill="none"
@@ -279,7 +279,7 @@ export default function ProductDetailPage() {
 
 
                     {/* Description */}
-                    <div
+                    <div className='custom-html'
                         dangerouslySetInnerHTML={{ __html: productDataById?.description }}
                     >
                     </div>

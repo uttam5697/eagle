@@ -129,3 +129,11 @@ body {
     }
   }
 }
+
+.custom-html {
+  ol, ul, menu {
+    margin: 16px 0;
+    padding-left: 16px;
+    list-style: revert;
+  }
+}
