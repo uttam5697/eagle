@@ -7,6 +7,7 @@ import SortDropdown from "../ui/SortDropdown";
 import api from "../../lib/api";
 import { useQuery, type QueryFunctionContext } from "@tanstack/react-query";
 import ProductSkeleton from "../ui/ProductSkeleton";
+import { useFooter } from "../../api/home";
 
 
 
@@ -51,17 +52,17 @@ export default function WeeklyBestsellers() {
     useEffect(() => {
         refetch()
     }, [category]);
-
+    const { data: generaldata } = useFooter(false);
     return (
         <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px] bg-primary-gradient xl:pt-[60px] lg:pt-[50px] md:pt-[40px] pt-[30px] xl:pb-[75px] lg:pb-[65px] md:pb-[55px] pb-[45px]">
             <div className="container">
                 <div className="2xl:mb-10 xl:mb-8 lg:mb-6 md:mb-4 mb-2 flex justify-between items-center">
                     <div>
                         <h1 className="text-white font-extralight 2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base xl:leading-none leading-normal">
-                            Weekly
+                            {generaldata?.weekly_bestsellers_title}
                         </h1>
                         <h1 className="text-white italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay -mt-3">
-                            Bestsellers
+                            {generaldata?.weekly_bestsellers_sub_title}
                         </h1>
                     </div>
                     <div className="flex items-center xl:gap-10 lg:gap-8 md:gap-6 gap-4">

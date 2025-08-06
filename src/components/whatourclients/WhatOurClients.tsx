@@ -2,22 +2,24 @@ import { useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { useHome } from "../../api/home";
+import { useFooter, useHome } from "../../api/home";
 
 export default function WhatOurClients() {
   const { data: homedata } = useHome(false);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
+  const { data: generaldata } = useFooter(false);
+  
   return (
     <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px]">
       <div className="container">
         <div className="2xl:mb-[60px] xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px] flex justify-between items-center">
           <div>
             <h1 className="text-black font-extralight 2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base xl:leading-none leading-normal">
-              What our Clients
+              {generaldata?.clients_say_title}
             </h1>
             <h1 className="text-primary italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay -mt-3">
-              Say?
+              {generaldata?.clients_say_sub_title}
             </h1>
           </div>
           <div className="flex lg:gap-5 md:gap-3 gap-2 items-center">

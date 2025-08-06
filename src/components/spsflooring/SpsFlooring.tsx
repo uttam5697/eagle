@@ -3,13 +3,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useFooter } from "../../api/home";
 
 export default function SpsFlooring({ productCategory }: any) {
   console.log("🚀 ~ SpsFlooring ~ productCategory:", productCategory)
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
-
+  const { data: generaldata } = useFooter(false);
   return (
     <section className="xl:mb-[100px] overflow-hidden lg:mb-[80px] md:mb-[60px] mb-[40px] xl:mt-[100px] lg:mt-[80px] md:mt-[60px] mt-[40px]">
       <div className="container">
@@ -17,10 +18,10 @@ export default function SpsFlooring({ productCategory }: any) {
         <div className="2xl:mb-10 xl:mb-8 lg:mb-6 md:mb-4 mb-2 flex justify-between items-center">
           <div>
             <h1 className="font-extralight 2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base xl:leading-none leading-normal">
-              SPS
+              {generaldata?.sps_flooring_title}
             </h1>
             <h1 className="text-primary italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay -mt-3">
-              Flooring
+              {generaldata?.sps_flooring_sub_title}
             </h1>
           </div>
           <div className="flex lg:gap-5 md:gap-3 gap-2 items-center">
