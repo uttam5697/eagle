@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Logo } from "../../assets/Index";
 import { FiMail, FiArrowLeft } from "react-icons/fi";
+import api from "../../lib/api";
+import { showToast } from "../../utils/toastUtils";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -10,6 +12,26 @@ export default function ForgotPassword() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    const formData = new FormData();
+    formData.append("Appuser[email]", email);
+      try {
+        const response = await api.post("/beforeauth/forgotpassword", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log("🚀 ~ handleSubmit ~ response:", response)
+
+        if (response?.data?.auth_key) {
+          localStorage.setItem("authKey", response?.data?.auth_key);
+          
+          showToast("Logged in successfully!", "success");
+        }
+
+      } catch (error: any) {
+        console.error("Login error:", error);
+        showToast(error?.response?.data?.message || "Login failed");
+      }
     
     // Simulate API call
     setTimeout(() => {

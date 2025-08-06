@@ -15,8 +15,8 @@ const COVERAGE_PER_BOX = 23.75;
 export default function ProductDetailPage() {
     const { slug } = useParams();
     const [boxes, setBoxes] = useState(1);
-    console.log("🚀 ~ ProductDetailPage ~ boxes:", boxes)
     const [productGallery, setProductGallery] = useState([]);
+    console.log("🚀 ~ ProductDetailPage ~ productGallery:", productGallery)
     const [sqft, setSqft] = useState(COVERAGE_PER_BOX);
     const [isWastageChecked, setIsWastageChecked] = useState(true);
 
@@ -34,6 +34,39 @@ export default function ProductDetailPage() {
         setBoxes(boxesNeeded);
         return boxesNeeded;
     };
+
+    function getYouTubeVideoID(url: any) {
+        console.log("🚀 ~ getYouTubeVideoID ~ url:", url)
+        try {
+            const parsedUrl = new URL(url);
+            const hostname = parsedUrl.hostname;
+
+            // Case: youtu.be/<id>
+            if (hostname === 'youtu.be') {
+                return parsedUrl.pathname.slice(1);
+            }
+
+            // Case: youtube.com/watch?v=<id>
+            if (parsedUrl.pathname === '/watch') {
+                return parsedUrl.searchParams.get('v');
+            }
+
+            // Case: youtube.com/shorts/<id>, /embed/<id>, /v/<id>
+            const pathMatch = parsedUrl.pathname.match(/^\/(shorts|embed|v)\/([a-zA-Z0-9_-]{11})/);
+            if (pathMatch) {
+                return pathMatch[2];
+            }
+
+            return null; // Not a valid YouTube video URL
+        } catch (e) {
+            return null; // Invalid URL format
+        }
+    }
+    function getYouTubeThumbnailURL(url: string, quality = "hqdefault") {
+        const videoId = getYouTubeVideoID(url);
+        if (!videoId) return null;
+        return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
+    }
 
     const getSqftFromBoxes = (boxCount: number) => {
         return parseFloat((boxCount * COVERAGE_PER_BOX).toFixed(2));
@@ -61,9 +94,10 @@ export default function ProductDetailPage() {
 
 
 
-    const [mainImage, setMainImage] = useState<string | undefined>();
+    // const [mainImage, setMainImage] = useState<string | undefined>();
+    const [mainImage, setMainImage] = useState<any>();
 
-    const handleGalleryImageClick = (img: any) => setMainImage(img);
+    const handleGalleryImageClick = (media: any) => setMainImage(media);
 
 
     const fetchProductById = async (slug: string) => {
@@ -71,7 +105,7 @@ export default function ProductDetailPage() {
         formData.append('slug', slug);
         const { data } = await api.post(`/beforeauth/getproductdetails`, formData);
         setProductGallery(data?.product_image);
-        setMainImage(data?.product_image[0]?.file);
+        setMainImage(data?.product_image[0]);
         return data
     };
 
@@ -80,7 +114,6 @@ export default function ProductDetailPage() {
         queryFn: () => fetchProductById(slug as string),
         enabled: false,
     });
-    console.log("🚀 ~ ProductDetailPage ~ productDataById:", productDataById)
 
     const breadcrumbData = [
         { label: 'Home', href: '/' },
@@ -96,19 +129,19 @@ export default function ProductDetailPage() {
             <Breadcrumbs items={breadcrumbData} />
             <div className="grid grid-cols-1 xl:mt-[30px] lg:mt-6 md:mt-5 mt-4 md:grid-cols-2 gap-6 ">
                 <div className="">
-                    <div className="border   w-full  rounded-2xl bg-[#f6f6f6]  overflow-hidden">
-                        {mainImage?.endsWith(".mp4") ? (
-                            <video
-                                src={mainImage}
-                                controls
-                                className="w-full h-full"
-                            />
+                    <div className="border w-full rounded-2xl bg-[#f6f6f6] overflow-hidden">
+                        {mainImage?.type === 'Video' && mainImage?.video ? (
+                            <video src={mainImage.video} controls className="w-full h-full" />
+                        ) : mainImage?.type === 'Youtube' && mainImage?.video_url ? (
+                            <iframe
+                            className="w-full aspect-video"
+                            // src={mainImage.video_url}
+                            src={`https://www.youtube.com/embed/${getYouTubeVideoID(mainImage.video_url)}`}
+                            title="YouTube Video"
+                            allowFullScreen
+                            ></iframe>
                         ) : (
-                            <img
-                                src={mainImage}
-                                alt="Main"
-                                className="w-full h-full object-cover"
-                            />
+                            <img src={mainImage?.file} alt="Main" className="w-full h-full object-cover" />
                         )}
                     </div>
 
@@ -117,7 +150,7 @@ export default function ProductDetailPage() {
                         <div className="">
                             <Swiper
                                 // spaceBetween={20}
-                                slidesPerView={3}
+                                slidesPerView="auto"
                                 loop={false}
                                 modules={[Navigation]}
 
@@ -127,53 +160,72 @@ export default function ProductDetailPage() {
                                 }}
                                 className="pb-8"
                                 spaceBetween={12}
-                                breakpoints={{
-                                    540: {
-                                        slidesPerView: 4,
-                                        spaceBetween: 12,
-                                    },
-                                    768: {
-                                        slidesPerView: 3,
-                                        spaceBetween: 12,
-                                    },
-                                    1024: {
-                                        slidesPerView: 3,
-                                        spaceBetween: 16,
-                                    },
-                                    1300: {
-                                        slidesPerView: 4,
-                                        spaceBetween: 20,
-                                    },
-                                }}
+                                // breakpoints={{
+                                //     540: {
+                                //         slidesPerView: 4,
+                                //         spaceBetween: 12,
+                                //     },
+                                //     768: {
+                                //         slidesPerView: 3,
+                                //         spaceBetween: 12,
+                                //     },
+                                //     1024: {
+                                //         slidesPerView: 3,
+                                //         spaceBetween: 16,
+                                //     },
+                                //     1300: {
+                                //         slidesPerView: 4,
+                                //         spaceBetween: 20,
+                                //     },
+                                // }}
                             >
-                                {productGallery?.map((img: any, index: number) => (
-                                    <SwiperSlide key={index} className="">
+                                {productGallery?.map((media: any, index: number) => {
+                                    const isActive =
+                                        mainImage?.type === media?.type &&
+                                        (
+                                        (media?.type === 'Image' && mainImage?.file === media?.file) ||
+                                        (media?.type === 'Video' && mainImage?.video === media?.video) ||
+                                        (media?.type === 'Youtube' && mainImage?.video_url === media?.video_url)
+                                        );
+
+                                    return (
+                                        <SwiperSlide key={index} className='!w-auto'>
                                         <div
-                                            onClick={() => handleGalleryImageClick(img?.file)}
-                                            className={` mt-5 overflow-hidden cursor-pointer border-3 rounded-[16px] transition-all duration-200 ${mainImage === img
-                                                ? "border-[#C41A2C]  border-[3px] rounded-xl"
-                                                : " hover:border-[#C41A2C] border-transparent border-[3px] rounded-xl"
-                                                }`}
+                                            onClick={() => handleGalleryImageClick(media)}
+                                            className={`mt-5 overflow-hidden cursor-pointer rounded-[16px] transition-all duration-200 lg:!w-[144px] md:!w-[124px] md:!h-[124px] !h-[104px] !w-[104px] lg:!h-[144px] object-cover object-center ${
+                                            isActive
+                                                ? "border-[#C41A2C] border-[3px] rounded-xl"
+                                                : "hover:border-[#C41A2C] border-transparent border-[3px] rounded-xl"
+                                            }`}
                                         >
-                                            {img?.file.endsWith(".mp4") ? (
-                                                <video
-                                                    src={img}
-                                                    className="w-full h-full object-cover"
-                                                    muted
-                                                    onMouseOver={(e) => e.currentTarget.play()}
-                                                    onMouseOut={(e) => e.currentTarget.pause()}
-                                                />
+                                            {media?.type === 'Video' && media?.video ? (
+                                            <video
+                                                src={media.video}
+                                                className="w-full h-full object-cover"
+                                                muted
+                                                onMouseOver={(e) => e.currentTarget.play()}
+                                                onMouseOut={(e) => e.currentTarget.pause()}
+                                            />
+                                            ) : media?.type === 'Youtube' && media?.video_url ? (
+                                            <img
+                                                className="lg:w-[144px] md:w-[124px] md:h-[124px] h-[104px] w-[104px] lg:h-[144px] object-cover object-center"
+                                                src={getYouTubeThumbnailURL(media.video_url) ?? undefined}
+                                                title={`YouTube video ${index}`}
+                                            />
+
                                             ) : (
-                                                <img
-                                                    src={img?.file}
-                                                    alt={`thumb-${index}`}
-                                                    className=" w-full h-full"
-                                                />
+                                            <img
+                                                src={media?.file}
+                                                alt={`thumb-${index}`}
+                                                className="lg:w-[144px] md:w-[124px] md:h-[124px] h-[104px] w-[104px] lg:h-[144px] object-cover object-center"
+                                            />
                                             )}
                                         </div>
-                                    </SwiperSlide>
+                                        </SwiperSlide>
+                                    );
+                                    })}
 
-                                ))}
+
                             </Swiper>
                         </div>
                         {<div className="swiper-button-prev-custom absolute z-20 top-1/2 -left-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
