@@ -82,7 +82,7 @@ export default function ContactUs() {
           <div className="w-full md:w-1/2  px-3 flex flex-col justify-center xl:py-[100px] lg:py-[80px] md:py-[40px]">
             <form
               onSubmit={handleSubmit}
-              className="max-w-[600px] mx-auto bg-[#fdfcfb] rounded-md xl:space-y-6 lg:space-y-5 md:space-y-4 space-y-3"
+              className="max-w-[600px] w-full mx-auto bg-[#fdfcfb] rounded-md xl:space-y-6 lg:space-y-5 md:space-y-4 space-y-3"
             >
               <h2 className="italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay xl:mb-10 lg:mb-8 md:mb-6 mb-4">
                 Contact Us

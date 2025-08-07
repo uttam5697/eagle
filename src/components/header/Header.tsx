@@ -79,7 +79,7 @@ export default function Header() {
                 <Link to="/contact-us" onClick={() => setIsMenuOpen(false)} className={`text-white transition-colors ${pathname === '/contact-us' ? 'active' : ''}`}>
                   Contact Us
                 </Link>
-                <Link to="/products" onClick={() => setIsMenuOpen(false)} className={`text-white transition-colors ${pathname === '/products' ? 'active' : ''}`}>
+                <Link to="/?product" onClick={() => setIsMenuOpen(false)} className={`text-white transition-colors ${pathname === '/?product' ? 'active' : ''}`}>
                   Product
                 </Link>
               </nav>
