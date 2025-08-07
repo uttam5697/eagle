@@ -37,7 +37,7 @@ export default function AboutUs() {
         <div className="container">
             <div className="xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]">
                 <h1 className="font-extralight 2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base xl:leading-none leading-normal">{aboutdata?.title}</h1>
-                <h1 className="text-black italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay -mt-3">{aboutdata?.sub_title}</h1>
+                <h1 className="text-primary italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay -mt-3">{aboutdata?.sub_title}</h1>
             </div>
             <div className="flex flex-col gap-4">
                 <div dangerouslySetInnerHTML={{ __html: aboutdata?.description }} />
