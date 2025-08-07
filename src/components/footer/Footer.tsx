@@ -119,9 +119,9 @@ export default function Footer() {
               <span className="md:w-[38px] md:h-[38px] w-[30px] h-[30px] flex-none border border-white rounded-full text-white flex items-center justify-center">
                 <FiMapPin className="lg:text-[18px] md:text-[16px] text-[14px]" />
               </span>
-              <p className="text-white md:text-sm text-[14px]">
+              <a href={generaldata?.map_url} target="_blank" className="text-white md:text-sm text-[14px]">
                 {generaldata?.address}
-              </p>
+              </a>
             </div>
             <div className="flex xl:gap-10 lg:gap-8 md:gap-6 gap-4 flex-wrap">
               <div className="flex gap-3 items-center">
@@ -148,7 +148,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <div className="xl:col-span-5 lg:col-span-7 col-span-12">
+          {/* <div className="xl:col-span-5 lg:col-span-7 col-span-12"> */}
             {/* <h3 className="text-white xl:text-xl lg:text-base md:text-2sm text-sm lg:mb-4 md:mb-3 mb-2">
               Sign up for Updates
             </h3> */}
@@ -167,7 +167,7 @@ export default function Footer() {
                 <FiArrowUpRight className="text-2sm group-hover:rotate-45 duration-300 transition-all" />
               </button>
             </form> */}
-            <p className="text-white font-light text-[14px]">
+            {/* <p className="text-white font-light text-[14px]">
               By submitting, you agree to our{" "}
               <Link to={"/privacy-policy"} className="font-semibold underline">
                 Terms & Conditions
@@ -177,15 +177,15 @@ export default function Footer() {
                 Privacy Policy
               </Link>
               .
-            </p>
-          </div>
+            </p> */}
+          {/* </div> */}
         </div>
       </div>
       <hr className="border-t border-white/30" />
       <div className="container">
         <div className="flex items-center justify-between flex-wrap gap-4 xl:pt-10 lg:pt-8 md:pt-6 pt-4">
           <p className="font-light md:text-sm text-[14px] text-white">
-            Copyright © 2025 Eagle Flooring Depot All Rights Reserved
+            Copyright © 2025 <a href="https://www.yellowpanther.io/" target="_blank" className="font-semibold">Yellow Panther</a> All Rights Reserved
           </p>
           <div className="flex lg:gap-[10px] md:gap-2 gap-1">
             <img src={PayCard} alt="PayCard" />
