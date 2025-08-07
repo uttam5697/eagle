@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-
+import { TiSocialYoutube } from "react-icons/ti";
 import Breadcrumbs from '../components/ui/Breadcrumbs';
 import QuantityInputGroup from '../components/ui/QuantityInputGroup';
 import { FiArrowUpRight, FiShoppingCart } from 'react-icons/fi';
+import { MdVideocam } from "react-icons/md";
 import { ProductSpecifications } from '../components';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -197,19 +198,29 @@ export default function ProductDetailPage() {
                                                     }`}
                                             >
                                                 {media?.type === 'Video' && media?.video ? (
-                                                    <video
-                                                        src={media.video}
-                                                        className="w-full h-full object-cover"
-                                                        muted
-                                                        onMouseOver={(e) => e.currentTarget.play()}
-                                                        onMouseOut={(e) => e.currentTarget.pause()}
-                                                    />
+                                                    <div className='relative h-full'>
+                                                        <video
+                                                            src={media.video}
+                                                            className="w-full h-full object-cover"
+                                                            muted
+                                                            onMouseOver={(e) => e.currentTarget.play()}
+                                                            onMouseOut={(e) => e.currentTarget.pause()}
+                                                        />
+                                                        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                                                            <MdVideocam  className='text-primary xl:text-[30px] lg:text-[24px] md:text-[20px] text-[16px] md:p-1 p-[2px] bg-white rounded-full' />
+                                                        </div>
+                                                    </div>
                                                 ) : media?.type === 'Youtube' && media?.video_url ? (
-                                                    <img
-                                                        className="lg:w-[144px] md:w-[124px] md:h-[124px] h-[104px] w-[104px] lg:h-[144px] object-cover object-center"
-                                                        src={getYouTubeThumbnailURL(media.video_url) ?? undefined}
-                                                        title={`YouTube video ${index}`}
-                                                    />
+                                                    <div className='relative'>
+                                                        <img
+                                                            className="lg:w-[144px] md:w-[124px] md:h-[124px] h-[104px] w-[104px] lg:h-[144px] object-cover object-center"
+                                                            src={getYouTubeThumbnailURL(media.video_url) ?? undefined}
+                                                            title={`YouTube video ${index}`}
+                                                        />
+                                                        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                                                            <TiSocialYoutube className='text-primary xl:text-[30px] lg:text-[24px] md:text-[20px] text-[16px] md:p-1 p-[2px] bg-white rounded-full' />
+                                                        </div>
+                                                    </div>
 
                                                 ) : (
                                                     <img
