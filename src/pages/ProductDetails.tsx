@@ -274,14 +274,13 @@ export default function ProductDetailPage() {
                 </div>
                 <div className="  text-black">
                     {/* Title */}
-                    <h1 className="2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-playfairDisplay italic mb-4">
+                    <h1 className="2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-playfairDisplay italic mb-2">
                         {productDataById?.title}
                     </h1>
                     <div className='xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]'>
-                        <h5 className='xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-bold'>${productDataById?.price} / sqft</h5>
-                        <p className="font-light md:text-[14px] text-[12px] mt-1 leading-none">
-                            Shipping calculated at checkout
-                        </p>
+                        <h5 className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold inline-block'>${productDataById?.price} / sqft <p className='xl:text-sm inline-block text-xm leading-none font-bold'>(${productDataById?.sqft_in_box} sqft/Box)</p></h5>
+                        {/* <p className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold'>${productDataById?.price_per_box} / sqft</p> */}
+                        <p className='custom-html font-light md:text-[14px] text-[12px] mt-1 leading-none' dangerouslySetInnerHTML={{ __html: productDataById?.description }} />
                     </div>
 
                     {/* Shipping note */}
@@ -321,10 +320,9 @@ export default function ProductDetailPage() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-4 mt-4 items-start">
-                        <div className="mb-6">
+                        {/* <div className="mb-6">
                             
 
-                            {/* Total Price */}
                             <div className=" p-3 bg-[#FAF8F6] rounded-md flex flex-col items-start">
                                 <span className="text-xs uppercase text-gray-500 tracking-[0.05em] mb-1 font-semibold">Total price</span>
                                 <span className="text-2xl font-extrabold text-black">
@@ -334,7 +332,7 @@ export default function ProductDetailPage() {
                                     for <span className="font-medium">{sqft}</span> sqft
                                 </span>
                             </div>
-                        </div>
+                        </div> */}
                         <div>
                             <label className="inline-flex items-start gap-2">
                                 <input
