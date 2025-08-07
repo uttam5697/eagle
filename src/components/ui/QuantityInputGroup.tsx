@@ -4,7 +4,7 @@ import { FiChevronLeft, FiChevronRight, FiMinus, FiPlus } from "react-icons/fi";
 
 type Props = {
   label: string;
-  value: number;
+  value: number | undefined;
   onDecrease: () => void;
   onIncrease: () => void;
   onChange: (newValue: number) => void;

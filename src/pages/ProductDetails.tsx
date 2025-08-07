@@ -10,33 +10,26 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../lib/api';
 
-const COVERAGE_PER_BOX = 23.75;
 
 export default function ProductDetailPage() {
     const { slug } = useParams();
     const [boxes, setBoxes] = useState(1);
     const [productGallery, setProductGallery] = useState([]);
-    console.log("🚀 ~ ProductDetailPage ~ productGallery:", productGallery)
-    const [sqft, setSqft] = useState(COVERAGE_PER_BOX);
+    const [sqft, setSqft] = useState(0);
     const [isWastageChecked, setIsWastageChecked] = useState(true);
 
-    const getBoxesForSqft = (rawSqft: number, wastage: boolean) => {
-        console.log("🏗️ Input raw square feet:", rawSqft);
-        console.log("📦 Wastage applied?", wastage);
+    const getBoxesForSqft = (rawSqft: number, wastage: boolean, coverage: number) => {
 
         const effective = wastage ? rawSqft * 1.1 : rawSqft;
         console.log("📐 Effective square feet (after wastage if any):", effective);
 
-        const boxesNeeded = Math.max(1, Math.ceil(effective / COVERAGE_PER_BOX));
-        console.log("📦 COVERAGE_PER_BOX:", COVERAGE_PER_BOX);
-        console.log("🔢 Boxes Needed (rounded up):", boxesNeeded);
+        const boxesNeeded = Math.max(1, Math.ceil(effective / Number(coverage)));
 
         setBoxes(boxesNeeded);
         return boxesNeeded;
     };
 
     function getYouTubeVideoID(url: any) {
-        console.log("🚀 ~ getYouTubeVideoID ~ url:", url)
         try {
             const parsedUrl = new URL(url);
             const hostname = parsedUrl.hostname;
@@ -68,27 +61,27 @@ export default function ProductDetailPage() {
         return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
     }
 
-    const getSqftFromBoxes = (boxCount: number) => {
-        return parseFloat((boxCount * COVERAGE_PER_BOX).toFixed(2));
+    const getSqftFromBoxes = (boxCount: number, coverage: number | undefined) => {
+        return parseFloat((boxCount * Number(coverage)).toFixed(2));
     };
 
     // Sync when boxes change
-    const handleBoxesChange = (newBoxes: number) => {
+    const handleBoxesChange = (newBoxes: number, coverage: number) => {
         const validBoxes = Math.max(1, newBoxes);
         setBoxes(validBoxes);
-        setSqft(getSqftFromBoxes(validBoxes));
+        setSqft(getSqftFromBoxes(validBoxes, coverage));
     };
 
     // Sync when sqft change
-    const handleSqftChange = (newSqft: number) => {
+    const handleSqftChange = (newSqft: number, coverage: number) => {
         const validSqft = Math.max(0, newSqft);
         setSqft(parseFloat(validSqft.toFixed(2))); // show user input
-        setBoxes(getBoxesForSqft(validSqft, isWastageChecked));
+        setBoxes(getBoxesForSqft(validSqft, isWastageChecked, coverage));
     };
 
     // Recalculate boxes when wastage toggle changes
     useEffect(() => {
-        getBoxesForSqft(sqft, isWastageChecked)
+        getBoxesForSqft(sqft, isWastageChecked, productDataById?.sqft_in_box);
 
     }, [isWastageChecked, sqft]);
 
@@ -104,6 +97,7 @@ export default function ProductDetailPage() {
         const formData = new FormData();
         formData.append('slug', slug);
         const { data } = await api.post(`/beforeauth/getproductdetails`, formData);
+        setSqft(Number(data?.sqft_in_box))
         setProductGallery(data?.product_image);
         setMainImage(data?.product_image[0]);
         return data
@@ -117,13 +111,18 @@ export default function ProductDetailPage() {
 
     const breadcrumbData = [
         { label: 'Home', href: '/' },
-        { label: `${productDataById?.title}`, href: '/products' },
+        { label: `${productDataById?.title}`, href: `/products/category/${productDataById?.product_category_id}` },
         { label: `${productDataById?.slug}` }
     ];
 
     useEffect(() => {
         refetch();
     }, [slug])
+
+    // THIS GOES RIGHT BEFORE YOUR NORMAL RETURN
+    if (!productDataById) {
+        return <div>Loading...</div>;
+    }
     return (
         <div className="container xl:my-[60px] lg:my-[50px] md:my-[40px] my-[30px]">
             <Breadcrumbs items={breadcrumbData} />
@@ -134,11 +133,11 @@ export default function ProductDetailPage() {
                             <video src={mainImage.video} controls className="w-full h-full" />
                         ) : mainImage?.type === 'Youtube' && mainImage?.video_url ? (
                             <iframe
-                            className="w-full aspect-video"
-                            // src={mainImage.video_url}
-                            src={`https://www.youtube.com/embed/${getYouTubeVideoID(mainImage.video_url)}`}
-                            title="YouTube Video"
-                            allowFullScreen
+                                className="w-full aspect-video"
+                                // src={mainImage.video_url}
+                                src={`https://www.youtube.com/embed/${getYouTubeVideoID(mainImage.video_url)}`}
+                                title="YouTube Video"
+                                allowFullScreen
                             ></iframe>
                         ) : (
                             <img src={mainImage?.file} alt="Main" className="w-full h-full object-cover" />
@@ -160,70 +159,69 @@ export default function ProductDetailPage() {
                                 }}
                                 className="pb-8"
                                 spaceBetween={12}
-                                // breakpoints={{
-                                //     540: {
-                                //         slidesPerView: 4,
-                                //         spaceBetween: 12,
-                                //     },
-                                //     768: {
-                                //         slidesPerView: 3,
-                                //         spaceBetween: 12,
-                                //     },
-                                //     1024: {
-                                //         slidesPerView: 3,
-                                //         spaceBetween: 16,
-                                //     },
-                                //     1300: {
-                                //         slidesPerView: 4,
-                                //         spaceBetween: 20,
-                                //     },
-                                // }}
+                            // breakpoints={{
+                            //     540: {
+                            //         slidesPerView: 4,
+                            //         spaceBetween: 12,
+                            //     },
+                            //     768: {
+                            //         slidesPerView: 3,
+                            //         spaceBetween: 12,
+                            //     },
+                            //     1024: {
+                            //         slidesPerView: 3,
+                            //         spaceBetween: 16,
+                            //     },
+                            //     1300: {
+                            //         slidesPerView: 4,
+                            //         spaceBetween: 20,
+                            //     },
+                            // }}
                             >
                                 {productGallery?.map((media: any, index: number) => {
                                     const isActive =
                                         mainImage?.type === media?.type &&
                                         (
-                                        (media?.type === 'Image' && mainImage?.file === media?.file) ||
-                                        (media?.type === 'Video' && mainImage?.video === media?.video) ||
-                                        (media?.type === 'Youtube' && mainImage?.video_url === media?.video_url)
+                                            (media?.type === 'Image' && mainImage?.file === media?.file) ||
+                                            (media?.type === 'Video' && mainImage?.video === media?.video) ||
+                                            (media?.type === 'Youtube' && mainImage?.video_url === media?.video_url)
                                         );
 
                                     return (
                                         <SwiperSlide key={index} className='!w-auto'>
-                                        <div
-                                            onClick={() => handleGalleryImageClick(media)}
-                                            className={`mt-5 overflow-hidden cursor-pointer rounded-[16px] transition-all duration-200 lg:!w-[144px] md:!w-[124px] md:!h-[124px] !h-[104px] !w-[104px] lg:!h-[144px] object-cover object-center ${
-                                            isActive
-                                                ? "border-[#C41A2C] border-[3px] rounded-xl"
-                                                : "hover:border-[#C41A2C] border-transparent border-[3px] rounded-xl"
-                                            }`}
-                                        >
-                                            {media?.type === 'Video' && media?.video ? (
-                                            <video
-                                                src={media.video}
-                                                className="w-full h-full object-cover"
-                                                muted
-                                                onMouseOver={(e) => e.currentTarget.play()}
-                                                onMouseOut={(e) => e.currentTarget.pause()}
-                                            />
-                                            ) : media?.type === 'Youtube' && media?.video_url ? (
-                                            <img
-                                                className="lg:w-[144px] md:w-[124px] md:h-[124px] h-[104px] w-[104px] lg:h-[144px] object-cover object-center"
-                                                src={getYouTubeThumbnailURL(media.video_url) ?? undefined}
-                                                title={`YouTube video ${index}`}
-                                            />
+                                            <div
+                                                onClick={() => handleGalleryImageClick(media)}
+                                                className={`mt-5 overflow-hidden cursor-pointer rounded-[16px] transition-all duration-200 lg:!w-[144px] md:!w-[124px] md:!h-[124px] !h-[104px] !w-[104px] lg:!h-[144px] object-cover object-center ${isActive
+                                                        ? "border-[#C41A2C] border-[3px] rounded-xl"
+                                                        : "hover:border-[#C41A2C] border-transparent border-[3px] rounded-xl"
+                                                    }`}
+                                            >
+                                                {media?.type === 'Video' && media?.video ? (
+                                                    <video
+                                                        src={media.video}
+                                                        className="w-full h-full object-cover"
+                                                        muted
+                                                        onMouseOver={(e) => e.currentTarget.play()}
+                                                        onMouseOut={(e) => e.currentTarget.pause()}
+                                                    />
+                                                ) : media?.type === 'Youtube' && media?.video_url ? (
+                                                    <img
+                                                        className="lg:w-[144px] md:w-[124px] md:h-[124px] h-[104px] w-[104px] lg:h-[144px] object-cover object-center"
+                                                        src={getYouTubeThumbnailURL(media.video_url) ?? undefined}
+                                                        title={`YouTube video ${index}`}
+                                                    />
 
-                                            ) : (
-                                            <img
-                                                src={media?.file}
-                                                alt={`thumb-${index}`}
-                                                className="lg:w-[144px] md:w-[124px] md:h-[124px] h-[104px] w-[104px] lg:h-[144px] object-cover object-center"
-                                            />
-                                            )}
-                                        </div>
+                                                ) : (
+                                                    <img
+                                                        src={media?.file}
+                                                        alt={`thumb-${index}`}
+                                                        className="lg:w-[144px] md:w-[124px] md:h-[124px] h-[104px] w-[104px] lg:h-[144px] object-cover object-center"
+                                                    />
+                                                )}
+                                            </div>
                                         </SwiperSlide>
                                     );
-                                    })}
+                                })}
 
 
                             </Swiper>
@@ -244,7 +242,7 @@ export default function ProductDetailPage() {
                                 />
                             </svg>
                         </div>}
-                        
+
                         <div className="swiper-button-next-custom absolute z-20 mt-[10px] top-1/2 right-0 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-yellow-50 cursor-pointer">
                             <svg
                                 className="w-5 h-5 text-gray-600"
@@ -278,11 +276,7 @@ export default function ProductDetailPage() {
                     {/* Shipping note */}
 
 
-                    {/* Description */}
-                    <div className='custom-html'
-                        dangerouslySetInnerHTML={{ __html: productDataById?.description }}
-                    >
-                    </div>
+                    
 
                     <div className="grid md:grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md">
                         {/* SQFT Input */}
@@ -290,9 +284,9 @@ export default function ProductDetailPage() {
                             <QuantityInputGroup
                                 label="Enter Coverage in SQFT:"
                                 value={sqft}
-                                onDecrease={() => handleSqftChange(sqft - 1)}
-                                onIncrease={() => handleSqftChange(sqft + 1)}
-                                onChange={(newVal) => handleSqftChange(newVal)}
+                                onDecrease={() => handleSqftChange(sqft - 1, productDataById?.sqft_in_box)}
+                                onIncrease={() => handleSqftChange(sqft + 1, productDataById?.sqft_in_box)}
+                                onChange={(newVal) => handleSqftChange(newVal, productDataById?.sqft_in_box)}
                                 iconType="arrow"
                             // unit="sqft"
                             />
@@ -306,9 +300,9 @@ export default function ProductDetailPage() {
                             <QuantityInputGroup
                                 label="# of Boxes"
                                 value={boxes}
-                                onDecrease={() => handleBoxesChange(boxes - 1)}
-                                onIncrease={() => handleBoxesChange(boxes + 1)}
-                                onChange={(newVal) => handleBoxesChange(newVal)}
+                                onDecrease={() => handleBoxesChange(boxes - 1, productDataById?.sqft_in_box)}
+                                onIncrease={() => handleBoxesChange(boxes + 1, productDataById?.sqft_in_box)}
+                                onChange={(newVal) => handleBoxesChange(newVal, productDataById?.sqft_in_box)}
                                 iconType="plusminus"
                             // unit="box"
                             />
@@ -316,7 +310,20 @@ export default function ProductDetailPage() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-4 mt-4 items-start">
-                        {/* Add Wastage Section */}
+                        <div className="mb-6">
+                            
+
+                            {/* Total Price */}
+                            <div className=" p-3 bg-[#FAF8F6] rounded-md flex flex-col items-start">
+                                <span className="text-xs uppercase text-gray-500 tracking-[0.05em] mb-1 font-semibold">Total price</span>
+                                <span className="text-2xl font-extrabold text-black">
+                                   {(sqft  * productDataById?.price).toFixed(2)}
+                                </span>
+                                <span className="text-xs text-gray-400 font-normal">
+                                    for <span className="font-medium">{sqft}</span> sqft
+                                </span>
+                            </div>
+                        </div>
                         <div>
                             <label className="inline-flex items-start gap-2">
                                 <input

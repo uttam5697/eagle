@@ -5,8 +5,10 @@ import { FiArrowUpRight } from "react-icons/fi";
 import api from "../../lib/api";
 import { showToast } from "../../utils/toastUtils";
 import AnimatedSection from "../ui/AnimatedSection";
+import { useNavigate } from "react-router-dom";
 
 export default function ContactUs() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -38,24 +40,27 @@ export default function ContactUs() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const formattedData = {
-        Contactus: {
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          email: formData.email,
-          message: formData.message,
-        },
-      };
 
-      await api.post('/beforeauth/contactus', formattedData);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        message: "",
-        subscribe: false
-      })
-      showToast("Contact us successful!", "success");
+      const contactus = new FormData();
+      contactus.append("Contactus[first_name]", formData.firstName);
+      contactus.append("Contactus[last_name]", formData.lastName);
+      contactus.append("Contactus[email]", formData.email);
+      contactus.append("Contactus[message]", formData.message);
+
+      const res = await api.post('/beforeauth/contactus', contactus);
+
+      if (res.status === 1) {
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          message: "",
+          subscribe: false
+        })
+        showToast("Thanks for the message, one of our team will be in touch shortly", "success");
+        navigate("/")
+      }
+
 
     } catch (error: any) {
       console.error("Contact us error", error);
@@ -133,15 +138,16 @@ export default function ContactUs() {
                   className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent resize-none"
                   rows={4}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
-                <div className="flex justify-end">
-                  <button className="flex justify-between black-btn group before:!hidden after:!hidden">
-                    <span className='leading-none'>Submit</span>
-                    <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
-                  </button>
-                </div>
+              <div className="flex justify-end">
+                <button className="flex justify-between black-btn group before:!hidden after:!hidden">
+                  <span className='leading-none'>Submit</span>
+                  <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
+                </button>
+              </div>
             </form>
           </div>
         </div>

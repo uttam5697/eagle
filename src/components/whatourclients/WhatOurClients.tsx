@@ -122,7 +122,7 @@ export default function WhatOurClients() {
                     <h4 className="text-black mb-[14px] font-playfairDisplay 2xl:text-[32px] xl:text-2xl lg:text-xl md:text-base text-2sm leading-none">
                       {client.name}
                     </h4>
-                    <p className="text-primary font-light xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4 leading-none lg:text-[16px] md:text-[14px] text-[12px]">Co-Founder Of Steel</p>
+                    <p className="text-primary font-light xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4 leading-none lg:text-[16px] md:text-[14px] text-[12px]">{client.designation}</p>
                     <p className="font-extralight xl:mb-[36px] lg:mb-[26px] md:mb-5 mb-4">
                       {client.description}
                     </p>
