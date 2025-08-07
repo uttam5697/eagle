@@ -6,6 +6,8 @@ import { useFooter } from "../../api/home";
 
 export default function Footer() {
    const { data: generaldata } = useFooter(false);
+   const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-black xl:py-[50px] lg:py-[40px] md:py-[30px] py-[20px] pb-8">
       <div className="container">
@@ -185,7 +187,7 @@ export default function Footer() {
       <div className="container">
         <div className="flex items-center justify-between flex-wrap gap-4 xl:pt-10 lg:pt-8 md:pt-6 pt-4">
           <p className="font-light md:text-sm text-[14px] text-white">
-            Copyright © 2025 <a href="https://www.yellowpanther.io/" target="_blank" className="font-semibold">Yellow Panther</a> All Rights Reserved
+            Copyright © {currentYear} <a href="https://www.yellowpanther.io/" target="_blank" className="font-semibold">Yellow Panther</a> All Rights Reserved
           </p>
           <div className="flex lg:gap-[10px] md:gap-2 gap-1">
             <img src={PayCard} alt="PayCard" />
