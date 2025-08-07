@@ -188,11 +188,11 @@ export default function SignUp() {
                 className="text-sm text-black leading-none accent-black"
               >
                 I agree to the{" "}
-                <Link to={"/"} className="text-primary hover:underline">
+                <Link to={"/terms-and-conditions"} className="text-primary hover:underline">
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link to={"/"} className="text-primary hover:underline">
+                <Link to={"/privacy-policy"} className="text-primary hover:underline">
                   Privacy Policy
                 </Link>
               </label>
