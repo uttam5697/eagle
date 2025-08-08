@@ -42,7 +42,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     localStorage.setItem("firstName", data.firstName);
     localStorage.setItem("lastName", data.lastName);
-    localStorage.setItem("authKey", data.authKey);
+    // localStorage.setItem("authKey", data.authKey);
     localStorage.setItem("fullName", data.fullName);
   };
 

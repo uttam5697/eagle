@@ -13,6 +13,7 @@ import AboutUs from "./components/aboutus/AboutUs";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Termsandconditions from "./components/Terms&Conditions";
 import { MyCart } from "./components";
+import Callback from "./components/Callback";
 
 // Define the routes separately
 const routes = [
@@ -66,6 +67,10 @@ const routes = [
       {
         path: paths.mycart.path,
         element: <MyCart />,
+      },
+      {
+        path: "/callback",
+        element: <Callback />,
       },
       {
         path: "*",

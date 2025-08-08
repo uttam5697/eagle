@@ -39,7 +39,6 @@ export default function Login() {
     const formData = new FormData();
     formData.append("Appuser[email]", email);
     formData.append("Appuser[password]", password);
-
     formData.append("Appuser[devices_type]", "Web");
     formData.append("Appuser[devices_name]", "mi y1");
     formData.append("Appuser[app_version]", "1");
@@ -53,7 +52,6 @@ export default function Login() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("🚀 ~ handleSubmit ~ response:", response)
 
       if (response?.data?.auth_key) {
         localStorage.setItem("authKey", response?.data?.auth_key);

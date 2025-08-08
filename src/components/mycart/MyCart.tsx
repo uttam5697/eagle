@@ -1,51 +1,20 @@
 import { useState } from "react";
-import { House } from "lucide-react";
+import { House, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { PiTrash, PiUserLight } from "react-icons/pi";
-import {  FiArrowUpRight, FiMapPin, FiMinus, FiPhoneCall, FiPlus } from "react-icons/fi";
-import { CgClose } from "react-icons/cg";
-import { product1 } from "../../assets/images";
+import { PiTrash } from "react-icons/pi";
+import { FiArrowUpRight, FiMinus, FiPlus } from "react-icons/fi";
+import AddressModal from "./AddressModal";
+import ChangeAddressModal from "./ChangeAddressModal";
+import { useCart } from "../../api/cart";
+import api from "../../lib/api";
+import { useUser } from "../context/UserContext";
+import { showToast } from "../../utils/toastUtils";
 
-// Types
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  total: number;
-  image: string;
-  boxes: number;
-  sqft: number;
-}
 
 interface Address {
   id: number;
   text: string;
 }
-
-// Mock data
-const cartItems: CartItem[] = [
-  {
-    id: 1,
-    name: "Alpine 22mil Rivawood Oak",
-    price: 1.79,
-    quantity: 46,
-    total: 82.34,
-    image: "../../assets/images/product2.png",
-    boxes: 2,
-    sqft: 47.9,
-  },
-  {
-    id: 2,
-    name: "Alpine 22mil Palermo Valley",
-    price: 1.79,
-    quantity: 23,
-    total: 31.97,
-    image: "../../assets/images/product2.png",
-    boxes: 1,
-    sqft: 23.76,
-  },
-];
 
 const initialAddresses: Address[] = [
   {
@@ -59,48 +28,74 @@ const initialAddresses: Address[] = [
 ];
 
 export default function MyCart() {
-  const [count, setCount] = useState<number>(1);
-  const [isAddressModalOpen, setIsAddressModalOpen] = useState<boolean>(false);
-  const [isAddressModalOpen1, setIsAddressModalOpen1] = useState<boolean>(true);
+  const { data: fetchedCartItems = [], refetch } = useCart(false);
+  const authkey = useUser()?.authKey;
+
+
+  // Local quantity state per cart item
+  const [quantities, setQuantities] = useState<Record<number, number>>(
+    () =>
+      fetchedCartItems.reduce((acc: Record<number, number>, item: any) => {
+        acc[item.user_carts_id] = item.quantity;
+        return acc;
+      }, {})
+  );
+
+  const [isAddressModalOpen, setAddressModalOpen] = useState(false);
+  const [isChangeModalOpen, setChangeModalOpen] = useState(false);
 
   const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
   const [selectedId, setSelectedId] = useState<number>(initialAddresses[0]?.id ?? 0);
 
-  const toggleAddressModal = () => setIsAddressModalOpen((prev) => !prev);
-  const toggleAddressModal1 = () => setIsAddressModalOpen1((prev) => !prev);
-
-  const handleIncrease = () => setCount((prev) => prev + 1);
-  const handleDecrease = () => setCount((prev) => (prev > 1 ? prev - 1 : 1));
-
-  const handleDelete = (id: number) => {
-    const updated = addresses.filter((addr) => addr.id !== id);
-    setAddresses(updated);
-    if (selectedId === id && updated.length > 0) {
-      setSelectedId(updated[0].id);
-    }
+  const handleIncrease = (id: number) => {
+    setQuantities((prev) => ({ ...prev, [id]: (prev[id] || 1) + 1 }));
   };
 
-  const handleAddNew = () => {
-    const newId = Date.now();
-    const newAddress: Address = {
-      id: newId,
-      text: "New Address Placeholder, Edit Me",
-    };
-    setAddresses((prev) => [...prev, newAddress]);
-    setSelectedId(newId);
+  const handleDecrease = (id: number) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [id]: prev[id] > 1 ? prev[id] - 1 : 1,
+    }));
   };
 
-  const handleSubmit = () => {
-    const selected = addresses.find((addr) => addr.id === selectedId);
-    alert(`Submitted: ${selected?.text}`);
+  const handleQuantityChange = (id: number, value: string) => {
+    const num = Math.max(1, parseInt(value) || 1);
+    setQuantities((prev) => ({ ...prev, [id]: num }));
   };
 
-  const itemTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+  const itemTotal = fetchedCartItems.reduce((sum: number, item: any) => {
+    const price = parseFloat(item.price);
+    const qty = quantities[item.user_carts_id] ?? item.quantity;
+    return sum + price * qty;
+  }, 0);
+
   const greenPackaging = 2;
   const totalAmount = itemTotal + greenPackaging;
+
+  const handleDelete = async (id: number) => {
+    try {
+      const formdata = new FormData();
+      formdata.append("user_carts_id", id.toString());
+
+      const res = await api.post(
+        `/userauth/deleteusercarts`, // ✅ match Postman
+        formdata,
+        { headers: { "auth_key": authkey } }
+      );
+      if (res?.status === 1) { // ✅ check API's response format
+        showToast("Item deleted successfully", "success");
+        refetch();
+      } else {
+        showToast("Failed to delete item", "error");
+      }
+    } catch (error) {
+      console.error("Delete address error:", error);
+      alert("Something went wrong while deleting address");
+    }
+  };
   return (
     <>
-      <div className="min-h-screen bg-light-white">
+      {fetchedCartItems.length > 0 ? <div className="min-h-screen bg-light-white">
         {/* Main Content */}
         <div className="container py-8">
           <div className="flex items-center justify-between xl:mb-14 lg:mb-10 md:mb-8 mb-3">
@@ -137,74 +132,61 @@ export default function MyCart() {
                     </tr>
                   </thead>
                   <tbody>
-                    {cartItems.map((item) => (
-                      <tr key={item.id}>
-                        {/* Product Info */}
-                        <td className="flex items-center space-x-4 py-4">
-                          <img
-                            src={product1}
-                            alt={item.name}
-                            className="xl:w-[140px] xl:h-[140px] lg:w-[100px] lg:h-[100px] md:w-[80px] md:h-[80px] w-[50px] h-[50px] object-center object-cover rounded-[16px]"
-                          />
-                          <div>
-                            <h3 className="text-black mb-1 lg:text-2sm md:text-sm text-xs">
-                              {item.name}
-                            </h3>
-                            <p className="font-bold xl:text-xl lg:text-base md:text-sm text-xs">
-                              ${item.price} /sq ft
-                            </p>
-                          </div>
-                        </td>
-
-                        {/* Quantity */}
-                        <td className="py-4 ps-4">
-                          <div className="flex items-center rounded-full border bg-white w-fit">
-                            <div className="flex items-center col-span-1 justify-start p-2">
-                              <button
-                                className="bg-[#C01F26] text-white p-1 lg:p-2  rounded-full"
-                                onClick={handleDecrease}
-                              >
-                                <FiMinus className="w-4 h-4 sm:w-5 sm:h-5" />
-                              </button>
-                            </div>
-                            {/* <span>{count}</span> */}
+                    {fetchedCartItems.map((item: any) => {
+                      const total = parseFloat(item.price) * (quantities[item.user_carts_id] ?? item.quantity);
+                      return (
+                        <tr key={item.user_carts_id}>
+                          <td className="flex items-center space-x-4 py-4">
+                            <img
+                              src={item.product.image}
+                              alt={item.product.title}
+                              className="xl:w-[140px] xl:h-[140px] lg:w-[100px] lg:h-[100px] md:w-[80px] md:h-[80px] w-[50px] h-[50px] object-center object-cover rounded-[16px]"
+                            />
                             <div>
+                              <h3 className="text-black mb-1 lg:text-2sm md:text-sm text-xs">{item.product.title}</h3>
+                              <p className="font-bold xl:text-xl lg:text-base md:text-sm text-xs">${item.price} /sq ft</p>
+                            </div>
+                          </td>
+                          <td className="py-4 ps-4">
+                            <div className="flex items-center rounded-full border bg-white w-fit">
+                              <div className="flex items-center col-span-1 justify-start p-2">
+                                <button
+                                  onClick={() => handleDecrease(item.user_carts_id)}
+                                  className="bg-[#C01F26] text-white p-1 rounded-full"
+                                >
+                                  <FiMinus className="w-4 h-4" />
+                                </button>
+                              </div>
                               <input
                                 type="number"
-                                step="0.01"
-                                value={count}
-                                // onChange={handleInputChange}
+                                value={quantities[item.user_carts_id] ?? item.quantity}
+                                onChange={(e) => handleQuantityChange(item.user_carts_id, e.target.value)}
                                 className="w-[50px] px-0 text-center font-semibold text-black text-[12px] lg:text-sm sm:text-base outline-none bg-transparent"
                               />
-                              {/* {unit && <span className="text-xs font-light ms-1">({unit})</span>} */}
-                            </div>
-                            <div className="flex items-center col-span-1 justify-start p-2">
                               <button
+                                onClick={() => handleIncrease(item.user_carts_id)}
                                 className="bg-[#C01F26] text-white p-1 lg:p-2  rounded-full"
-                                onClick={handleIncrease}
                               >
-                                <FiPlus className="w-4 h-4 sm:w-5 sm:h-5" />
+                                <FiPlus className="w-4 h-4" />
                               </button>
                             </div>
-                          </div>
-                          <p className="md:text-[12px] text-[10px] text-black mt-1">
-                            {item.boxes} boxes • {item.sqft} sq ft
-                          </p>
-                        </td>
-
-                        {/* Total & Remove */}
-                        <td className="py-4 text-right ps-4">
-                          <div className="flex items-center justify-end space-x-3">
-                            <span className="xl:text-xl lg:text-base md:text-sm text-xs font-bold text-black">
-                              ${item.total}
-                            </span>
-                            <button className="bg-[#C41A2C] text-white flex-none hover:bg-transparent hover:text-[#C41A2C] border-[#C41A2C] border duration-300 transition-all w-[30px] h-[30px] rounded-full flex items-center justify-center">
-                              <PiTrash className="text-lg" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                            {item.product.sqft_in_box && (
+                              <p className="md:text-[12px] text-[10px] text-black mt-1">
+                                {item.product.sqft_in_box} sq ft/box
+                              </p>
+                            )}
+                          </td>
+                          <td className="py-4 text-right ps-4">
+                            <div className="flex items-center justify-end space-x-3">
+                              <span className="xl:text-xl lg:text-base md:text-sm text-xs font-bold text-black">${total.toFixed(2)}</span>
+                              <button className="bg-[#C41A2C] text-white flex-none hover:bg-transparent hover:text-[#C41A2C] border-[#C41A2C] border duration-300 transition-all w-[30px] h-[30px] rounded-full flex items-center justify-center">
+                                <PiTrash onClick={() => handleDelete(item.user_carts_id)} className="text-lg" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -275,7 +257,7 @@ export default function MyCart() {
                       </div>
                     </div>
                     <button
-                      onClick={toggleAddressModal}
+                      onClick={() => setAddressModalOpen(true)}
                       className="text-black !ml-auto md:text-sm text-xs underline font-semibold"
                     >
                       Add Address
@@ -295,163 +277,52 @@ export default function MyCart() {
             </div>
           </div>
         </div>
-      </div>
-      {isAddressModalOpen && (
-        <div className="fixed inset-0 p-4 block overflow-auto z-50 bg-black/50 transition-opacity duration-300">
-            <div className="flex h-full items-center">
-                <div className="bg-white mx-auto relative x;:rounded-[34px] lg:rounded-[24px] md:rounded-[20px] rounded-[16px] xl:p-[62px] lg:p-[52px] md:p-[42px] p-4 w-[90%] max-w-[730px] transform transition-all duration-300 scale-100 opacity-100">
-                    <button
-                    onClick={toggleAddressModal}
-                    className="absolute top-5 right-5"
-                    >
-                    <CgClose className="xl:text-[34px] lg:text-[24px] text-[20px]" />
-                    </button>
-                    <h2 className="xl:text-[64px] lg:text-[54px] md:text-[44px] text-[24px] italic xl:leading-none leading-normal font-playfairDisplay xl:mb-[46px] lg:mb-[36px] md:mb-[26px] mb-4">
-                    Add Address
-                    </h2>
-                    <form>
-                    <div className="flex xl:mb-6 lg:mb-5 md:mb-4 mb-3 items-center bg-white border border-black/30 rounded-full p-2 w-full">
-                        <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
-                        <PiUserLight className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
-                        </div>
-                        <input
-                        type="text"
-                        name="Recipient's name"
-                        placeholder="Recipient's name"
-                        className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent"
-                        />
-                    </div>
-                    <div className="flex xl:mb-6 lg:mb-5 md:mb-4 mb-3 items-center bg-white border border-black/30 rounded-full p-2 w-full">
-                        <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
-                        <FiMapPin className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
-                        </div>
-                        <input
-                        type="text"
-                        name="Address Line 1"
-                        placeholder="Address Line 1"
-                        className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent"
-                        />
-                    </div>
-                    <div className="flex xl:mb-6 lg:mb-5 md:mb-4 mb-3 items-center bg-white border border-black/30 rounded-full p-2 w-full">
-                        <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
-                        <FiMapPin className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
-                        </div>
-                        <input
-                        type="text"
-                        name="Address Line 2"
-                        placeholder="Address Line 2"
-                        className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent"
-                        />
-                    </div>
-                    <div className="flex lg:flex-row flex-col xl:gap-6 lg:gap-5 md:gap-4 gap-3">
-                        <div className="flex items-center bg-white border border-black/30 rounded-full p-2 w-full">
-                        <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
-                            <FiMapPin className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
-                        </div>
-                        <input
-                            type="text"
-                            name="Postal Code"
-                            placeholder="Postal Codes"
-                            className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent"
-                        />
-                        </div>
-                        <div className="flex items-center bg-white border border-black/30 rounded-full p-2 w-full">
-                        <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
-                            <FiPhoneCall className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
-                        </div>
-                        <input
-                            type="text"
-                            name="Mobile Number"
-                            placeholder="Mobile Number"
-                            className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent"
-                        />
-                        </div>
-                    </div>
-                    <div className="xl:mt-10 lg:mt-8 md:mt-6 mt-4 flex items-center gap-4 flex-wrap justify-between">
-                        <div>
-                        <label className="flex items-center md:text-xs text-[12px] accent-black">
-                            <input className="mr-2" type="checkbox" />I have read and
-                            agree to the Terms & Conditions & Privacy Policy
-                        </label>
-                        </div>
-                        <div>
-                        <button className="flex justify-between black-btn group before:!hidden after:!hidden">
-                            <span className="leading-none">Submit</span>
-                            <FiArrowUpRight className="text-2sm group-hover:rotate-45 duration-300 transition-all" />
-                        </button>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-      )}
-      {isAddressModalOpen1 && (
-        <div className="fixed inset-0 p-4 block overflow-auto z-50 bg-black/50 transition-opacity duration-300">
-          <div className="bg-white mx-auto relative x;:rounded-[34px] lg:rounded-[24px] md:rounded-[20px] rounded-[16px] xl:p-[62px] lg:p-[52px] md:p-[42px] p-4 w-[90%] max-w-[730px] transform transition-all duration-300 scale-100 opacity-100">
-            <button
-              onClick={toggleAddressModal1}
-              className="absolute top-5 right-5"
-            >
-              <CgClose className="xl:text-[34px] lg:text-[24px] text-[20px]" />
-            </button>
-            <h2 className="xl:text-[64px] lg:text-[54px] md:text-[44px] text-[24px] italic xl:leading-none leading-normal font-playfairDisplay xl:mb-[46px] lg:mb-[36px] md:mb-[26px] mb-4">
-              Change Address
-            </h2>
-            <div className="xl:space-y-6 lg:space-y-5 md:space-y-4 space-y-3">
-              {addresses.map((address) => (
-                <label
-                  key={address.id}
-                  className={`flex items-center justify-between border rounded-xl lg:p-4 md:p-3 p-2 cursor-pointer transition-all ${
-                    selectedId === address.id
-                      ? "border-black"
-                      : "border-black/30"
-                  }`}
-                >
-                  <div className="flex items-center space-x-4">
-                    <input
-                      type="radio"
-                      name="address"
-                      value={address.id}
-                      checked={selectedId === address.id}
-                      onChange={() => setSelectedId(address.id)}
-                      className="w-5 h-5 accent-black"
-                    />
-                    <span className="md:text-sm text-xs font-medium leading-none">
-                      {address.text}
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => handleDelete(address.id)}
-                    className="bg-[#C41A2C] text-white flex-none hover:bg-transparent hover:text-[#C41A2C] border-[#C41A2C] border duration-300 transition-all w-[30px] h-[30px] rounded-full flex items-center justify-center"
-                  >
-                    <PiTrash className="text-lg" />
-                  </button>
-                </label>
-              ))}
+      </div> :
+        <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
+            {/* Icon */}
+            <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-full bg-gray-100">
+              <ShoppingCart className="text-gray-500 text-3xl" />
             </div>
 
-            <div className="flex items-center justify-between mt-8">
-              <button
-                onClick={handleAddNew}
-                className="flex justify-between black-btn bg-transparent text-black hover:text-white hover:bg-black group before:!hidden after:!hidden"
-              >
-                <span className="leading-none">Add New</span>
-                <FiPlus className="text-2sm duration-300 transition-all" />
-              </button>
-              <div>
-                <button
-                  onClick={handleSubmit}
-                  className="flex justify-between black-btn group before:!hidden after:!hidden"
-                >
-                  <span className="leading-none">Submit</span>
-                  <FiArrowUpRight className="text-2sm group-hover:rotate-45 duration-300 transition-all" />
-                </button>
-              </div>
-            </div>
+            {/* Title */}
+            <h1 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
+              Your cart is empty
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-gray-500 mb-6">
+              Looks like you haven’t added anything yet. Start exploring our products!
+            </p>
+
+            {/* Action */}
+            <Link
+              to="/"
+              className="inline-block bg-primary hover:bg-primary-dark text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              Shop Now
+            </Link>
           </div>
         </div>
-      )}
+      }
+      <AddressModal isOpen={isAddressModalOpen} onClose={() => {
+        setAddressModalOpen(false)
+        setChangeModalOpen(true)
+      }} />
+      <ChangeAddressModal
+        isOpen={isChangeModalOpen}
+        onClose={() => setChangeModalOpen(false)}
+        addresses={addresses}
+        selectedId={selectedId}
+        setSelectedId={setSelectedId}
+        handleDelete={(id) => setAddresses(addresses.filter((a) => a.id !== id))}
+        handleSubmit={() => console.log("Submit")}
+        handleAddNew={() => {
+          setAddressModalOpen(true);
+          setChangeModalOpen(false);
+        }}
+        isAddressModalOpen={isAddressModalOpen}
+      />
     </>
   );
 }

@@ -1,5 +1,8 @@
 import React from 'react';
 import { CgClose } from 'react-icons/cg';
+import { useCart } from '../../api/cart';
+import { Link } from 'react-router-dom';
+import { ShoppingCartIcon } from 'lucide-react';
 
 interface ShoppingCartProps {
   isOpen: boolean;
@@ -7,13 +10,20 @@ interface ShoppingCartProps {
 }
 
 const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
+  const { data: cartItems } = useCart(false);
+
+
+  // Calculate subtotal
+  const subtotal = cartItems?.reduce((total: number, item: any) => {
+    return total + parseFloat(item.price) * item.quantity;
+  }, 0);
+
   return (
     <div
-      className={`fixed inset-0 mr-0 ml-auto z-50 bg-white flex flex-col transition-all duration-300 max-w-[340px] w-full mx-4 ${
-        isOpen
+      className={`fixed inset-0 mr-0 ml-auto z-50 bg-white flex flex-col transition-all duration-300 max-w-[340px] w-full mx-4 ${isOpen
           ? "opacity-100 visible"
           : "opacity-0 invisible pointer-events-none translate-x-full"
-      }`}
+        }`}
     >
       <div className="flex justify-between items-center p-4 border-b border-gray-200">
         <h2 className="xl:text-2xl lg:text-xl md:text-base text-2sm font-bold text-black leading-none">Shopping cart</h2>
@@ -27,48 +37,79 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
       </div>
 
       <div className="overflow-y-auto">
-        <div className="p-4 border-b border-[#0000001b] last:border-none hover:bg-[#f7f7f7]">
-          <div className="flex items-start space-x-4">
-            <div className="flex-shrink-0">
-              <img
-                src="/src/assets/images/sps-flooring/flooring-img.png"
-                alt="ALPINE 22MIL BARRY OAK"
-                className="w-16 h-12 object-cover rounded"
-              />
+        {
+          cartItems?.length === 0 && (
+            <div className="flex flex-col justify-center items-center p-6 text-center">
+              {/* Icon */}
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3">
+                <ShoppingCartIcon className="text-gray-500 text-lg" />
+              </div>
+
+              {/* Message */}
+              <p className="text-gray-800 font-medium text-sm md:text-base">
+                Your cart is empty
+              </p>
+
+              {/* Call to Action */}
+              <Link
+                to="/"
+                className="mt-3 text-primary text-xs md:text-sm hover:underline transition-colors"
+              >
+                Shop Now
+              </Link>
             </div>
-            <div className="flex-1">
-              <h3 className="text-black leading-none font-medium uppercase lg:text-sm md:text-[14px] text-[12px]">
-                ALPINE 22MIL BARRY OAK
-              </h3>
-              <div className="flex items-center justify-between mt-2">
-                <div className="text-black lg:text-sm md:text-[14px] text-[12px]">
-                  <span>2 × </span>
-                  <span className="text-primary font-semibold">$95.32</span>
+          )
+        }
+
+
+        {cartItems?.map((item: any) => (
+          <div key={item.user_carts_id} className="p-4 border-b border-[#0000001b] last:border-none hover:bg-[#f7f7f7]">
+            <div className="flex items-start space-x-4">
+              <div className="flex-shrink-0">
+                <img
+                  src={item.product?.image || "/fallback.png"}
+                  alt={item.product?.title}
+                  className="w-16 h-12 object-cover rounded"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-black leading-none font-medium uppercase lg:text-sm md:text-[14px] text-[12px]">
+                  {item.product?.title}
+                </h3>
+                <div className="flex items-center justify-between mt-2">
+                  <div className="text-black lg:text-sm md:text-[14px] text-[12px]">
+                    <span>{item.quantity} × </span>
+                    <span className="text-primary font-semibold">${parseFloat(item.price).toFixed(2)}</span>
+                  </div>
                 </div>
               </div>
+              <button className="text-black hover:text-primary">
+                <CgClose className="lg:text-base md:text-2sm text-sm" />
+              </button>
             </div>
-            <button className="text-black hover:text-primary">
-              <CgClose className="lg:text-base md:text-2sm text-sm" />
-            </button>
           </div>
-        </div>
+        ))}
       </div>
 
-      <div className="px-6 py-4 border-t border-gray-200 mt-auto">
-        <div className="flex justify-between items-center">
-          <span className="font-bold text-black">Subtotal:</span>
-          <span className="text-primary font-semibold text-lg">$95.32</span>
-        </div>
-      </div>
+      {
+        cartItems?.length > 0 &&
+        <div className="px-6 py-4 border-t border-gray-200 mt-auto">
+          <div className="flex justify-between items-center">
+            <span className="font-bold text-black">Subtotal:</span>
+            <span className="text-primary font-semibold text-lg">${subtotal?.toFixed(2)}</span>
+          </div>
+        </div>}
 
-      <div className="px-6 space-y-3 md:pb-4 pb-2">
-        <button className="w-full bg-gray-200 text-black py-3 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors">
-          View cart
-        </button>
-        <button className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center">
-          <span>Checkout</span>
-        </button>
-      </div>
+      {
+        cartItems?.length > 0 &&
+        <div className="px-6 space-y-3 md:pb-4 pb-2">
+          <button className="w-full bg-gray-200 text-black py-3 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors">
+            View cart
+          </button>
+          <button className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center">
+            <span>Checkout</span>
+          </button>
+        </div>}
     </div>
   );
 };

@@ -7,17 +7,25 @@ import QuantityInputGroup from '../components/ui/QuantityInputGroup';
 import { FiArrowUpRight, FiShoppingCart } from 'react-icons/fi';
 import { MdVideocam } from "react-icons/md";
 import { ProductSpecifications } from '../components';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../lib/api';
+import { showToast } from '../utils/toastUtils';
+import { useUser } from '../components/context/UserContext';
+import { paths } from '../config/path';
+import { useCart } from '../api/cart';
 
 
 export default function ProductDetailPage() {
     const { slug } = useParams();
+    const {refetch: refetchCart} = useCart(false);
     const [boxes, setBoxes] = useState(1);
     const [productGallery, setProductGallery] = useState([]);
     const [sqft, setSqft] = useState(0);
     const [isWastageChecked, setIsWastageChecked] = useState(true);
+    const navigate = useNavigate();
+    const authKey = useUser()?.authKey;
+    console.log("🚀 ~ ProductDetailPage ~ authKey:", authKey)
 
     const getBoxesForSqft = (rawSqft: number, wastage: boolean, coverage: number) => {
 
@@ -109,6 +117,7 @@ export default function ProductDetailPage() {
         queryFn: () => fetchProductById(slug as string),
         enabled: false,
     });
+    console.log("🚀 ~ ProductDetailPage ~ productDataById:", productDataById)
 
     const breadcrumbData = [
         { label: 'Home', href: '/' },
@@ -119,6 +128,45 @@ export default function ProductDetailPage() {
     useEffect(() => {
         refetch();
     }, [slug])
+
+    const handleAddToCart = async() => {
+        console.log("🚀 ~ handleAddToCart ~ authKey:", authKey)
+        if (authKey) {
+            const formData = new FormData();
+            formData.append('Usercarts[product_id]', productDataById?.product_id);
+            // formData.append('user_carts_id', productDataById?.id);
+            formData.append('Usercarts[price]', productDataById?.price);
+            formData.append('Usercarts[quantity]', '1');
+
+            try {
+                const response = await api.post("/userauth/addeditusercarts", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "auth_key": authKey
+                    },
+                });
+                console.log("🚀 ~ handleAddToCart ~ response:", response.status === 1)
+
+                if (response.status === 1) {                    
+                    refetchCart();
+                    showToast("Product added to cart", "success");
+                    // navigate(`${paths.home.path}`);
+                } else {
+                    showToast("Failed to add to cart", "error");
+
+                }
+
+            } catch (error: any) {
+                console.error("Error adding to cart:", error);
+                showToast(error?.response?.data?.message || "An error occurred", "error");
+            }
+        }else{
+            navigate(`${paths.login.path}`);
+            showToast("Please login first");
+        }
+    };
+
+
 
     // THIS GOES RIGHT BEFORE YOUR NORMAL RETURN
     if (!productDataById) {
@@ -193,8 +241,8 @@ export default function ProductDetailPage() {
                                             <div
                                                 onClick={() => handleGalleryImageClick(media)}
                                                 className={`mt-5 overflow-hidden cursor-pointer rounded-[16px] transition-all duration-200 lg:!w-[144px] md:!w-[124px] md:!h-[124px] !h-[104px] !w-[104px] lg:!h-[144px] object-cover object-center ${isActive
-                                                        ? "border-[#C41A2C] border-[3px] rounded-xl"
-                                                        : "hover:border-[#C41A2C] border-transparent border-[3px] rounded-xl"
+                                                    ? "border-[#C41A2C] border-[3px] rounded-xl"
+                                                    : "hover:border-[#C41A2C] border-transparent border-[3px] rounded-xl"
                                                     }`}
                                             >
                                                 {media?.type === 'Video' && media?.video ? (
@@ -207,7 +255,7 @@ export default function ProductDetailPage() {
                                                             onMouseOut={(e) => e.currentTarget.pause()}
                                                         />
                                                         <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-                                                            <MdVideocam  className='text-primary xl:text-[30px] lg:text-[24px] md:text-[20px] text-[16px] md:p-1 p-[2px] bg-white rounded-full' />
+                                                            <MdVideocam className='text-primary xl:text-[30px] lg:text-[24px] md:text-[20px] text-[16px] md:p-1 p-[2px] bg-white rounded-full' />
                                                         </div>
                                                     </div>
                                                 ) : media?.type === 'Youtube' && media?.video_url ? (
@@ -286,7 +334,7 @@ export default function ProductDetailPage() {
                     {/* Shipping note */}
 
 
-                    
+
 
                     <div className="grid md:grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md">
                         {/* SQFT Input */}
@@ -326,7 +374,7 @@ export default function ProductDetailPage() {
                             <div className=" p-3 bg-[#FAF8F6] rounded-md flex flex-col items-start">
                                 <span className="text-xs uppercase text-gray-500 tracking-[0.05em] mb-1 font-semibold">Total price</span>
                                 <span className="text-2xl font-extrabold text-black">
-                                   {(sqft  * productDataById?.price).toFixed(2)}
+                                    {(sqft * productDataById?.price).toFixed(2)}
                                 </span>
                                 <span className="text-xs text-gray-400 font-normal">
                                     for <span className="font-medium">{sqft}</span> sqft
@@ -349,11 +397,11 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4 items-start mt-[84px]">
-                        <Link to="/my-cart" className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black xl:px-6 px-4 xl:py-[18px] py-[14px]">
+                        <button onClick={handleAddToCart} className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black xl:px-6 px-4 xl:py-[18px] py-[14px]">
                             <span className='leading-none'> Add to Cart</span>
                             <FiShoppingCart className='text-2sm  duration-300 transition-all' />
-                        </Link>
-                        <Link to="#" className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
+                        </button>
+                        <Link to="/my-cart" onClick={handleAddToCart} className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
                             <span className='leading-none'>Buy Now</span>
                             <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
                         </Link>
