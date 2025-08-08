@@ -130,13 +130,12 @@ export default function ProductDetailPage() {
     }, [slug])
 
     const handleAddToCart = async() => {
-        console.log("🚀 ~ handleAddToCart ~ authKey:", authKey)
         if (authKey) {
             const formData = new FormData();
             formData.append('Usercarts[product_id]', productDataById?.product_id);
             // formData.append('user_carts_id', productDataById?.id);
             formData.append('Usercarts[price]', productDataById?.price);
-            formData.append('Usercarts[quantity]', '1');
+            formData.append('Usercarts[quantity]', boxes.toString());
 
             try {
                 const response = await api.post("/userauth/addeditusercarts", formData, {
@@ -161,7 +160,7 @@ export default function ProductDetailPage() {
                 showToast(error?.response?.data?.message || "An error occurred", "error");
             }
         }else{
-            navigate(`${paths.login.path}`);
+            navigate(`${paths.login.path}?redirect=${window.location.href}`);
             showToast("Please login first");
         }
     };

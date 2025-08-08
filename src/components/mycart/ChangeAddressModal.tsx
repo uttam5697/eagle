@@ -12,10 +12,10 @@ import { showToast } from "../../utils/toastUtils";
 interface ChangeAddressModalProps {
   isOpen: boolean;
   onClose: () => void;
-  addresses: any;
+  // addresses: any;
   selectedId: number;
   setSelectedId: (id: number) => void;
-  handleDelete: (id: number) => void;
+  // handleDelete: (id: number) => void;
   handleSubmit: () => void;
   handleAddNew: () => void;
   isAddressModalOpen: boolean;
@@ -31,12 +31,8 @@ const ChangeAddressModal: React.FC<ChangeAddressModalProps> = ({
   handleAddNew,
   isAddressModalOpen
 }) => {
-
-
-
   const { data: addressAll, refetch } = useAddress();
   const authkey = useUser().authKey;
-  console.log("🚀 ~ ChangeAddressModal ~ addressAll:", addressAll)
 
   const handleDelete = async (id: number) => {
     try {
@@ -49,7 +45,6 @@ const ChangeAddressModal: React.FC<ChangeAddressModalProps> = ({
         { headers: { "auth_key": authkey } }
       );
 
-      console.log("🚀 ~ handleDelete ~ res:", res);
 
       if (res?.status === 1) { // ✅ check API's response format
         showToast("Address deleted successfully" , "success");
@@ -62,7 +57,6 @@ const ChangeAddressModal: React.FC<ChangeAddressModalProps> = ({
       alert("Something went wrong while deleting address");
     }
   };
-  console.log("🚀 ~ addresses:", addressAll)
 
   if (!isOpen) return null;
 

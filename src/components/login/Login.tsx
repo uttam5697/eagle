@@ -28,6 +28,9 @@ const getDeviceToken = () => {
 
 export default function Login() {
   const { login } = useUser();
+  const url = new URL(window.location.href);
+  const redirect = url.searchParams.get("redirect");
+  console.log("🚀 ~ Login ~ redirect:", redirect)
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,10 +65,14 @@ export default function Login() {
           authKey: response?.data?.auth_key,
         });
         showToast("Logged in successfully!", "success");
-        navigate(`${paths.home.path}`);
+        if (redirect) {
+          window.location.href = redirect;
+        } else {
+          navigate(paths.home.path, { replace: true });
+        }
       } else {
         showToast("Invalid email or password please try again", "error");
-        
+
       }
 
     } catch (error: any) {

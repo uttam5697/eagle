@@ -5,10 +5,11 @@ import { PiTrash } from "react-icons/pi";
 import { FiArrowUpRight, FiMinus, FiPlus } from "react-icons/fi";
 import AddressModal from "./AddressModal";
 import ChangeAddressModal from "./ChangeAddressModal";
-import { useCart } from "../../api/cart";
+import { useAddress, useCart } from "../../api/cart";
 import api from "../../lib/api";
 import { useUser } from "../context/UserContext";
 import { showToast } from "../../utils/toastUtils";
+import { set } from "zod";
 
 
 interface Address {
@@ -16,19 +17,12 @@ interface Address {
   text: string;
 }
 
-const initialAddresses: Address[] = [
-  {
-    id: 1,
-    text: "900, N Michigan Ave, 360 Chicago Observation Deck, IL, Chicago, 60611",
-  },
-  {
-    id: 2,
-    text: "100, W Randolph St, Chicago, IL, 60601",
-  },
-];
+
 
 export default function MyCart() {
   const { data: fetchedCartItems = [], refetch } = useCart(false);
+    const { data: addressAll } = useAddress();
+    console.log("🚀 ~ MyCart ~ addressAll:", addressAll)
   const authkey = useUser()?.authKey;
 
 
@@ -44,8 +38,8 @@ export default function MyCart() {
   const [isAddressModalOpen, setAddressModalOpen] = useState(false);
   const [isChangeModalOpen, setChangeModalOpen] = useState(false);
 
-  const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
-  const [selectedId, setSelectedId] = useState<number>(initialAddresses[0]?.id ?? 0);
+  const [selectedId, setSelectedId] = useState<number>(addressAll?.length > 0 ? addressAll[0]?.appuser_address_id ?? 0 : 0);
+  console.log("🚀 ~ MyCart ~ selectedId:", selectedId)
 
   const handleIncrease = (id: number) => {
     setQuantities((prev) => ({ ...prev, [id]: (prev[id] || 1) + 1 }));
@@ -93,6 +87,10 @@ export default function MyCart() {
       alert("Something went wrong while deleting address");
     }
   };
+
+  const handlechangeAddress = async (id: number) => {
+    
+  }
   return (
     <>
       {fetchedCartItems.length > 0 ? <div className="min-h-screen bg-light-white">
@@ -253,11 +251,16 @@ export default function MyCart() {
                         <p className="text-black md:text-sm text-xs font-semibold">
                           Delivery to
                         </p>
-                        <p className="md:text-xs text-[12px] font-light">USA</p>
+                        <p className="md:text-xs text-[12px] font-light">
+                          {addressAll?.length > 0 &&
+                            addressAll.find((address: any) => address.appuser_address_id === selectedId)?.
+address_line_1
+                          }
+                        </p>
                       </div>
                     </div>
                     <button
-                      onClick={() => setAddressModalOpen(true)}
+                      onClick={() => setChangeModalOpen(true) }
                       className="text-black !ml-auto md:text-sm text-xs underline font-semibold"
                     >
                       Add Address
@@ -312,11 +315,11 @@ export default function MyCart() {
       <ChangeAddressModal
         isOpen={isChangeModalOpen}
         onClose={() => setChangeModalOpen(false)}
-        addresses={addresses}
+        // addresses={addresses}
         selectedId={selectedId}
         setSelectedId={setSelectedId}
-        handleDelete={(id) => setAddresses(addresses.filter((a) => a.id !== id))}
-        handleSubmit={() => console.log("Submit")}
+        // handleDelete={(id) => setAddresses(addresses.filter((a) => a.id !== id))}
+        handleSubmit={() => setChangeModalOpen(false)}
         handleAddNew={() => {
           setAddressModalOpen(true);
           setChangeModalOpen(false);

@@ -6,8 +6,10 @@ import { PiShoppingCartLight } from 'react-icons/pi';
 import ShoppingCart from '../shoppingcart/ShoppingCart';
 import { Link, useLocation } from 'react-router-dom';
 import AuthDropdown from './components/AuthDropdown';
+import { useCart } from '../../api/cart';
 
 export default function Header() {
+  const { data: fetchedCartItems = [] } = useCart(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const pathname = useLocation().pathname;
@@ -63,15 +65,20 @@ export default function Header() {
             </nav>
 
             {/* Cart */}
-            <div className='ml-auto' ref={cartRef}>
-              <button
-                onClick={() => setIsCartOpen(!isCartOpen)}
-                className="flex lg:w-[54px] relative md:w-[44px] w-[34px] lg:h-[54px] md:h-[44px] h-[34px] white-btn group p-0 justify-center border-white/30 lg:gap-6 md:gap-5 gap-4 bg-white-light-gradient bg-transparent hover:bg-white hover:text-black text-white mr-4 md:ml-0 ml-auto"
-              >
-                <PiShoppingCartLight className="lg:text-[22px] md:text-[20px] text-[18px]" />
-                <span className="absolute top-0 end-0 inline-flex items-center py-0.5 px-1.5 rounded-full md:text-[11px] text-[9px] font-medium transform -translate-y-1/2 translate-x-1/2 bg-primary text-white">99+</span>
-              </button>
-            </div>
+              <div className='md:ml-0 ml-auto' ref={cartRef}>
+                <button
+                  onClick={() => setIsCartOpen(!isCartOpen)}
+                  className="flex lg:w-[54px] relative md:w-[44px] w-[34px] lg:h-[54px] md:h-[44px] h-[34px] white-btn group p-0 justify-center border-white/30 lg:gap-6 md:gap-5 gap-4 bg-white-light-gradient bg-transparent hover:bg-white hover:text-black text-white mr-4 md:ml-0 ml-auto"
+                  >
+                  <PiShoppingCartLight className="lg:text-[22px] md:text-[20px] text-[18px]" />
+                  {fetchedCartItems.length > 0 &&
+                  <span className="absolute top-0 end-0 inline-flex items-center py-0.5 px-1.5 rounded-full md:text-[11px] text-[9px] font-medium transform -translate-y-1/2 translate-x-1/2 bg-primary text-white">{
+                    fetchedCartItems.reduce((acc: number, item: any) => acc + item.quantity, 0)
+                  }</span>
+                  }
+                </button>
+              </div>
+
             {/* Auth */}
             <AuthDropdown />
 

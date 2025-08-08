@@ -3,6 +3,9 @@ import { CgClose } from 'react-icons/cg';
 import { useCart } from '../../api/cart';
 import { Link } from 'react-router-dom';
 import { ShoppingCartIcon } from 'lucide-react';
+import { useUser } from '../context/UserContext';
+import api from '../../lib/api';
+import { showToast } from '../../utils/toastUtils';
 
 interface ShoppingCartProps {
   isOpen: boolean;
@@ -10,13 +13,36 @@ interface ShoppingCartProps {
 }
 
 const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
-  const { data: cartItems } = useCart(false);
+  const { data: cartItems ,refetch} = useCart(false);
+  const authkey = useUser()?.authKey;
 
 
   // Calculate subtotal
   const subtotal = cartItems?.reduce((total: number, item: any) => {
     return total + parseFloat(item.price) * item.quantity;
   }, 0);
+
+  const handleDelete = async (id: number) => {
+    try {
+      const formdata = new FormData();
+      formdata.append("user_carts_id", id.toString());
+
+      const res = await api.post(
+        `/userauth/deleteusercarts`, // ✅ match Postman
+        formdata,
+        { headers: { "auth_key": authkey } }
+      );
+      if (res?.status === 1) { // ✅ check API's response format
+        showToast("Item deleted successfully", "success");
+        refetch();
+      } else {
+        showToast("Failed to delete item", "error");
+      }
+    } catch (error) {
+      console.error("Delete address error:", error);
+      alert("Something went wrong while deleting address");
+    }
+  };
 
   return (
     <div
@@ -83,7 +109,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               </div>
-              <button className="text-black hover:text-primary">
+              <button onClick={() => {handleDelete(item.user_carts_id) }} className="text-black hover:text-primary">
                 <CgClose className="lg:text-base md:text-2sm text-sm" />
               </button>
             </div>
