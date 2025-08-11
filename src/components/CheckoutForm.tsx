@@ -151,11 +151,10 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
       style={{
         margin: "0 auto",
         borderRadius: 14,
-        fontFamily: 'Inter,"Segoe UI",Roboto,sans-serif',
       }}
     >
       <div style={{ textAlign: "center", marginBottom: 16 }}>
-        <span style={{ fontWeight: 600, fontSize: 24, color: "#282241" }}>
+        <span className="2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-playfairDisplay italic mb-2">
           Checkout
         </span>
       </div>
@@ -169,19 +168,13 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
           marginBottom: 18,
         }}
       >
-        <div style={{ fontWeight: 500, fontSize: 15, marginBottom: 7 }}>
+        <div className="mb-2 font-semibold lg:text-base md:text-2sm text-sm">
           Order Summary:
         </div>
         {cartItems?.map((item: any, i) => (
           <div
+            className="flex text-black justify-between items-center md:text-[16px] text-[12px] mb-2"
             key={item.id || i}
-            style={{
-              fontSize: 15,
-              display: "flex",
-              justifyContent: "space-between",
-              marginBottom: 4,
-              color: "#39384c",
-            }}
           >
             <span>
               {item?.product.title} × {item.quantity}
@@ -206,7 +199,7 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
           }}
         >
           <span>Total</span>
-          <span style={{ color: "#6c63ff" }}>
+          <span style={{ color: "#000" }}>
             {currencySymbol}
             {formattedAmount}
           </span>
@@ -221,7 +214,7 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
             display: "block",
             fontWeight: 500,
             marginBottom: 5,
-            color: "#39384c",
+            color: "#000",
             fontSize: 15,
           }}
         >
@@ -232,7 +225,7 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
             border: "1px solid #e3e3ea",
             borderRadius: 6,
             padding: "12px 10px",
-            background: "#fafaff",
+            background: "#fff",
             marginBottom: 14,
           }}
         >
@@ -242,9 +235,8 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
               style: {
                 base: {
                   fontSize: "16px",
-                  color: "#27224a",
-                  "::placeholder": { color: "#aaaabd" },
-                  fontFamily: 'Inter,"Segoe UI",Roboto,sans-serif',
+                  color: "#000",
+                  "::placeholder": { color: "#000" },
                 },
                 invalid: { color: "#b12727" },
               },
@@ -253,24 +245,12 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
         </div>
 
         <button
-          
           type="submit"
           disabled={true}
-          className="cursor-not-allowed"
+          className="cursor-not-allowed gap-3 flex items-center justify-center w-full p-3 !text-white lg:text-[18px] md:text-[16px] text-[14px] mb-2 mt-1 font-semibold hover:!bg-transparent hover:!text-[#C41A2C] !border-[#C41A2C] !border !duration-300 !transition-all !rounded-full"
           style={{
-            
-            width: "100%",
-            padding: "13px",
-            background: loading ? "#6c63ff89" : "#6c63ff",
-            color: "#fff",
-            fontSize: 17,
-            fontWeight: 600,
-            border: "none",
-            borderRadius: 6,
-            cursor: "not-allowed" ,
-            marginBottom: 3,
-            marginTop: 2,
-            transition: "background 0.2s",
+            background: loading ? "#6c63ff89" : "#C41A2C",
+            cursor: "not-allowed",
             boxShadow: "0 2px 8px rgba(110, 80, 255, 0.06)",
           }}
         >
@@ -287,7 +267,13 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
               }}
             />
           ) : (
-            <>Pay <strong>{currencySymbol}{formattedAmount}</strong></>
+            <>
+              Pay{" "}
+              <strong>
+                {currencySymbol}
+                {formattedAmount}
+              </strong>
+            </>
           )}
         </button>
       </form>

@@ -89,14 +89,14 @@ export const ThankYouModal: React.FC<ThankYouModalProps> = ({
         <div
           style={{
             fontSize: 16,
-            color: "#4b4b63",
+            color: "#000",
             marginBottom: 12,
             textAlign: "center",
             lineHeight: "1.45",
           }}
         >
           Your payment of&nbsp;
-          <span style={{ color: "#2ea76f", fontWeight: 600 }}>{currencySymbol}{amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+          <span style={{ color: "#c01f26", fontWeight: 600 }}>{currencySymbol}{amount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
           &nbsp;was successful.
           <br />
           {orderId && (
@@ -111,7 +111,7 @@ export const ThankYouModal: React.FC<ThankYouModalProps> = ({
         <button
           onClick={onClose}
           style={{
-            background: "#27d987",
+            background: "#c01f26",
             color: "#fff",
             fontWeight: 600,
             fontSize: 16,

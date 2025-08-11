@@ -1,20 +1,23 @@
+import { CgClose } from "react-icons/cg";
 import CheckoutForm from "../CheckoutForm";
 
 export default function CheckoutModal({ isOpen, onClose, cartItems, totalAmount, currentAddress }: any) {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 relative">
-        <button className="absolute top-3 right-3 text-2xl" onClick={onClose}>&times;</button>
-        <CheckoutForm
-          totalAmount={totalAmount}
-          cartItems={cartItems}
-          currentAddress={currentAddress}
-          onSuccess={() => {
-            onClose();
-            console.log("Checkout successful!");
-          }}
-        />
+    <div className=" fixed inset-0 z-50 visible:opacity-0 bg-black/50 overflow-auto p-4">
+      <div className="h-full flex items-center">
+        <div className="mx-auto relative w-[90%] max-w-[730px] bg-white rounded-[16px] md:rounded-[20px] lg:rounded-[24px] xl:rounded-[34px] p-4 md:p-[42px] lg:p-[52px] xl:p-[62px] transform transition-all duration-300 scale-100 opacity-100 checkout-modal">
+          <button className="absolute top-3 right-3" onClick={onClose}><CgClose className="text-[20px] md:text-[24px] xl:text-[34px]" /></button>
+          <CheckoutForm
+            totalAmount={totalAmount}
+            cartItems={cartItems}
+            currentAddress={currentAddress}
+            onSuccess={() => {
+              onClose();
+              console.log("Checkout successful!");
+            }}
+          />
+        </div>
       </div>
     </div>
   );

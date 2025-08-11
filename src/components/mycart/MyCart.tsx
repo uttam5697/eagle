@@ -185,7 +185,7 @@ export default function MyCart() {
                                   onClick={() =>
                                     updateQuantity(item.user_carts_id, item.product.product_id, item.price,item.quantity, "decrease")
                                   }
-                                  className="bg-[#C01F26] text-white p-1 rounded-full"
+                                  className="bg-[#C01F26] text-white p-1 lg:p-2 rounded-full"
                                 >
                                   <FiMinus className="w-4 h-4" />
                                 </button>
@@ -196,14 +196,16 @@ export default function MyCart() {
                                 onChange={(e) => handleQuantityChange(item.user_carts_id, e.target.value)}
                                 className="w-[50px] px-0 text-center font-semibold text-black text-[12px] lg:text-sm sm:text-base outline-none bg-transparent"
                               />
-                              <button
-                                onClick={() =>
-                                  updateQuantity(item.user_carts_id, item.product.product_id, item.price, item.quantity, "increase")
-                                }
-                                className="bg-[#C01F26] text-white p-1 lg:p-2  rounded-full"
-                              >
-                                <FiPlus className="w-4 h-4" />
-                              </button>
+                              <div className="flex items-center col-span-1 justify-start p-2">
+                                <button
+                                  onClick={() =>
+                                    updateQuantity(item.user_carts_id, item.product.product_id, item.price, item.quantity, "increase")
+                                  }
+                                  className="bg-[#C01F26] text-white p-1 lg:p-2 rounded-full"
+                                >
+                                  <FiPlus className="w-4 h-4" />
+                                </button>
+                              </div>
                             </div>
                             {item.product.sqft_in_box && (
                               <p className="md:text-[12px] text-[10px] text-black mt-1">
