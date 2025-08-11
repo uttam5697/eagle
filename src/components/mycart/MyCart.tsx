@@ -309,8 +309,9 @@ export default function MyCart() {
 
                 {/* Process Button */}
                 <button
+                 disabled 
                   onClick={() => handleCheckout()}
-                  className="flex justify-between black-btn max-w-[286px] mx-auto group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]"
+                  className="flex cursor-not-allowed justify-between black-btn max-w-[286px] mx-auto group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]"
                 >
                   <span className="leading-none">Process to Continue</span>
                   <FiArrowUpRight className="text-2sm group-hover:rotate-45 duration-300 transition-all" />

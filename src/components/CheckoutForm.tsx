@@ -4,6 +4,7 @@ import type { StripeCardElement } from '@stripe/stripe-js';
 import api from "../lib/api";
 import { useNavigate } from "react-router-dom";
 import { ThankYouModal } from "./ThankYouModal";
+import { useCart } from "../api/cart";
 
 interface PaymentIntentResponse {
   clientSecret?: string;
@@ -36,6 +37,7 @@ interface CheckoutPayload {
 }
 
 export default function CheckoutForm({ totalAmount, cartItems, currentAddress }: CheckoutFormProps) {
+  const {  refetch } = useCart(false);
   const [thankYouOpen, setThankYouOpen] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
@@ -62,9 +64,12 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
       }
 
       const res = await api.post(`/userauth/checkout`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": "multipart/form-data" ,
+          auth_key: authKey,
+         },
       });
       navigate("/")
+      refetch();
       setThankYouOpen(true);
 
       console.log("Checkout success:", res.data);
@@ -131,10 +136,10 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
           "Userorder[sub_total]": totalAmount,
           "Userorder[total]": totalAmount,
           "Userorder[order_status]": "Confirm",
-          "Userorder[user_carts_id]": cartItems?.map(item => item.id).join(',')
+          "Userorder[user_carts_id]": cartItems?.map((item: any) => item.user_carts_id).join(',')
         });
 
-
+        // refetch();
       } else {
         setMessage(`Payment status: ${paymentIntent?.status}`);
       }
@@ -284,7 +289,6 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
         amount={totalAmount}
         onClose={() => {
           setThankYouOpen(false);
-          window.location.href = `/`;
           // Optionally, route however you like!
         }}
       />

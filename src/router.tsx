@@ -87,5 +87,5 @@ const routes = [
 
 // Pass basename option
 export const createAppRouter = createBrowserRouter(routes, {
-  basename: "/buckeyefloors-web",
+  basename: "/",
 });
