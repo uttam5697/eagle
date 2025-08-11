@@ -36,7 +36,7 @@ interface CheckoutPayload {
 }
 
 export default function CheckoutForm({ totalAmount, cartItems, currentAddress }: CheckoutFormProps) {
-  const [thankYouOpen, setThankYouOpen] = useState(true);
+  const [thankYouOpen, setThankYouOpen] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const authKey = localStorage.getItem("authKey");
@@ -149,12 +149,8 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
   return (
     <div
       style={{
-        width: 370,
         margin: "0 auto",
-        background: "#fff",
-        padding: 28,
         borderRadius: 14,
-        boxShadow: "0 8px 40px rgba(38, 22, 200, 0.15)",
         fontFamily: 'Inter,"Segoe UI",Roboto,sans-serif',
       }}
     >
@@ -257,9 +253,12 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
         </div>
 
         <button
+          
           type="submit"
-          disabled={!stripe || loading}
+          disabled={true}
+          className="cursor-not-allowed"
           style={{
+            
             width: "100%",
             padding: "13px",
             background: loading ? "#6c63ff89" : "#6c63ff",
@@ -268,7 +267,7 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
             fontWeight: 600,
             border: "none",
             borderRadius: 6,
-            cursor: loading ? "not-allowed" : "pointer",
+            cursor: "not-allowed" ,
             marginBottom: 3,
             marginTop: 2,
             transition: "background 0.2s",

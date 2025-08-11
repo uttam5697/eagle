@@ -14,6 +14,7 @@ import PrivacyPolicy from "./components/PrivacyPolicy";
 import Termsandconditions from "./components/Terms&Conditions";
 import { MyCart } from "./components";
 import Callback from "./components/Callback";
+import PaymentForm from "./components/testpayment";
 
 // Define the routes separately
 const routes = [
@@ -71,6 +72,10 @@ const routes = [
       {
         path: "/callback",
         element: <Callback />,
+      },
+      {
+        path: "/callbacktest",
+        element: <PaymentForm />,
       },
       {
         path: "*",

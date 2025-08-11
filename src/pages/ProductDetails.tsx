@@ -25,7 +25,6 @@ export default function ProductDetailPage() {
     const [isWastageChecked, setIsWastageChecked] = useState(true);
     const navigate = useNavigate();
     const authKey = useUser()?.authKey;
-    console.log("🚀 ~ ProductDetailPage ~ authKey:", authKey)
 
     const getBoxesForSqft = (rawSqft: number, wastage: boolean, coverage: number) => {
 
@@ -117,7 +116,6 @@ export default function ProductDetailPage() {
         queryFn: () => fetchProductById(slug as string),
         enabled: false,
     });
-    console.log("🚀 ~ ProductDetailPage ~ productDataById:", productDataById)
 
     const breadcrumbData = [
         { label: 'Home', href: '/' },
@@ -144,7 +142,6 @@ export default function ProductDetailPage() {
                         "auth_key": authKey
                     },
                 });
-                console.log("🚀 ~ handleAddToCart ~ response:", response.status === 1)
 
                 if (response.status === 1) {                    
                     refetchCart();

@@ -6,6 +6,7 @@ import "./index.css";
 import { MainErrorFallback } from "./components/error/main";
 import { createAppRouter } from "./router";
 import { UserProvider } from "./components/context/UserContext";
+import StripeProviderWrapper from "./components/StripeProviderWrapper";
 
 const queryClient = new QueryClient();
 
@@ -15,9 +16,11 @@ const AppProvider = () => {
             <ErrorBoundary FallbackComponent={MainErrorFallback}>
                 <QueryClientProvider client={queryClient}>
                     {/* <SmoothScrollbar> */}
-                    <UserProvider>
-                    <RouterProvider router={createAppRouter} />
-                    </UserProvider>
+                    <StripeProviderWrapper>
+                        <UserProvider>
+                            <RouterProvider router={createAppRouter} />
+                        </UserProvider>
+                    </StripeProviderWrapper>
                     {/* </SmoothScrollbar> */}
                 </QueryClientProvider>
             </ErrorBoundary>

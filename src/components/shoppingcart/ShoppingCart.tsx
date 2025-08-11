@@ -1,7 +1,7 @@
 import React from 'react';
 import { CgClose } from 'react-icons/cg';
 import { useCart } from '../../api/cart';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCartIcon } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 import api from '../../lib/api';
@@ -15,6 +15,7 @@ interface ShoppingCartProps {
 const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
   const { data: cartItems ,refetch} = useCart(false);
   const authkey = useUser()?.authKey;
+  const navigate = useNavigate();
 
 
   // Calculate subtotal
@@ -129,10 +130,10 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
       {
         cartItems?.length > 0 &&
         <div className="px-6 space-y-3 md:pb-4 pb-2">
-          <button className="w-full bg-gray-200 text-black py-3 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors">
+          {/* <button onClick={() => { navigate("/my-cart") }}  className="w-full bg-gray-200 text-black py-3 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors">
             View cart
-          </button>
-          <button className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center">
+          </button> */}
+          <button onClick={() => { navigate("/my-cart") ; onClose() }} className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center">
             <span>Checkout</span>
           </button>
         </div>}

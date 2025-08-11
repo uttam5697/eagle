@@ -9,20 +9,12 @@ import { useAddress, useCart } from "../../api/cart";
 import api from "../../lib/api";
 import { useUser } from "../context/UserContext";
 import { showToast } from "../../utils/toastUtils";
-import { set } from "zod";
-
-
-interface Address {
-  id: number;
-  text: string;
-}
-
+import CheckoutModal from "./CheckoutModal";
 
 
 export default function MyCart() {
   const { data: fetchedCartItems = [], refetch } = useCart(false);
-    const { data: addressAll } = useAddress();
-    console.log("🚀 ~ MyCart ~ addressAll:", addressAll)
+  const { data: addressAll } = useAddress();
   const authkey = useUser()?.authKey;
 
 
@@ -34,23 +26,60 @@ export default function MyCart() {
         return acc;
       }, {})
   );
+  console.log("🚀 ~ MyCart ~ quantities:", quantities)
 
   const [isAddressModalOpen, setAddressModalOpen] = useState(false);
   const [isChangeModalOpen, setChangeModalOpen] = useState(false);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   const [selectedId, setSelectedId] = useState<number>(addressAll?.length > 0 ? addressAll[0]?.appuser_address_id ?? 0 : 0);
-  console.log("🚀 ~ MyCart ~ selectedId:", selectedId)
 
-  const handleIncrease = (id: number) => {
-    setQuantities((prev) => ({ ...prev, [id]: (prev[id] || 1) + 1 }));
+  const updateQuantity = async (
+    id: number,
+  productId: number,
+    price: number,
+    quantity: number,
+    action: "increase" | "decrease"
+  ) => {
+    const currentQty = quantity || 1;
+
+    // If decreasing last quantity → delete instead
+    if (action === "decrease" && currentQty <= 1) {
+      await handleDelete(id);
+      return;
+    }
+
+    const newQuantity = action === "increase" ? currentQty + 1 : currentQty - 1;
+
+    setQuantities((prev) => ({ ...prev, [id]: newQuantity }));
+
+    const formData = new FormData();
+    formData.append("user_carts_id", String(id));
+    formData.append("Usercarts[product_id]", String(productId));
+    formData.append("Usercarts[price]", String(price));
+    formData.append("Usercarts[quantity]", String(newQuantity));
+
+    try {
+      const response = await api.post("/userauth/addeditusercarts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          auth_key: authkey,
+        },
+      });
+
+      if (response.status === 1) {
+        refetch();
+        showToast("Cart updated successfully", "success");
+      } else {
+        showToast("Failed to update cart", "error");
+      }
+    } catch (error: any) {
+      console.error("Error updating cart:", error);
+      showToast(error?.response?.data?.message || "An error occurred", "error");
+    }
   };
 
-  const handleDecrease = (id: number) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: prev[id] > 1 ? prev[id] - 1 : 1,
-    }));
-  };
+
 
   const handleQuantityChange = (id: number, value: string) => {
     const num = Math.max(1, parseInt(value) || 1);
@@ -88,8 +117,12 @@ export default function MyCart() {
     }
   };
 
-  const handlechangeAddress = async (id: number) => {
-    
+  const handleCheckout = async () => {
+  if(selectedId === 0){
+    showToast("Please select an address", "error");
+    return;
+  }
+  setIsCheckoutModalOpen(true);
   }
   return (
     <>
@@ -149,7 +182,9 @@ export default function MyCart() {
                             <div className="flex items-center rounded-full border bg-white w-fit">
                               <div className="flex items-center col-span-1 justify-start p-2">
                                 <button
-                                  onClick={() => handleDecrease(item.user_carts_id)}
+                                  onClick={() =>
+                                    updateQuantity(item.user_carts_id, item.product.product_id, item.price,item.quantity, "decrease")
+                                  }
                                   className="bg-[#C01F26] text-white p-1 rounded-full"
                                 >
                                   <FiMinus className="w-4 h-4" />
@@ -162,7 +197,9 @@ export default function MyCart() {
                                 className="w-[50px] px-0 text-center font-semibold text-black text-[12px] lg:text-sm sm:text-base outline-none bg-transparent"
                               />
                               <button
-                                onClick={() => handleIncrease(item.user_carts_id)}
+                                onClick={() =>
+                                  updateQuantity(item.user_carts_id, item.product.product_id, item.price, item.quantity, "increase")
+                                }
                                 className="bg-[#C01F26] text-white p-1 lg:p-2  rounded-full"
                               >
                                 <FiPlus className="w-4 h-4" />
@@ -204,7 +241,7 @@ export default function MyCart() {
                       Item total (MRP)
                     </span>
                     <span className="font-semibold">
-                      ${itemTotal.toFixed(2)}
+                      ₹{itemTotal.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -212,10 +249,10 @@ export default function MyCart() {
                       Green packaging charge
                     </span>
                     <span className="font-semibold">
-                      ${greenPackaging.toFixed(2)}
+                      ₹{greenPackaging.toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <span className="text-black font-light md:text-sm text-xs">
                       Delivery Charges
                     </span>
@@ -225,7 +262,7 @@ export default function MyCart() {
                     >
                       Log in
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Total */}
@@ -235,7 +272,7 @@ export default function MyCart() {
                       To be paid
                     </span>
                     <span className="text-lg font-semibold text-black lg:text-base md:text-2sm text-sm">
-                      ${totalAmount.toFixed(2)}
+                      ₹{totalAmount.toFixed(2)}
                     </span>
                   </div>
                 </div>
@@ -254,13 +291,13 @@ export default function MyCart() {
                         <p className="md:text-xs text-[12px] font-light">
                           {addressAll?.length > 0 &&
                             addressAll.find((address: any) => address.appuser_address_id === selectedId)?.
-address_line_1
+                              address_line_1
                           }
                         </p>
                       </div>
                     </div>
                     <button
-                      onClick={() => setChangeModalOpen(true) }
+                      onClick={() => setChangeModalOpen(true)}
                       className="text-black !ml-auto md:text-sm text-xs underline font-semibold"
                     >
                       Add Address
@@ -269,13 +306,13 @@ address_line_1
                 </div>
 
                 {/* Process Button */}
-                <a
-                  href="#"
+                <button
+                  onClick={() => handleCheckout()}
                   className="flex justify-between black-btn max-w-[286px] mx-auto group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]"
                 >
                   <span className="leading-none">Process to Continue</span>
                   <FiArrowUpRight className="text-2sm group-hover:rotate-45 duration-300 transition-all" />
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -326,6 +363,7 @@ address_line_1
         }}
         isAddressModalOpen={isAddressModalOpen}
       />
+      <CheckoutModal isOpen={isCheckoutModalOpen} onClose={() => setIsCheckoutModalOpen(false)} cartItems={fetchedCartItems} totalAmount={totalAmount} currentAddress={selectedId} />
     </>
   );
 }
