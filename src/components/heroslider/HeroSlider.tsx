@@ -28,14 +28,14 @@ export default function HeroSlider({homedatabanner}:any) {
           >
             {item.type === "Image" && (
               <img
-                className="w-full 2xl:h-[990px] xl:h-[890px] lg:h-[790px] md:h-[690px] sm:h-[590px] h-[490px] object-cover object-center"
+                className="w-full h-[100vh] object-cover object-center"
                 src={item?.image}
                 alt="Hero Banner"
               />
             )}
             {item.type === "Video" && (
               <video
-                className="w-full 2xl:h-[990px] xl:h-[890px] lg:h-[790px] md:h-[690px] sm:h-[590px] h-[490px] object-cover object-center"
+                className="w-full  h-[100vh] object-cover object-center"
                 autoPlay={true}
                 loop
                 muted

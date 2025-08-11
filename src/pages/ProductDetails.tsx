@@ -22,13 +22,13 @@ export default function ProductDetailPage() {
     const [boxes, setBoxes] = useState(1);
     const [productGallery, setProductGallery] = useState([]);
     const [sqft, setSqft] = useState(0);
-    const [isWastageChecked, setIsWastageChecked] = useState(true);
+    const [isWastageChecked, setIsWastageChecked] = useState(false);
     const navigate = useNavigate();
     const authKey = useUser()?.authKey;
 
-    const getBoxesForSqft = (rawSqft: number, wastage: boolean, coverage: number) => {
+    const getBoxesForSqft = (rawSqft: number, coverage: number) => {
 
-        const effective = wastage ? rawSqft * 1.1 : rawSqft;
+        const effective =  rawSqft;
         console.log("📐 Effective square feet (after wastage if any):", effective);
 
         const boxesNeeded = Math.max(1, Math.ceil(effective / Number(coverage)));
@@ -84,14 +84,21 @@ export default function ProductDetailPage() {
     const handleSqftChange = (newSqft: number, coverage: number) => {
         const validSqft = Math.max(0, newSqft);
         setSqft(parseFloat(validSqft.toFixed(2))); // show user input
-        setBoxes(getBoxesForSqft(validSqft, isWastageChecked, coverage));
+        setBoxes(getBoxesForSqft(validSqft, coverage));
     };
 
     // Recalculate boxes when wastage toggle changes
     useEffect(() => {
-        getBoxesForSqft(sqft, isWastageChecked, productDataById?.sqft_in_box);
+        getBoxesForSqft(sqft, productDataById?.sqft_in_box);
 
-    }, [isWastageChecked, sqft]);
+    }, [sqft]);
+
+     useEffect(() => {
+        const effective = isWastageChecked ? sqft * 1.1 : sqft;
+        console.log("📐 Effective square feet (after wastage if any):", productDataById?.sqft_in_box);
+        getBoxesForSqft(effective, productDataById?.sqft_in_box);
+        handleSqftChange(effective, productDataById?.sqft_in_box);
+    }, [isWastageChecked]);
 
 
 
@@ -321,10 +328,10 @@ export default function ProductDetailPage() {
                     <h1 className="2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-playfairDisplay italic mb-2">
                         {productDataById?.title}
                     </h1>
-                    <div className='xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]'>
+                    <div className=' my-4'>
                         <h5 className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold inline-block'>${productDataById?.price} / sqft <p className='xl:text-sm inline-block text-xm leading-none font-bold'>(${productDataById?.sqft_in_box} sqft/Box)</p></h5>
                         {/* <p className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold'>${productDataById?.price_per_box} / sqft</p> */}
-                        <p className='custom-html font-light md:text-[14px] text-[12px] mt-1 leading-none' dangerouslySetInnerHTML={{ __html: productDataById?.description }} />
+                        <p className='custom-html  md:text-[14px] text-[12px] mt-1 leading-none mt-[15px]' dangerouslySetInnerHTML={{ __html: productDataById?.description }} />
                     </div>
 
                     {/* Shipping note */}
@@ -332,7 +339,7 @@ export default function ProductDetailPage() {
 
 
 
-                    <div className="grid md:grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md">
+                    <div className="grid md:grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md ">
                         {/* SQFT Input */}
                         <div className="col-span-2 ">
                             <QuantityInputGroup
@@ -397,7 +404,7 @@ export default function ProductDetailPage() {
                             <span className='leading-none'> Add to Cart</span>
                             <FiShoppingCart className='text-2sm  duration-300 transition-all' />
                         </button>
-                        <Link to="/my-cart" onClick={handleAddToCart} className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
+                        <Link to="/my-cart" className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
                             <span className='leading-none'>Buy Now</span>
                             <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
                         </Link>

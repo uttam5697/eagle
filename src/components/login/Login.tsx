@@ -30,7 +30,6 @@ export default function Login() {
   const { login } = useUser();
   const url = new URL(window.location.href);
   const redirect = url.searchParams.get("redirect");
-  console.log("🚀 ~ Login ~ redirect:", redirect)
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -78,6 +77,14 @@ export default function Login() {
     } catch (error: any) {
       console.error("Login error:", error);
       showToast(error?.response?.data?.message || "Login failed");
+    }
+  };
+
+  const handleSignup = () => {
+    if(redirect){
+     navigate(`${paths.signup.path}?redirect=${redirect}`);
+    }else{
+      navigate(`${paths.signup.path}`);
     }
   };
 
@@ -148,12 +155,12 @@ export default function Login() {
             </button>
           </form>
           <div className="text-center mt-4">
-            <Link
-              to={"/sign-up"}
+            <button
+              onClick={() => handleSignup()}
               className="text-black font-bold text-sm hover:underline"
             >
               Create an Account
-            </Link>
+            </button>
           </div>
         </div>
       </div>

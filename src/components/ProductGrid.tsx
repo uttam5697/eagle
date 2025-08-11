@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ProductCard from './ProductCard';
 // import SortDropdown from './ui/SortDropdown';
 import AnimatedSection from './ui/AnimatedSection';
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type QueryFunctionContext } from "@tanstack/react-query";
 import api from '../lib/api';
 import ProductSkeleton from './ui/ProductSkeleton';
 
@@ -13,9 +13,9 @@ import ProductSkeleton from './ui/ProductSkeleton';
 //     { label: 'Newest', value: 'newest' },
 // ];
 type CategoryListProps = {
-  categoryId?: string | undefined;
+    categoryId?: string | undefined;
 };
-    const ProductList: React.FC<CategoryListProps> = ({ categoryId }) => {
+const ProductList: React.FC<CategoryListProps> = ({ categoryId }) => {
 
 
     const fetchProductById = async (categoryId: string) => {
@@ -31,6 +31,18 @@ type CategoryListProps = {
         enabled: false,
     });
 
+    const getProductCategory = async (
+        _ctx: QueryFunctionContext<[string]>
+    ) => {
+        const { data } = await api.post('/beforeauth/getproductcategory');
+        return data;
+    };
+
+    const { data: productCategoryData } = useQuery({
+        queryKey: ['productCategory'],
+        queryFn: getProductCategory,
+        refetchOnWindowFocus: false,
+    });
     useEffect(() => {
         refetch();
     }, []);
@@ -41,7 +53,11 @@ type CategoryListProps = {
                 <div className="container">
                     <div className="flex items-center gap-2 md:flex-nowrap flex-wrap justify-between 2xl:mb-[60px] xl:mb-[50px] lg:mb-[40px] md:mb-[30px] mb-[20px]">
                         <h1 className="text-primary flex-none italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay">
-                            Alpine 2.2
+                            {
+                                productCategoryData?.find(
+                                    (category: any) => category.product_category_id === Number(categoryId)
+                                )?.title
+                            }
                         </h1>
                         {/* <div className="flex items-center gap-4 w-full">
                             <span className="lg:text-2sm md:text-sm text-[12px] ml-auto flex-none">
@@ -54,18 +70,18 @@ type CategoryListProps = {
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6 lg:gap-5 md:gap-4 gap-3">
                         {isLoading
                             ? Array.from({ length: 8 }).map((_, index) => (
-                                  <ProductSkeleton key={index} />
-                              ))
+                                <ProductSkeleton key={index} />
+                            ))
                             : productDataById?.map((product: any) => (
-                                  <ProductCard
-                                      key={product.product_id}
-                                      id={product.product_id}
-                                      title={product.title}
-                                      price={product.price}
-                                      imageUrl={product.image}
-                                      slug={product?.slug}
-                                  />
-                              ))}
+                                <ProductCard
+                                    key={product.product_id}
+                                    id={product.product_id}
+                                    title={product.title}
+                                    price={product.price}
+                                    imageUrl={product.image}
+                                    slug={product?.slug}
+                                />
+                            ))}
                     </div>
                 </div>
             </section>

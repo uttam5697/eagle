@@ -13,7 +13,7 @@ interface AddressModalProps {
 
 const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
-
+  const [isSubmitting, setIsSubmitting] = useState(false); // 🔹 for API status
   const [formData, setFormData] = useState({
     recipient: "",
     address1: "",
@@ -22,7 +22,7 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
     mobile: "",
     isDefault: false,
   });
-    const {refetch} = useAddress();
+  const { refetch } = useAddress();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -33,69 +33,74 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
   };
 
   const handleAddNewAddress = async (e: React.MouseEvent<HTMLButtonElement>) => {
-  e.preventDefault();
-  const { recipient, address1, postal, mobile, isDefault } = formData;
+    e.preventDefault();
+    setIsSubmitting(true);
+    const { recipient, address1, postal, mobile, isDefault } = formData;
 
-  // 🔽 Inline Validations
-  if (!recipient.trim()) {
-    showToast("Please enter recipient name", "error");
-    return;
-  }
-
-  if (!address1.trim()) {
-    showToast("Please enter address line 1", "error");
-    return;
-  }
-
-  if (!postal.trim() || !/^\d{6}$/.test(postal)) {
-    showToast("Please enter a valid 6-digit postal code", "error");
-    return;
-  }
-
-  if (!mobile.trim() || !/^\d{10}$/.test(mobile)) {
-    showToast("Please enter a valid 10-digit mobile number", "error");
-    return;
-  }
-
-  if (!isDefault) {
-    showToast("Please agree to the Terms & Conditions", "error");
-    return;
-  }
-
-  const authKey = localStorage.getItem("authKey");
-  if (!authKey) {
-    showToast("Auth key missing", "error");
-    return;
-  }
-
-  const payload = new FormData();
-  payload.append("Appuseraddress[name]", recipient);
-  payload.append("Appuseraddress[address_line_1]", address1);
-  payload.append("Appuseraddress[address_line_2]", formData.address2);
-  payload.append("Appuseraddress[postal_code]", postal);
-  payload.append("Appuseraddress[mobile_number]", mobile);
-  payload.append("Appuseraddress[is_default]", isDefault ? "1" : "0");
-
-  try {
-    const response = await api.post("/userauth/addeditappuseraddress", payload, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        auth_key: authKey,
-      },
-    });
-
-    if (response?.status === 1) {
-      showToast("Address added successfully", "success");
-      refetch()
-      onClose();
-    } else {
-      showToast("Failed to add address", "error");
+    // 🔽 Inline Validations
+    if (!recipient.trim()) {
+      showToast("Please enter recipient name", "error");
+      setIsSubmitting(false);
+      return;
     }
-  } catch (error: any) {
-    console.error("API error:", error);
-    showToast(error?.response?.data?.message || "Something went wrong", "error");
-  }
-};
+
+    if (!address1.trim()) {
+      showToast("Please enter address line 1", "error");
+      return;
+    }
+
+    if (!postal.trim() || !/^\d{6}$/.test(postal)) {
+      showToast("Please enter a valid 6-digit postal code", "error");
+      return;
+    }
+
+    if (!mobile.trim() || !/^\d{10}$/.test(mobile)) {
+      showToast("Please enter a valid 10-digit mobile number", "error");
+      return;
+    }
+
+    if (!isDefault) {
+      showToast("Please agree to the Terms & Conditions", "error");
+      return;
+    }
+
+    const authKey = localStorage.getItem("authKey");
+    if (!authKey) {
+      showToast("Auth key missing", "error");
+      return;
+    }
+
+    const payload = new FormData();
+    payload.append("Appuseraddress[name]", recipient);
+    payload.append("Appuseraddress[address_line_1]", address1);
+    payload.append("Appuseraddress[address_line_2]", formData.address2);
+    payload.append("Appuseraddress[postal_code]", postal);
+    payload.append("Appuseraddress[mobile_number]", mobile);
+    payload.append("Appuseraddress[is_default]", isDefault ? "1" : "0");
+
+    try {
+      const response = await api.post("/userauth/addeditappuseraddress", payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          auth_key: authKey,
+        },
+      });
+
+      if (response?.status === 1) {
+        showToast("Address added successfully", "success");
+        refetch()
+        onClose();
+        setIsSubmitting(false);
+      } else {
+        showToast("Failed to add address", "error");
+        setIsSubmitting(false);
+      }
+    } catch (error: any) {
+      console.error("API error:", error);
+      setIsSubmitting(false);
+      showToast(error?.response?.data?.message || "Something went wrong", "error");
+    }
+  };
 
 
   return (
@@ -195,10 +200,13 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
                 I have read and agree to the Terms & Conditions & Privacy Policy
               </label>
               <button
+                disabled={isSubmitting}
                 onClick={handleAddNewAddress}
                 className="black-btn group flex justify-between before:!hidden after:!hidden"
               >
-                <span className="leading-none">Submit</span>
+                <span className="leading-none">
+                  Submit
+                </span>
                 <FiArrowUpRight className="text-2sm group-hover:rotate-45 transition-all duration-300" />
               </button>
             </div>

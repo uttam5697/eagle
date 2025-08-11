@@ -4,6 +4,8 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../lib/api";
 import { showToast } from "../../utils/toastUtils";
+import { paths } from "../../config/path";
+import { useUser } from "../context/UserContext";
 
 type FormFields = {
   firstName: string;
@@ -16,6 +18,9 @@ type FormFields = {
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const { login } = useUser();
+  const url = new URL(window.location.href);
+  const redirect = url.searchParams.get("redirect");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState<FormFields>({
@@ -59,9 +64,18 @@ export default function SignUp() {
 
       const res = await api.post("/beforeauth/usersignup", payload);
       if (res.status === 1) {
-        navigate("/login");
-        localStorage.setItem("authKey", res.data.auth_key);
+        login({
+          firstName: res?.data?.first_name,
+          lastName: res?.data?.first_name,
+          fullName: res?.data?.full_name,
+          authKey: res?.data?.auth_key,
+        });
         showToast("Signup successful!", "success");
+      }
+      if (redirect) {
+        window.location.href = redirect;
+      } else {
+        navigate(paths.home.path, { replace: true });
       }
 
     } catch (error: any) {
