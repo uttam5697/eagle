@@ -3,7 +3,7 @@ import * as z from "zod";
 const createEnv = () => {
   const EnvSchema = z.object({
     API_URL: z.string(),
-    APP_URL: z.string().optional().default("https://buckeyefloors.com/buckeyefloors/api/"),
+    APP_URL: z.string().optional().default("http://3.147.241.20/buckeyefloors/api/"),
   });
 
   const envVars = Object.entries(import.meta.env).reduce<
