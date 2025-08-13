@@ -87,7 +87,7 @@ export default function ShoppingBrand() {
                   alt="FlooringImg"
                 />
                 <div className="bg-white w-[134px] h-[70px] rounded-[18px] flex items-center justify-center absolute z-20 bottom-[10px] lg:left-6 md:left-5 left-4 transition-all duration-300 group-hover:translate-y-[-5px]">
-                  <img src={BrandLogo} />
+                  <img src={BrandLogo} alt="BrandLogo"/>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@ export default function ShoppingBrand() {
                   alt="FlooringImg"
                 />
                 <div className="bg-white w-[134px] h-[70px] rounded-[18px] flex items-center justify-center absolute z-20 bottom-[10px] lg:left-6 md:left-5 left-4 transition-all duration-300 group-hover:translate-y-[-5px]">
-                  <img src={BrandLogo2} />
+                  <img src={BrandLogo2} alt="BrandLogo2"/>
                 </div>
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function ShoppingBrand() {
                   alt="FlooringImg"
                 />
                 <div className="bg-white w-[134px] h-[70px] rounded-[18px] flex items-center justify-center absolute z-20 bottom-[10px] lg:left-6 md:left-5 left-4 transition-all duration-300 group-hover:translate-y-[-5px]">
-                  <img src={BrandLogo3} />
+                  <img src={BrandLogo3} alt="BrandLogo3"/>
                 </div>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function ShoppingBrand() {
                   alt="FlooringImg"
                 />
                 <div className="bg-white w-[134px] h-[70px] rounded-[18px] flex items-center justify-center absolute z-20 bottom-[10px] lg:left-6 md:left-5 left-4 transition-all duration-300 group-hover:translate-y-[-5px]">
-                  <img src={BrandLogo4} />
+                  <img src={BrandLogo4} alt="BrandLogo4"/>
                 </div>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function ShoppingBrand() {
                   alt="FlooringImg"
                 />
                 <div className="bg-white w-[134px] h-[70px] rounded-[18px] flex items-center justify-center absolute z-20 bottom-[10px] lg:left-6 md:left-5 left-4 transition-all duration-300 group-hover:translate-y-[-5px]">
-                  <img src={BrandLogo} />
+                  <img src={BrandLogo} alt="BrandLogo"/>
                 </div>
               </div>
             </div>

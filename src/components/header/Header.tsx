@@ -59,9 +59,9 @@ export default function Header() {
             {/* Desktop Navigation */}
             <nav className="hidden navbar md:flex items-center space-x-[50px] mx-auto">
               <Link to="/" className={`text-white ${pathname === '/' ? 'active' : ''}`}>Home</Link>
+              <Link to="/?product" className={`text-white ${pathname === '/?product' ? 'active' : ''}`}>Product</Link>
               <Link to="/about-us" className={`text-white ${pathname === '/about-us' ? 'active' : ''}`}>About Us</Link>
               <Link to="/contact-us" className={`text-white ${pathname === '/contact-us' ? 'active' : ''}`}>Contact Us</Link>
-              <Link to="/?product" className={`text-white ${pathname === '/?product' ? 'active' : ''}`}>Product</Link>
             </nav>
 
             {/* Cart */}
@@ -110,14 +110,14 @@ export default function Header() {
                   <Link to="/" onClick={() => setIsMenuOpen(false)} className={`text-white ${pathname === '/' ? 'active' : ''}`}>
                     Home
                   </Link>
+                  <Link to="/?product" onClick={() => setIsMenuOpen(false)} className={`text-white ${pathname === '/?product' ? 'active' : ''}`}>
+                    Product
+                  </Link>
                   <Link to="/about-us" onClick={() => setIsMenuOpen(false)} className={`text-white ${pathname === '/about-us' ? 'active' : ''}`}>
                     About Us
                   </Link>
                   <Link to="/contact-us" onClick={() => setIsMenuOpen(false)} className={`text-white ${pathname === '/contact-us' ? 'active' : ''}`}>
                     Contact Us
-                  </Link>
-                  <Link to="/?product" onClick={() => setIsMenuOpen(false)} className={`text-white ${pathname === '/?product' ? 'active' : ''}`}>
-                    Product
                   </Link>
                 </nav>
               </div>
