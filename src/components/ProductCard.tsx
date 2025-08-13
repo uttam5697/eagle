@@ -9,6 +9,7 @@ type ProductCardProps = {
   id: number;
   slug: any
   price_per_box: number
+  price: number
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug, price_per_box,price}) => {

@@ -80,6 +80,7 @@ const ProductList: React.FC<CategoryListProps> = ({ categoryId }) => {
                                     price={product.price}
                                     imageUrl={product.image}
                                     slug={product?.slug}
+                                    price_per_box={product.price_per_box}
                                 />
                             ))}
                     </div>

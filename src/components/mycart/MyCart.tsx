@@ -86,7 +86,7 @@ export default function MyCart() {
   };
 
   const itemTotal = fetchedCartItems.reduce((sum: number, item: any) => {
-    const price = parseFloat(item.price);
+    const price = parseFloat(item?.product?.price_per_box);
     const qty = quantities[item.user_carts_id] ?? item.quantity;
     return sum + price * qty;
   }, 0);
@@ -163,7 +163,7 @@ export default function MyCart() {
                   </thead>
                   <tbody>
                     {fetchedCartItems.map((item: any) => {
-                      const total = parseFloat(item.price) * (quantities[item.user_carts_id] ?? item.quantity);
+                      const total = parseFloat(item?.product?.price_per_box) * (quantities[item.user_carts_id] ?? item.quantity);
                       return (
                         <tr key={item.user_carts_id}>
                           <td className="flex items-center space-x-4 py-4">
@@ -174,7 +174,7 @@ export default function MyCart() {
                             />
                             <div>
                               <h3 className="text-black mb-1 lg:text-2sm md:text-sm text-xs">{item.product.title}</h3>
-                              <p className="font-bold xl:text-xl lg:text-base md:text-sm text-xs">${item.price} /sq ft</p>
+                              <p className="font-bold xl:text-xl lg:text-base md:text-sm text-xs">${item?.price} /sq ft</p>
                             </div>
                           </td>
                           <td className="py-4 ps-4">
@@ -182,7 +182,7 @@ export default function MyCart() {
                               <div className="flex items-center col-span-1 justify-start p-2">
                                 <button
                                   onClick={() =>
-                                    updateQuantity(item.user_carts_id, item.product.product_id, item.price,item.quantity, "decrease")
+                                    updateQuantity(item.user_carts_id, item.product.product_id, item?.product?.price_per_box,item.quantity, "decrease")
                                   }
                                   className="bg-[#C01F26] text-white p-1 lg:p-2 rounded-full"
                                 >
@@ -198,7 +198,7 @@ export default function MyCart() {
                               <div className="flex items-center col-span-1 justify-start p-2">
                                 <button
                                   onClick={() =>
-                                    updateQuantity(item.user_carts_id, item.product.product_id, item.price, item.quantity, "increase")
+                                    updateQuantity(item.user_carts_id, item.product.product_id, item?.product?.price_per_box, item.quantity, "increase")
                                   }
                                   className="bg-[#C01F26] text-white p-1 lg:p-2 rounded-full"
                                 >

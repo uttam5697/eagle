@@ -149,6 +149,7 @@ export default function WeeklyBestsellers() {
                                             imageUrl={product.image}
                                             slug={product.slug}
                                             price_per_box={product.price_per_box}
+                                            price={product.price}
                                         />
                                     </SwiperSlide>
                                 ))
