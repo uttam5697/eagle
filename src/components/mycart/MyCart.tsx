@@ -26,7 +26,6 @@ export default function MyCart() {
         return acc;
       }, {})
   );
-  console.log("🚀 ~ MyCart ~ quantities:", quantities)
 
   const [isAddressModalOpen, setAddressModalOpen] = useState(false);
   const [isChangeModalOpen, setChangeModalOpen] = useState(false);

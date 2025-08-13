@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useFooter } from "../../api/home";
 
 export default function SpsFlooring({ productCategory }: any) {
-  console.log("🚀 ~ SpsFlooring ~ productCategory:", productCategory)
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();

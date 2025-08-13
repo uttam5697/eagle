@@ -22,14 +22,13 @@ export default function ProductDetailPage() {
     const [boxes, setBoxes] = useState(1);
     const [productGallery, setProductGallery] = useState([]);
     const [sqft, setSqft] = useState(0);
-    const [isWastageChecked, setIsWastageChecked] = useState(false);
+    const [isWastageChecked, setIsWastageChecked] = useState(true);
     const navigate = useNavigate();
     const authKey = useUser()?.authKey;
 
     const getBoxesForSqft = (rawSqft: number, coverage: number) => {
 
         const effective =  rawSqft;
-        console.log("📐 Effective square feet (after wastage if any):", effective);
 
         const boxesNeeded = Math.max(1, Math.ceil(effective / Number(coverage)));
 
@@ -87,6 +86,13 @@ export default function ProductDetailPage() {
         setBoxes(getBoxesForSqft(validSqft, coverage));
     };
 
+     const { data: productDataById, refetch } = useQuery({
+        queryKey: ["product", slug],
+        queryFn: () => fetchProductById(slug as string),
+        enabled: false,
+    });
+
+
     // Recalculate boxes when wastage toggle changes
     useEffect(() => {
         getBoxesForSqft(sqft, productDataById?.sqft_in_box);
@@ -95,10 +101,9 @@ export default function ProductDetailPage() {
 
      useEffect(() => {
         const effective = isWastageChecked ? sqft * 1.1 : sqft;
-        console.log("📐 Effective square feet (after wastage if any):", productDataById?.sqft_in_box);
         getBoxesForSqft(effective, productDataById?.sqft_in_box);
         handleSqftChange(effective, productDataById?.sqft_in_box);
-    }, [isWastageChecked]);
+    }, [isWastageChecked ,productDataById?.sqft_in_box]);
 
 
 
@@ -118,12 +123,7 @@ export default function ProductDetailPage() {
         return data
     };
 
-    const { data: productDataById, refetch } = useQuery({
-        queryKey: ["product", slug],
-        queryFn: () => fetchProductById(slug as string),
-        enabled: false,
-    });
-
+   
     const breadcrumbData = [
         { label: 'Home', href: '/' },
         { label: `${productDataById?.title}`, href: `/products/category/${productDataById?.product_category_id}` },

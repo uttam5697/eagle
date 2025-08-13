@@ -4,7 +4,6 @@ import AnimatedSection from "./ui/AnimatedSection";
 
 export default function Termsandconditions() {
     const { data:termsandconditions  } = useFooter(false);
-    console.log("🚀 ~ PrivacyPolicy ~ privacyPolicy:", termsandconditions)
   return (
     <>
       <AnimatedSection direction="up" delay={0.2}>

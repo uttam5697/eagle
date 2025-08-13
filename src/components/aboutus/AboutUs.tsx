@@ -4,7 +4,6 @@ import WhatOurClients from "../whatourclients/WhatOurClients";
 
 export default function AboutUs() {
   const { data: aboutdata } = useAbout(false);
-  console.log("🚀 ~ AboutUs ~ aboutdata:", aboutdata)
   return (
     <>
       <AnimatedSection direction="up" delay={0.2}>

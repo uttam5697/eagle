@@ -24,7 +24,6 @@ export default function Callback() {
         });
 
         const data = await res.json();
-        console.log("🚀 ~ exchangeToken ~ data:", data)
         if (data.access_token) {
           localStorage.setItem("quickbooks_token", data.access_token);
           setMessage("✅ Access token saved!");

@@ -20,7 +20,6 @@ export default function ForgotPassword() {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log("🚀 ~ handleSubmit ~ response:", response)
 
         if (response?.data?.auth_key) {
           localStorage.setItem("authKey", response?.data?.auth_key);
