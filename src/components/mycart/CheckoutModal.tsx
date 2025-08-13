@@ -1,7 +1,14 @@
 import { CgClose } from "react-icons/cg";
 import CheckoutForm from "../CheckoutForm";
+import { ThankYouModal } from "../ThankYouModal";
+import { useState } from "react";
+import { showToast } from "../../utils/toastUtils";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutModal({ isOpen, onClose, cartItems, totalAmount, currentAddress }: any) {
+  const [thankYouOpen, setThankYouOpen] = useState(false);
+  const navigate = useNavigate();
+
   if (!isOpen) return null;
   return (
     <div className=" fixed inset-0 z-50 visible:opacity-0 bg-black/50 overflow-auto p-4">
@@ -12,13 +19,25 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, totalAmount,
             totalAmount={totalAmount}
             cartItems={cartItems}
             currentAddress={currentAddress}
+            onClose={onClose}
             onSuccess={() => {
+              showToast("🎉 Order placed successfully!", "success");
+              // setThankYouOpen(true)
+              navigate("/");
               onClose();
-              console.log("Checkout successful!");
             }}
           />
         </div>
       </div>
+      <ThankYouModal
+        open={thankYouOpen}
+        // orderId={lastOrderId}
+        amount={totalAmount}
+        onClose={() => {
+          setThankYouOpen(false);
+          // Optionally, route however you like!
+        }}
+      />
     </div>
   );
 }

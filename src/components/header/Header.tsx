@@ -9,7 +9,7 @@ import AuthDropdown from './components/AuthDropdown';
 import { useCart } from '../../api/cart';
 
 export default function Header() {
-  const { data: fetchedCartItems = [] } = useCart(false);
+  const { data: fetchedCartItems = [] , refetch } = useCart(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const pathname = useLocation().pathname;
@@ -36,6 +36,11 @@ export default function Header() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isMenuOpen, isCartOpen]);
+
+  useEffect(() => {
+    console.log('Cart items:', fetchedCartItems); 
+    refetch();
+  }, []);
 
   return (
     <>
@@ -73,7 +78,7 @@ export default function Header() {
                   <PiShoppingCartLight className="lg:text-[22px] md:text-[20px] text-[18px]" />
                   {fetchedCartItems.length > 0 &&
                   <span className="absolute top-0 end-0 inline-flex items-center py-0.5 px-1.5 rounded-full md:text-[11px] text-[9px] font-medium transform -translate-y-1/2 translate-x-1/2 bg-primary text-white">{
-                    fetchedCartItems.reduce((acc: number, item: any) => acc + item.quantity, 0)
+                    fetchedCartItems?.length
                   }</span>
                   }
                 </button>

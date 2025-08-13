@@ -116,13 +116,15 @@ const ChangeAddressModal: React.FC<ChangeAddressModalProps> = ({
               <span className="leading-none">Add New</span>
               <FiPlus className="text-2sm transition-all duration-300" />
             </button>
-            <button
+            {
+              addressAll?.length > 0 &&
+              <button
               onClick={handleSubmit}
               className="black-btn flex justify-between group before:!hidden after:!hidden"
             >
               <span className="leading-none">Submit</span>
               <FiArrowUpRight className="text-2sm group-hover:rotate-45 transition-all duration-300" />
-            </button>
+            </button>}
           </div>
         </div>
       </div>

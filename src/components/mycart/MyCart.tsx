@@ -13,7 +13,7 @@ import CheckoutModal from "./CheckoutModal";
 
 
 export default function MyCart() {
-  const { data: fetchedCartItems = [], refetch } = useCart(false);
+  const { data: fetchedCartItems = [], refetch } = useCart(true);
   const { data: addressAll } = useAddress();
   const authkey = useUser()?.authKey;
 
@@ -35,7 +35,7 @@ export default function MyCart() {
 
   const updateQuantity = async (
     id: number,
-  productId: number,
+    productId: number,
     price: number,
     quantity: number,
     action: "increase" | "decrease"
@@ -86,7 +86,7 @@ export default function MyCart() {
   };
 
   const itemTotal = fetchedCartItems.reduce((sum: number, item: any) => {
-    const price = parseFloat(item?.product?.price_per_box);
+    const price = parseFloat(item.product.price_per_box);
     const qty = quantities[item.user_carts_id] ?? item.quantity;
     return sum + price * qty;
   }, 0);
@@ -117,11 +117,11 @@ export default function MyCart() {
   };
 
   const handleCheckout = async () => {
-  if(selectedId === 0){
-    showToast("Please select an address", "error");
-    return;
-  }
-  setIsCheckoutModalOpen(true);
+    if (selectedId === 0) {
+      showToast("Please select an address", "error");
+      return;
+    }
+    setIsCheckoutModalOpen(true);
   }
   return (
     <>
@@ -163,7 +163,7 @@ export default function MyCart() {
                   </thead>
                   <tbody>
                     {fetchedCartItems.map((item: any) => {
-                      const total = parseFloat(item?.product?.price_per_box) * (quantities[item.user_carts_id] ?? item.quantity);
+                      const total = parseFloat(item.product.price_per_box) * (quantities[item.user_carts_id] ?? item.quantity);
                       return (
                         <tr key={item.user_carts_id}>
                           <td className="flex items-center space-x-4 py-4">
@@ -174,7 +174,8 @@ export default function MyCart() {
                             />
                             <div>
                               <h3 className="text-black mb-1 lg:text-2sm md:text-sm text-xs">{item.product.title}</h3>
-                              <p className="font-bold xl:text-xl lg:text-base md:text-sm text-xs">${item?.price} /sq ft</p>
+                              <p className="font-bold xl:text-xl lg:text-base md:text-sm text-xs">${item.product.price_per_box
+                              } /sqft/Box</p>
                             </div>
                           </td>
                           <td className="py-4 ps-4">
@@ -182,7 +183,7 @@ export default function MyCart() {
                               <div className="flex items-center col-span-1 justify-start p-2">
                                 <button
                                   onClick={() =>
-                                    updateQuantity(item.user_carts_id, item.product.product_id, item?.product?.price_per_box,item.quantity, "decrease")
+                                    updateQuantity(item.user_carts_id, item.product.product_id, item.product.price_per_box, item.quantity, "decrease")
                                   }
                                   className="bg-[#C01F26] text-white p-1 lg:p-2 rounded-full"
                                 >
@@ -198,7 +199,7 @@ export default function MyCart() {
                               <div className="flex items-center col-span-1 justify-start p-2">
                                 <button
                                   onClick={() =>
-                                    updateQuantity(item.user_carts_id, item.product.product_id, item?.product?.price_per_box, item.quantity, "increase")
+                                    updateQuantity(item.user_carts_id, item.product.product_id, item.product.price_per_box, item.quantity, "increase")
                                   }
                                   className="bg-[#C01F26] text-white p-1 lg:p-2 rounded-full"
                                 >
@@ -308,9 +309,8 @@ export default function MyCart() {
 
                 {/* Process Button */}
                 <button
-                 disabled 
                   onClick={() => handleCheckout()}
-                  className="flex cursor-not-allowed justify-between black-btn max-w-[286px] mx-auto group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]"
+                  className="flex  justify-between black-btn max-w-[286px] mx-auto group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]"
                 >
                   <span className="leading-none">Process to Continue</span>
                   <FiArrowUpRight className="text-2sm group-hover:rotate-45 duration-300 transition-all" />

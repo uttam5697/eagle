@@ -12,7 +12,7 @@ type ProductCardProps = {
   price: number
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug, price_per_box,price}) => {
+const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug,price}) => {
     // const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
 
@@ -39,11 +39,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug, price_
             <div className="mt-4 text-center px-[10px] pb-[10px]">
                 <h3 className="xl:text-2sm lg:text-sm md:text-[14px] text-[12px] font-regular text-black leading-none lg:mb-3 md:mb-2 mb-1">{title}</h3>
                 <div className='flex justify-between items-center'>
-                    {price_per_box && (
+                    {/* {price_per_box && (
                         <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
                             ${price_per_box} <span className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold"></span>
                         </p>
-                    )}
+                    )} */}
                     {price && (
                         <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
                             ${price} / sqft

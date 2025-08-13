@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import type { StripeCardElement } from '@stripe/stripe-js';
 import api from "../lib/api";
-import { useNavigate } from "react-router-dom";
 import { ThankYouModal } from "./ThankYouModal";
 import { useCart } from "../api/cart";
 
@@ -24,6 +23,7 @@ interface CheckoutFormProps {
   cartItems: CartItem[];
   currentAddress: any
   onSuccess: () => void;
+  onClose: () => void;
 }
 interface CheckoutPayload {
   "Userorder[appuser_address_id]": string | number;
@@ -36,13 +36,13 @@ interface CheckoutPayload {
   "Userorder[user_carts_id]": string;
 }
 
-export default function CheckoutForm({ totalAmount, cartItems, currentAddress }: CheckoutFormProps) {
-  const {  refetch } = useCart(false);
+export default function CheckoutForm({ totalAmount, cartItems, currentAddress  , onSuccess }: CheckoutFormProps) {
+  const {  refetch } = useCart(true);
   const [thankYouOpen, setThankYouOpen] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const authKey = localStorage.getItem("authKey");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -68,9 +68,8 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
           auth_key: authKey,
          },
       });
-      navigate("/")
+      onSuccess();
       refetch();
-      setThankYouOpen(true);
 
       console.log("Checkout success:", res.data);
       return res.data;
@@ -251,7 +250,7 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress }:
 
         <button
           type="submit"
-          disabled={true}
+          // disabled={true}
           className="cursor-not-allowed gap-3 flex items-center justify-center w-full p-3 !text-white lg:text-[18px] md:text-[16px] text-[14px] mb-2 mt-1 font-semibold hover:!bg-transparent hover:!text-[#C41A2C] !border-[#C41A2C] !border !duration-300 !transition-all !rounded-full"
           style={{
             background: loading ? "#6c63ff89" : "#C41A2C",

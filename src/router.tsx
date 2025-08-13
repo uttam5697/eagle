@@ -15,20 +15,33 @@ import Termsandconditions from "./components/Terms&Conditions";
 import { MyCart } from "./components";
 import Callback from "./components/Callback";
 import PaymentForm from "./components/testpayment";
+import RedirectIfLoggedIn from "./components/RedirectIfLoggedIn";
 
 // Define the routes separately
 const routes = [
   {
     path: paths.login.path,
-    element: <Login />,
+    element: (
+      <RedirectIfLoggedIn>
+        <Login />
+      </RedirectIfLoggedIn>
+    ),
   },
   {
     path: paths.forgotpassword.path,
-    element: <ForgotPassword />,
+    element: (
+      <RedirectIfLoggedIn>
+        <ForgotPassword />
+      </RedirectIfLoggedIn>
+    ),
   },
   {
     path: paths.signup.path,
-    element: <SignUp />,
+    element: (
+      <RedirectIfLoggedIn>
+        <SignUp />
+      </RedirectIfLoggedIn>
+    ),
   },
   {
     element: (

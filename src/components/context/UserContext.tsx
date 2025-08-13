@@ -34,7 +34,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  const login = (data: { firstName: string; lastName: string; authKey: string , fullName: string}) => {
+  const login = (data: { firstName: string; lastName: string; authKey: string, fullName: string }) => {
     setFirstName(data.firstName);
     setLastName(data.lastName);
     setAuthKey(data.authKey);
@@ -59,8 +59,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("fullName");
   };
 
-  const handleLogout = async() => {
-    await api.post('/beforeauth/logout',{
+  const handleLogout = async () => {
+    await api.post('/userauth/logout', {}, {
       headers: {
         "auth_key": authKey
       }

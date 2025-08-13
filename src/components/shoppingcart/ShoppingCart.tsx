@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CgClose } from 'react-icons/cg';
 import { useCart } from '../../api/cart';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,14 +13,15 @@ interface ShoppingCartProps {
 }
 
 const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
-  const { data: cartItems ,refetch} = useCart(false);
+  const { data: cartItems, refetch } = useCart(true);
   const authkey = useUser()?.authKey;
   const navigate = useNavigate();
 
 
   // Calculate subtotal
   const subtotal = cartItems?.reduce((total: number, item: any) => {
-    return total + parseFloat(item.price) * item.quantity;
+    return total + parseFloat(item.product.price_per_box
+    ) * item.quantity;
   }, 0);
 
   const handleDelete = async (id: number) => {
@@ -45,11 +46,15 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <div
       className={`fixed inset-0 mr-0 ml-auto z-50 bg-white flex flex-col transition-all duration-300 max-w-[340px] w-full mx-4 ${isOpen
-          ? "opacity-100 visible"
-          : "opacity-0 invisible pointer-events-none translate-x-full"
+        ? "opacity-100 visible"
+        : "opacity-0 invisible pointer-events-none translate-x-full"
         }`}
     >
       <div className="flex justify-between items-center p-4 border-b border-gray-200">
@@ -106,11 +111,12 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
                 <div className="flex items-center justify-between mt-2">
                   <div className="text-black lg:text-sm md:text-[14px] text-[12px]">
                     <span>{item.quantity} × </span>
-                    <span className="text-primary font-semibold">${parseFloat(item.price).toFixed(2)}</span>
+                    <span className="text-primary font-semibold">${parseFloat(item?.product?.price_per_box
+                    ).toFixed(2)}</span>
                   </div>
                 </div>
               </div>
-              <button onClick={() => {handleDelete(item.user_carts_id) }} className="text-black hover:text-primary">
+              <button onClick={() => { handleDelete(item.user_carts_id) }} className="text-black hover:text-primary">
                 <CgClose className="lg:text-base md:text-2sm text-sm" />
               </button>
             </div>
@@ -133,7 +139,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
           {/* <button onClick={() => { navigate("/my-cart") }}  className="w-full bg-gray-200 text-black py-3 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors">
             View cart
           </button> */}
-          <button onClick={() => { navigate("/my-cart") ; onClose() }} className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center">
+          <button onClick={() => { navigate("/my-cart"); onClose() }} className="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center">
             <span>Checkout</span>
           </button>
         </div>}

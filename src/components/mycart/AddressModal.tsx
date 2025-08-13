@@ -14,6 +14,7 @@ interface AddressModalProps {
 const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   const [isSubmitting, setIsSubmitting] = useState(false); // 🔹 for API status
+  console.log("🚀 ~ AddressModal ~ isSubmitting:", isSubmitting)
   const [formData, setFormData] = useState({
     recipient: "",
     address1: "",
@@ -46,27 +47,37 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
 
     if (!address1.trim()) {
       showToast("Please enter address line 1", "error");
+      setIsSubmitting(false);
+
       return;
     }
 
     if (!postal.trim() || !/^\d{6}$/.test(postal)) {
       showToast("Please enter a valid 6-digit postal code", "error");
+      setIsSubmitting(false);
+
       return;
     }
 
     if (!mobile.trim() || !/^\d{10}$/.test(mobile)) {
       showToast("Please enter a valid 10-digit mobile number", "error");
+      setIsSubmitting(false);
+
       return;
     }
 
     if (!isDefault) {
       showToast("Please agree to the Terms & Conditions", "error");
+      setIsSubmitting(false);
+
       return;
     }
 
     const authKey = localStorage.getItem("authKey");
     if (!authKey) {
       showToast("Auth key missing", "error");
+      setIsSubmitting(false);
+
       return;
     }
 

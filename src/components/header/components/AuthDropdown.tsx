@@ -13,6 +13,7 @@ const AuthDropdown: React.FC = () => {
     logout();
     setOpen(false);
     navigate("/login");
+    window.location.reload();
   };
 
   // Close dropdown when clicking outside

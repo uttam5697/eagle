@@ -18,17 +18,17 @@ import { useCart } from '../api/cart';
 
 export default function ProductDetailPage() {
     const { slug } = useParams();
-    const {refetch: refetchCart} = useCart(false);
+    const { refetch: refetchCart } = useCart(true);
     const [boxes, setBoxes] = useState(1);
     const [productGallery, setProductGallery] = useState([]);
     const [sqft, setSqft] = useState(0);
-    const [isWastageChecked, setIsWastageChecked] = useState(true);
+    const [isWastageChecked, setIsWastageChecked] = useState(false);
     const navigate = useNavigate();
     const authKey = useUser()?.authKey;
 
     const getBoxesForSqft = (rawSqft: number, coverage: number) => {
 
-        const effective =  rawSqft;
+        const effective = rawSqft;
 
         const boxesNeeded = Math.max(1, Math.ceil(effective / Number(coverage)));
 
@@ -86,7 +86,7 @@ export default function ProductDetailPage() {
         setBoxes(getBoxesForSqft(validSqft, coverage));
     };
 
-     const { data: productDataById, refetch } = useQuery({
+    const { data: productDataById, refetch } = useQuery({
         queryKey: ["product", slug],
         queryFn: () => fetchProductById(slug as string),
         enabled: false,
@@ -99,11 +99,33 @@ export default function ProductDetailPage() {
 
     }, [sqft]);
 
-     useEffect(() => {
-        const effective = isWastageChecked ? sqft * 1.1 : sqft;
-        getBoxesForSqft(effective, productDataById?.sqft_in_box);
-        handleSqftChange(effective, productDataById?.sqft_in_box);
-    }, [isWastageChecked ,productDataById?.sqft_in_box]);
+    useEffect(() => {
+        console.log("isWastageChecked", isWastageChecked);
+        console.log("🚀 ~ ProductDetailPage ~ sqft:", sqft);
+
+        let baseSqft = sqft === 0
+            ? Number(productDataById?.sqft_in_box) || 0
+            : sqft;
+
+        if (isWastageChecked) {
+            baseSqft = baseSqft * 1.1; // add 10% wastage
+        }
+
+        console.log("🚀 ~ ProductDetailPage ~ effective:", baseSqft);
+
+        // These functions must not directly update dependencies in this effect
+        getBoxesForSqft(baseSqft, productDataById?.sqft_in_box);
+        handleSqftChange(baseSqft, productDataById?.sqft_in_box);
+
+    }, [isWastageChecked, productDataById?.sqft_in_box]); // removed sqft
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setIsWastageChecked(true);
+        }, 500); // Adjust the delay as needed
+
+        return () => clearTimeout(timeoutId);
+    }, []);
 
 
 
@@ -123,7 +145,7 @@ export default function ProductDetailPage() {
         return data
     };
 
-   
+
     const breadcrumbData = [
         { label: 'Home', href: '/' },
         { label: `${productDataById?.title}`, href: `/products/category/${productDataById?.product_category_id}` },
@@ -134,7 +156,7 @@ export default function ProductDetailPage() {
         refetch();
     }, [slug])
 
-    const handleAddToCart = async() => {
+    const handleAddToCart = async () => {
         if (authKey) {
             const formData = new FormData();
             formData.append('Usercarts[product_id]', productDataById?.product_id);
@@ -150,7 +172,7 @@ export default function ProductDetailPage() {
                     },
                 });
 
-                if (response.status === 1) {                    
+                if (response.status === 1) {
                     refetchCart();
                     showToast("Product added to cart", "success");
                     // navigate(`${paths.home.path}`);
@@ -163,7 +185,7 @@ export default function ProductDetailPage() {
                 console.error("Error adding to cart:", error);
                 showToast(error?.response?.data?.message || "An error occurred", "error");
             }
-        }else{
+        } else {
             navigate(`${paths.login.path}?redirect=${window.location.href}`);
             showToast("Please login first");
         }
@@ -192,7 +214,7 @@ export default function ProductDetailPage() {
                                 allowFullScreen
                             ></iframe>
                         ) : (
-                            <img src={mainImage?.file} alt="Main" className="w-full h-full object-cover" />
+                            <img src={mainImage?.file} alt="Main" className="w-full  max-h-[636px] h-full object-cover" />
                         )}
                     </div>
 
@@ -331,14 +353,16 @@ export default function ProductDetailPage() {
                     <div className=' my-4'>
                         <h5 className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold inline-block lg:mb-5 md:mb-4 mb-3'>${productDataById?.price} / sqft <p className='xl:text-sm inline-block text-xm leading-none font-bold'>(${productDataById?.sqft_in_box} sqft/Box)</p></h5>
                         <div className='flex items-center lg:gap-5 md:gap-4 gap-3 flex-wrap'>
-                            {productDataById?.main_price &&
-                                <p className='xl:text-xl lg:text-base md:text-2sm text-sm leading-none font-bold text-black/60'>${productDataById?.main_price} / sqft</p>
-                            }
+                            {productDataById?.main_price && (
+                                <p className="xl:text-lg lg:text-base md:text-sm text-xs leading-none font-medium text-gray-500 line-through">
+                                    ${productDataById?.main_price} / sqft
+                                </p>
+                            )}
                             {productDataById?.save_button_price &&
                                 <span className='bg-primary text-white font-semibold xl:text-[18px] lg:text-[16px] md:text-[14px] text-[12px] py-[5px] lg:px-[14px] md:px-[12px] px-[10px] rounded-[12px] leading-none'>{productDataById?.save_button_price}</span>
-                            } 
+                            }
                         </div>
-                        
+
                         <p className='custom-html  md:text-[14px] text-[12px] leading-none mt-[15px]' dangerouslySetInnerHTML={{ __html: productDataById?.description }} />
                     </div>
 

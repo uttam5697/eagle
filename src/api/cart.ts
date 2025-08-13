@@ -3,7 +3,7 @@ import { getAllAddress, getCartData } from "../hook/useCart";
 
 export const useCart = (skip = false) => {
     const query = useQuery({
-        queryKey: ["cart"],
+        queryKey: ["cart" , skip],
         queryFn: () => getCartData(),
         refetchOnWindowFocus: false,
         enabled: !skip,

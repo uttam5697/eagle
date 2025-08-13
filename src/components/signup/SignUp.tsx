@@ -84,6 +84,14 @@ export default function SignUp() {
     }
   };
 
+  const handleRedirect = () => {
+     if(redirect){
+     navigate(`${paths.login.path}?redirect=${redirect}`);
+    }else{
+      navigate(`${paths.login.path}`);
+    }
+  };
+
   return (
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">
       <div className="w-full md:w-1/2  px-3 flex flex-col justify-center">
@@ -224,9 +232,9 @@ export default function SignUp() {
             <span className="text-gray-600 text-sm">
               Already have an account?{" "}
             </span>
-            <Link to={"/login"} className="text-primary text-sm hover:underline">
+            <button  onClick={handleRedirect} className="text-primary text-sm hover:underline">
               Sign in
-            </Link>
+            </button>
           </div>
         </div>
       </div>
