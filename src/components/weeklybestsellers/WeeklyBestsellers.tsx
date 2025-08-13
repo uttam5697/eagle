@@ -146,9 +146,9 @@ export default function WeeklyBestsellers() {
                                         <ProductCard
                                             id={product.product_id}
                                             title={product.title}
-                                            price={product.price}
                                             imageUrl={product.image}
                                             slug={product.slug}
+                                            price_per_box={product.price_per_box}
                                         />
                                     </SwiperSlide>
                                 ))

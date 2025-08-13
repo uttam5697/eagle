@@ -329,9 +329,15 @@ export default function ProductDetailPage() {
                         {productDataById?.title}
                     </h1>
                     <div className=' my-4'>
-                        <h5 className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold inline-block'>${productDataById?.price} / sqft <p className='xl:text-sm inline-block text-xm leading-none font-bold'>(${productDataById?.sqft_in_box} sqft/Box)</p></h5>
-                        {/* <p className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold'>${productDataById?.price_per_box} / sqft</p> */}
-                        <p className='custom-html  md:text-[14px] text-[12px] mt-1 leading-none mt-[15px]' dangerouslySetInnerHTML={{ __html: productDataById?.description }} />
+                        <h5 className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold inline-block lg:mb-5 md:mb-4 mb-3'>${productDataById?.price} / sqft <p className='xl:text-sm inline-block text-xm leading-none font-bold'>(${productDataById?.sqft_in_box} sqft/Box)</p></h5>
+                        <div className='flex items-center lg:gap-5 md:gap-4 gap-3 flex-wrap'>
+                            <p className='xl:text-xl lg:text-base md:text-2sm text-sm leading-none font-bold text-black/60'>${productDataById?.main_price} / sqft</p>
+                            {productDataById?.save_button_price &&
+                                <span className='bg-primary text-white font-semibold xl:text-[18px] lg:text-[16px] md:text-[14px] text-[12px] py-[5px] lg:px-[14px] md:px-[12px] px-[10px] rounded-[12px] leading-none'>{productDataById?.save_button_price}</span>
+                            } 
+                        </div>
+                        
+                        <p className='custom-html  md:text-[14px] text-[12px] leading-none mt-[15px]' dangerouslySetInnerHTML={{ __html: productDataById?.description }} />
                     </div>
 
                     {/* Shipping note */}

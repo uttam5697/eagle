@@ -6,12 +6,12 @@ import { useNavigate } from 'react-router-dom';
 type ProductCardProps = {
   imageUrl: string | undefined;
   title: string;
-  price: number;
   id: number;
   slug: any
+  price_per_box: number
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug}) => {
+const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug, price_per_box,price}) => {
     // const [liked, setLiked] = useState(false);
     const navigate = useNavigate();
 
@@ -37,9 +37,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug}) => {
 
             <div className="mt-4 text-center">
                 <h3 className="xl:text-2sm lg:text-sm md:text-[14px] text-[12px] font-regular text-black leading-none lg:mb-[18px] md:mb-[16px] mb-[14px]">{title}</h3>
-                <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
-                    {/* ${price?.toFixed(2)} <span className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold">/ sqft</span> */}
-                </p>
+                {price_per_box && (
+                    <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
+                        ${price_per_box} <span className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold"></span>
+                    </p>
+                )}
+                {price && (
+                    <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
+                        ${price} / sqft
+                    </p>
+                )}
 
                 <div className="lg:mb-[18px] md:mb-4 mb-3 lg:mt-5 md:mt-4 mt-3">
                     <PrimaryButton

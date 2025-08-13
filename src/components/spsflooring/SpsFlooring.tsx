@@ -94,9 +94,12 @@ export default function SpsFlooring({ productCategory }: any) {
                       src={item.image}
                       alt="FlooringImg"
                     />
-                    <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
+                    <h2 className="font-playfairDisplay text-white xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none absolute z-20 lg:bottom-14 md:bottom-12 bottom-9 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
                       {item.title}
                     </h2>
+                    <p className="font-quicksand text-white xl:text-[20px] lg:text-[16px] md:text-[14px] text-[12px] leading-none absolute z-20 lg:bottom-6 md:bottom-5 bottom-4 lg:left-6 md:left-5 left-4 transition-all duration-300 md:group-hover:translate-y-[-10px] group-hover:translate-y-[-5px]">
+                      {item.description}
+                    </p>
                   </div>
                   {/* Hover Overlay */}
                   <div 
