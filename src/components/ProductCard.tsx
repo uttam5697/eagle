@@ -1,4 +1,4 @@
-import PrimaryButton from './ui/Button';
+import { FiArrowUpRight } from 'react-icons/fi';
 // import { FaRegHeart } from 'react-icons/fa';
 // import { AiFillHeart } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
@@ -36,25 +36,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, title ,slug, price_
                 </button> */}
             </div>
 
-            <div className="mt-4 text-center">
-                <h3 className="xl:text-2sm lg:text-sm md:text-[14px] text-[12px] font-regular text-black leading-none lg:mb-[18px] md:mb-[16px] mb-[14px]">{title}</h3>
-                {price_per_box && (
-                    <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
-                        ${price_per_box} <span className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold"></span>
-                    </p>
-                )}
-                {price && (
-                    <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
-                        ${price} / sqft
-                    </p>
-                )}
-
-                <div className="lg:mb-[18px] md:mb-4 mb-3 lg:mt-5 md:mt-4 mt-3">
-                    <PrimaryButton
-                        label="See Details"
-                        onClick={() => navigate(`/products/${slug}`)}
-                    />
+            <div className="mt-4 text-center px-[10px] pb-[10px]">
+                <h3 className="xl:text-2sm lg:text-sm md:text-[14px] text-[12px] font-regular text-black leading-none lg:mb-3 md:mb-2 mb-1">{title}</h3>
+                <div className='flex justify-between items-center'>
+                    {price_per_box && (
+                        <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
+                            ${price_per_box} <span className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold"></span>
+                        </p>
+                    )}
+                    {price && (
+                        <p className="xl:text-xl lg:text-base md:text-2sm text-sm font-bold text-black leading-none">
+                            ${price} / sqft
+                        </p>
+                    )}
+                    <button onClick={() => navigate(`/products/${slug}`)} className="flex justify-between lg:p-[11px] md:p-[8px] p-[6px] black-btn group before:!hidden after:!hidden">
+                        <FiArrowUpRight className='lg:text-base md:text-2sm text-sm group-hover:rotate-45 duration-300 transition-all' />
+                    </button>
                 </div>
+
             </div>
             
         </div>
