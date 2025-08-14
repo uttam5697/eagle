@@ -19,25 +19,35 @@ const ChatPopup: React.FC = () => {
 
   const togglePopup = () => setIsOpen((open) => !open);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const openWhatsApp = (e: FormEvent) => {
     e.preventDefault();
-    // TODO: Handle submission logic or API call
-    alert("Your message has been sent!");
-    setFormData({ name: "", email: "", message: "" });
-    setIsOpen(false);
-  };
 
-  const openWhatsApp = () => {
-    const phoneNumber = "916354448763"; // Set your WhatsApp number
-    const text = "Hello, I want to enquire about your products.";
+    // Simple validation
+    if (!formData.name || !formData.email || !formData.message) {
+      alert("Please fill all fields before sending.");
+      return;
+    }
+
+    const phoneNumber = "916354448763"; // Your WhatsApp number
+    const text = `Hello, I want to enquire about your products.%0A
+Name: ${formData.name}%0A
+Email: ${formData.email}%0A
+Message: ${formData.message}`;
+
     window.open(
       `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`,
       "_blank"
     );
+
+    // Reset form and close popup
+    setFormData({ name: "", email: "", message: "" });
+    setIsOpen(false);
   };
 
   return (
@@ -73,11 +83,12 @@ const ChatPopup: React.FC = () => {
           <div className="p-6">
             <div className="flex items-center mb-3">
               <div className="w-10 h-10 flex items-center justify-center mr-3">
-                <img src={Logo}/>
+                <img src={Logo} />
               </div>
               <h3 className="text-xl font-semibold text-gray-800">Enquiry Form</h3>
             </div>
-            <form className="space-y-4" onSubmit={handleSubmit} autoComplete="off">
+
+            <form className="space-y-4" onSubmit={openWhatsApp} autoComplete="off">
               <input
                 type="text"
                 name="name"
@@ -106,19 +117,12 @@ const ChatPopup: React.FC = () => {
               />
               <button
                 type="submit"
-                className="w-full bg-primary text-white py-2 rounded-lg font-medium border border-primary hover:bg-transparent hover:text-black transition"
+                className="w-full flex items-center justify-center bg-primary text-white py-2 rounded-lg font-medium border border-primary hover:bg-transparent hover:text-black transition"
               >
-                Send
+                <span className="text-xl mr-2">📱</span>
+                Chat on WhatsApp
               </button>
             </form>
-            <button
-              onClick={openWhatsApp}
-              className="w-full flex items-center justify-center mt-4 bg-primary text-white py-2 rounded-lg font-medium border border-primary hover:bg-transparent hover:text-black transition"
-              type="button"
-            >
-              <span className="text-xl mr-2">📱</span>
-              Chat on WhatsApp
-            </button>
           </div>
         )}
       </div>
