@@ -2,7 +2,7 @@ import React from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe("pk_test_51RtxLERwLqQA1WMbrwmNL6fjrC3VZVviFzBpzbZXm4BISUNDnMXfChvOzZZb3YLoUe57eM5Fkc5NCh7wh94tCl1c00XJmOIYKv");
+const stripePromise = loadStripe("pk_live_51RtxLERwLqQA1WMbD00m04GV5qq7E62ivIldOP3RX1NcaLhN4odUliCeoSGyW9PUgKeZh5UfYFLiJAV3VEahjZWs00Gb39P8Rc");
 
 export default function StripeProviderWrapper({ children }: { children: React.ReactNode }) {
   return <Elements stripe={stripePromise}>{children}</Elements>;
