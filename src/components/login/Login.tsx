@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Logo } from "../../assets/Index";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FiArrowLeft, FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../lib/api";
 import { showToast } from "../../utils/toastUtils";
@@ -92,6 +92,14 @@ export default function Login() {
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">
       <div className="w-full md:w-1/2 px-3 flex flex-col justify-center">
         <div className="w-full bg-white rounded-lg md:p-4 p-3 shadow-lg max-w-[500px] mx-auto">
+          {/* Back to Login Button */}
+            <Link
+              to={"/"}
+              className="flex items-center text-black hover:text-primary mb-4 md:text-sm text-xs transition-colors"
+            >
+              <FiArrowLeft className="mr-2" />
+              Back
+            </Link>
           <div className="flex justify-center mb-6">
             <img src={Logo} alt="Eagle Logo" />
           </div>
