@@ -243,7 +243,7 @@ export default function MyCart() {
                       Item total (MRP)
                     </span>
                     <span className="font-semibold">
-                      ₹{itemTotal.toFixed(2)}
+                      ${itemTotal.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -251,7 +251,7 @@ export default function MyCart() {
                       Green packaging charge
                     </span>
                     <span className="font-semibold">
-                      ₹{greenPackaging.toFixed(2)}
+                      ${greenPackaging.toFixed(2)}
                     </span>
                   </div>
                   {/* <div className="flex justify-between">
@@ -274,7 +274,7 @@ export default function MyCart() {
                       To be paid
                     </span>
                     <span className="text-lg font-semibold text-black lg:text-base md:text-2sm text-sm">
-                      ₹{totalAmount.toFixed(2)}
+                      ${totalAmount.toFixed(2)}
                     </span>
                   </div>
                 </div>

@@ -12,7 +12,7 @@ export const ThankYouModal: React.FC<ThankYouModalProps> = ({
   open,
   orderId,
   amount,
-  currencySymbol = "₹",
+  currencySymbol = "$",
   onClose,
 }) => {
   if (!open) return null;

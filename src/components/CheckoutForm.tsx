@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import type { StripeCardElement } from '@stripe/stripe-js';
+import type { StripeCardElement } from "@stripe/stripe-js";
 import api from "../lib/api";
 import { ThankYouModal } from "./ThankYouModal";
 import { useCart } from "../api/cart";
@@ -9,7 +9,6 @@ interface PaymentIntentResponse {
   clientSecret?: string;
   orderId?: string;
 }
-
 
 interface CartItem {
   id?: string | number;
@@ -21,10 +20,11 @@ interface CartItem {
 interface CheckoutFormProps {
   totalAmount: number;
   cartItems: CartItem[];
-  currentAddress: any
+  currentAddress: any;
   onSuccess: () => void;
   onClose: () => void;
 }
+
 interface CheckoutPayload {
   "Userorder[appuser_address_id]": string | number;
   "Userorder[payment_type]": string;
@@ -36,25 +36,27 @@ interface CheckoutPayload {
   "Userorder[user_carts_id]": string;
 }
 
-export default function CheckoutForm({ totalAmount, cartItems, currentAddress  , onSuccess }: CheckoutFormProps) {
-  const {  refetch } = useCart(true);
+export default function CheckoutForm({
+  totalAmount,
+  cartItems,
+  currentAddress,
+  onSuccess,
+}: CheckoutFormProps) {
+  const { refetch } = useCart(true);
   const [thankYouOpen, setThankYouOpen] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const authKey = localStorage.getItem("authKey");
-  // const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const currencySymbol = "₹";
-  const formattedAmount = Number(totalAmount).toLocaleString("en-IN", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+  // USD currency formatting
+  const formattedAmount = Number(totalAmount).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
   });
-
-
 
   async function checkoutOrder(payload: CheckoutPayload) {
     try {
@@ -64,13 +66,14 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
       }
 
       const res = await api.post(`/userauth/checkout`, formData, {
-        headers: { "Content-Type": "multipart/form-data" ,
+        headers: {
+          "Content-Type": "multipart/form-data",
           auth_key: authKey,
-         },
+        },
       });
+
       onSuccess();
       refetch();
-
       console.log("Checkout success:", res.data);
       return res.data;
     } catch (error) {
@@ -78,9 +81,10 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
       throw error;
     }
   }
+  const greenPackaging = 2;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!stripe || !elements) return;
 
     setLoading(true);
@@ -88,10 +92,10 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
     setSuccess(false);
 
     try {
-      // Step 1: Create Payment Intent
+      // Step 1: Create Payment Intent in USD
       const formData = new FormData();
       formData.append("amount", String(totalAmount));
-      formData.append("currency", "inr");
+      formData.append("currency", "usd");
 
       const res = await api.post<PaymentIntentResponse>(
         "/userauth/createpaymentintent",
@@ -135,10 +139,10 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
           "Userorder[sub_total]": totalAmount,
           "Userorder[total]": totalAmount,
           "Userorder[order_status]": "Confirm",
-          "Userorder[user_carts_id]": cartItems?.map((item: any) => item.user_carts_id).join(',')
+          "Userorder[user_carts_id]": cartItems
+            ?.map((item: any) => item.user_carts_id)
+            .join(","),
         });
-
-        // refetch();
       } else {
         setMessage(`Payment status: ${paymentIntent?.status}`);
       }
@@ -148,15 +152,8 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
       setLoading(false);
     }
   };
-
-
   return (
-    <div
-      style={{
-        margin: "0 auto",
-        borderRadius: 14,
-      }}
-    >
+    <div style={{ margin: "0 auto", borderRadius: 14 }}>
       <div style={{ textAlign: "center", marginBottom: 16 }}>
         <span className="2xl:text-4.5xl xl:text-4xl lg:text-3xl md:text-2xl text-base leading-none font-playfairDisplay italic mb-2">
           Checkout
@@ -184,13 +181,22 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
               {item?.product.title} × {item.quantity}
             </span>
             <span>
-              {currencySymbol}
-              {Number(item.price).toLocaleString("en-IN", {
+              {Number(item.price * item.quantity).toLocaleString("en-US", {
                 minimumFractionDigits: 2,
+                style: "currency",
+                currency: "USD",
               })}
             </span>
           </div>
         ))}
+        <div className="flex text-black justify-between items-center md:text-[16px] text-[12px] mb-2">
+          <span>
+            Green packaging charge
+          </span>
+          <span>
+            ${greenPackaging.toFixed(2)}
+          </span>
+        </div>
         <div
           style={{
             borderTop: "1px dashed #dadbdd",
@@ -203,10 +209,7 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
           }}
         >
           <span>Total</span>
-          <span style={{ color: "#000" }}>
-            {currencySymbol}
-            {formattedAmount}
-          </span>
+          <span style={{ color: "#000" }}>{formattedAmount}</span>
         </div>
       </div>
 
@@ -250,7 +253,6 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
 
         <button
           type="submit"
-          // disabled={true}
           className="!cursor-pointer gap-3 flex items-center justify-center w-full p-3 text-white lg:text-[18px] md:text-[16px] text-[14px] mb-2 mt-1 font-semibold hover:!bg-transparent hover:!text-[#C41A2C] !border-[#C41A2C] !border !duration-300 !transition-all !rounded-full"
           style={{
             background: loading ? "#6c63ff89" : "#C41A2C",
@@ -272,11 +274,7 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
             />
           ) : (
             <>
-              Pay{" "}
-              <strong>
-                {currencySymbol}
-                {formattedAmount}
-              </strong>
+              Pay <strong>{formattedAmount}</strong>
             </>
           )}
         </button>
@@ -284,12 +282,8 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
 
       <ThankYouModal
         open={thankYouOpen}
-        // orderId={lastOrderId}
         amount={totalAmount}
-        onClose={() => {
-          setThankYouOpen(false);
-          // Optionally, route however you like!
-        }}
+        onClose={() => setThankYouOpen(false)}
       />
 
       {/* Feedback Message */}
@@ -323,6 +317,4 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
       `}</style>
     </div>
   );
-
-
 }
