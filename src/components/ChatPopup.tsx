@@ -85,7 +85,7 @@ const ChatPopup: React.FC = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-400 transition"
+                className="font-light placeholder:text-black text-black w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary transition"
               />
               <input
                 type="email"
@@ -94,7 +94,7 @@ const ChatPopup: React.FC = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-400 transition"
+                className="font-light placeholder:text-black text-black w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary transition"
               />
               <textarea
                 name="message"
@@ -102,7 +102,7 @@ const ChatPopup: React.FC = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-400 transition min-h-[80px] resize-none"
+                className="font-light placeholder:text-black text-black w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-primary transition min-h-[80px] resize-none"
               />
               <button
                 type="submit"

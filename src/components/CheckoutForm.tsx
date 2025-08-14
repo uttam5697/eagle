@@ -251,7 +251,7 @@ export default function CheckoutForm({ totalAmount, cartItems, currentAddress  ,
         <button
           type="submit"
           // disabled={true}
-          className="cursor-not-allowed gap-3 flex items-center justify-center w-full p-3 !text-white lg:text-[18px] md:text-[16px] text-[14px] mb-2 mt-1 font-semibold hover:!bg-transparent hover:!text-[#C41A2C] !border-[#C41A2C] !border !duration-300 !transition-all !rounded-full"
+          className="!cursor-pointer gap-3 flex items-center justify-center w-full p-3 text-white lg:text-[18px] md:text-[16px] text-[14px] mb-2 mt-1 font-semibold hover:!bg-transparent hover:!text-[#C41A2C] !border-[#C41A2C] !border !duration-300 !transition-all !rounded-full"
           style={{
             background: loading ? "#6c63ff89" : "#C41A2C",
             cursor: "not-allowed",
