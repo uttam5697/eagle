@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
+import { Logo } from "../assets/Index";
 
 interface FormData {
   name: string;
@@ -45,7 +46,7 @@ const ChatPopup: React.FC = () => {
       <button
         onClick={togglePopup}
         aria-label={isOpen ? "Close chat popup" : "Open chat popup"}
-        className="fixed bottom-5 right-5 bg-gradient-to-r from-blue-600 to-cyan-400 text-white px-6 py-4 rounded-full shadow-2xl hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 transition-all z-40"
+        className="fixed bottom-5 right-5 bg-gradient-to-r from-primary to-primary text-white text-[32px] w-[60px] h-[60px] rounded-full shadow-2xl hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all z-40"
       >
         {isOpen ? "✖" : "💬"}
       </button>
@@ -71,8 +72,8 @@ const ChatPopup: React.FC = () => {
         {isOpen && (
           <div className="p-6">
             <div className="flex items-center mb-3">
-              <div className="bg-blue-600 rounded-full w-10 h-10 flex items-center justify-center text-white text-2xl mr-3">
-                💡
+              <div className="w-10 h-10 flex items-center justify-center mr-3">
+                <img src={Logo}/>
               </div>
               <h3 className="text-xl font-semibold text-gray-800">Enquiry Form</h3>
             </div>
@@ -105,14 +106,14 @@ const ChatPopup: React.FC = () => {
               />
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-2 rounded-lg font-medium hover:from-green-700 hover:to-emerald-800 transition"
+                className="w-full bg-primary text-white py-2 rounded-lg font-medium border border-primary hover:bg-transparent hover:text-black transition"
               >
                 Send
               </button>
             </form>
             <button
               onClick={openWhatsApp}
-              className="w-full flex items-center justify-center mt-4 bg-[#25D366] text-white py-2 rounded-lg font-medium hover:bg-green-700 transition"
+              className="w-full flex items-center justify-center mt-4 bg-primary text-white py-2 rounded-lg font-medium border border-primary hover:bg-transparent hover:text-black transition"
               type="button"
             >
               <span className="text-xl mr-2">📱</span>
