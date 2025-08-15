@@ -181,7 +181,7 @@ export default function CheckoutForm({
               {item?.product.title} × {item.quantity}
             </span>
             <span>
-              {Number(item.price * item.quantity).toLocaleString("en-US", {
+              {Number(item.product.price_per_box * item.quantity).toLocaleString("en-US", {
                 minimumFractionDigits: 2,
                 style: "currency",
                 currency: "USD",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "../../assets/Index";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ type FormFields = {
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const { login } = useUser();
+  const {authKey, login } = useUser();
   const url = new URL(window.location.href);
   const redirect = url.searchParams.get("redirect");
   const [showPassword, setShowPassword] = useState(false);
@@ -62,7 +62,8 @@ export default function SignUp() {
       payload.append("Appuser[devices_id]", "erfrrdfjjweksh123464758nbvbdshjasdwarfe");
       payload.append("Appuser[app_version]", "1");
 
-      const res = await api.post("/beforeauth/usersignup", payload);
+      const res = await api.post("/beforeauth/usersignup", payload) as any;
+      console.log("🚀 ~ handleSubmit ~ res:", res)
       if (res.status === 1) {
         login({
           firstName: res?.data?.first_name,
@@ -70,13 +71,16 @@ export default function SignUp() {
           fullName: res?.data?.full_name,
           authKey: res?.data?.auth_key,
         });
-        showToast("Signup successful!", "success");
-      }
-      if (redirect) {
+        showToast("Signup successful!", "success"); 
+        if (redirect) {
         window.location.href = redirect;
       } else {
         navigate(paths.home.path, { replace: true });
       }
+      }else{
+        showToast(res?.message, "error");
+      }
+      
 
     } catch (error: any) {
       console.error("Signup error", error);
@@ -91,6 +95,16 @@ export default function SignUp() {
       navigate(`${paths.login.path}`);
     }
   };
+
+    useEffect(() => {
+      if (authKey) {
+        if (redirect) {
+          window.location.href = redirect; // external or internal
+        } else {
+          navigate(paths.home.path, { replace: true });
+        }
+      }
+    }, [authKey, redirect, navigate]);
 
   return (
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">

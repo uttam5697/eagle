@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "../../assets/Index";
 import { FiArrowLeft, FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
@@ -27,13 +27,24 @@ const getDeviceToken = () => {
 };
 
 export default function Login() {
-  const { login } = useUser();
+  const { authKey, login } = useUser(); // <-- Get current user
   const url = new URL(window.location.href);
   const redirect = url.searchParams.get("redirect");
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  // 🚀 Redirect if already logged in
+  useEffect(() => {
+    if (authKey) {
+      if (redirect) {
+        window.location.href = redirect; // external or internal
+      } else {
+        navigate(paths.home.path, { replace: true });
+      }
+    }
+  }, [authKey, redirect, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,9 +82,7 @@ export default function Login() {
         }
       } else {
         showToast("Invalid email or password please try again", "error");
-
       }
-
     } catch (error: any) {
       console.error("Login error:", error);
       showToast(error?.response?.data?.message || "Login failed");
@@ -81,10 +90,10 @@ export default function Login() {
   };
 
   const handleSignup = () => {
-    if(redirect){
-     navigate(`${paths.signup.path}?redirect=${redirect}`);
-    }else{
-      navigate(`${paths.signup.path}`);
+    if (redirect) {
+      navigate(`${paths.signup.path}?redirect=${redirect}`);
+    } else {
+      navigate(paths.signup.path);
     }
   };
 
@@ -92,14 +101,13 @@ export default function Login() {
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">
       <div className="w-full md:w-1/2 px-3 flex flex-col justify-center">
         <div className="w-full bg-white rounded-lg md:p-4 p-3 shadow-lg max-w-[500px] mx-auto">
-          {/* Back to Login Button */}
-            <Link
-              to={"/"}
-              className="flex items-center text-black hover:text-primary mb-4 md:text-sm text-xs transition-colors"
-            >
-              <FiArrowLeft className="mr-2" />
-              Back
-            </Link>
+          <Link
+            to={"/"}
+            className="flex items-center text-black hover:text-primary mb-4 md:text-sm text-xs transition-colors"
+          >
+            <FiArrowLeft className="mr-2" />
+            Back
+          </Link>
           <div className="flex justify-center mb-6">
             <img src={Logo} alt="Eagle Logo" />
           </div>
@@ -164,7 +172,7 @@ export default function Login() {
           </form>
           <div className="text-center mt-4">
             <button
-              onClick={() => handleSignup()}
+              onClick={handleSignup}
               className="text-black font-bold text-sm hover:underline"
             >
               Create an Account
