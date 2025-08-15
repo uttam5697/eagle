@@ -64,7 +64,7 @@ export default function Login() {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
+      }) as any;
 
       if (response?.data?.auth_key) {
         localStorage.setItem("authKey", response?.data?.auth_key);
@@ -74,14 +74,14 @@ export default function Login() {
           fullName: response?.data?.full_name,
           authKey: response?.data?.auth_key,
         });
-        showToast("Logged in successfully!", "success");
+        showToast(response?.message, "success");
         if (redirect) {
           window.location.href = redirect;
         } else {
           navigate(paths.home.path, { replace: true });
         }
       } else {
-        showToast("Invalid email or password please try again", "error");
+        showToast(response?.message, "error");
       }
     } catch (error: any) {
       console.error("Login error:", error);

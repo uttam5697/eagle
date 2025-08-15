@@ -63,15 +63,16 @@ export default function SignUp() {
       payload.append("Appuser[app_version]", "1");
 
       const res = await api.post("/beforeauth/usersignup", payload) as any;
-      console.log("🚀 ~ handleSubmit ~ res:", res)
+      console.log("🚀 ~ handleSubmit ~ res:", res?.data?.auth_key)
       if (res.status === 1) {
+        localStorage.setItem("authKey", res?.data?.auth_key);
         login({
           firstName: res?.data?.first_name,
           lastName: res?.data?.first_name,
           fullName: res?.data?.full_name,
           authKey: res?.data?.auth_key,
         });
-        showToast("Signup successful!", "success"); 
+        showToast(res?.message, "success"); 
         if (redirect) {
         window.location.href = redirect;
       } else {
