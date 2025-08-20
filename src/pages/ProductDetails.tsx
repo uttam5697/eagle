@@ -216,10 +216,10 @@ useEffect(() => {
                 <div className="">
                     <div className="border w-full rounded-2xl bg-[#f6f6f6] overflow-hidden">
                         {mainImage?.type === 'Video' && mainImage?.video ? (
-                            <video src={mainImage.video} controls className="w-full h-full" />
+                            <video src={mainImage.video} controls className="w-full h-full max-h-[636px] object-cover" />
                         ) : mainImage?.type === 'Youtube' && mainImage?.video_url ? (
                             <iframe
-                                className="w-full aspect-video"
+                                className="w-full aspect-video w-full  max-h-[636px] h-full object-cover"
                                 // src={mainImage.video_url}
                                 src={`https://www.youtube.com/embed/${getYouTubeVideoID(mainImage.video_url)}`}
                                 title="YouTube Video"
