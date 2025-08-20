@@ -52,10 +52,9 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
       return;
     }
 
-    if (!postal.trim() || !/^\d{6}$/.test(postal)) {
-      showToast("Please enter a valid 6-digit postal code", "error");
+    if (!postal.trim() || !/^\d{5}(-\d{4})?$/.test(postal)) {
+      showToast("Please enter a valid 5- or 9-digit postal code", "error");
       setIsSubmitting(false);
-
       return;
     }
 

@@ -95,7 +95,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
 
 
         {cartItems?.map((item: any) => (
-          <div key={item.user_carts_id} className="p-4 border-b border-[#0000001b] last:border-none hover:bg-[#f7f7f7]">
+          <div onClick={() => navigate(`/my-cart`)} key={item.user_carts_id} className="p-4 border-b border-[#0000001b] last:border-none hover:bg-[#f7f7f7]">
             <div className="flex items-start space-x-4">
               <div className="flex-shrink-0">
                 <img
