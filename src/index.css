@@ -18,6 +18,11 @@ body {
     @apply bg-black flex lg:text-[18px] md:text-[16px] text-[14px] text-white font-semibold xl:gap-10 lg:gap-8 md:gap-6 gap-4 items-center lg:px-[18px] md:px-4 px-3 md:py-[18px] py-3 transition-colors duration-300 rounded-full border border-black hover:bg-white hover:text-black;
   }
 }
+@layer components {
+  .red-btn {
+    @apply bg-primary flex lg:text-[18px] md:text-[16px] text-[14px] text-white font-semibold xl:gap-10 lg:gap-8 md:gap-6 gap-4 items-center lg:px-[18px] md:px-4 px-3 md:py-[18px] py-3 transition-colors duration-300 rounded-full border border-primary hover:bg-white hover:text-primary;
+  }
+}
 .header-navbar .mobile-nemu {
   transform: translateX(110%);
   transition: 0.6s;

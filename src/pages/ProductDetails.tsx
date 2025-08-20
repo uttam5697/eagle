@@ -364,7 +364,7 @@ useEffect(() => {
                         {productDataById?.title}
                     </h1>
                     <div className=' my-4'>
-                        <h5 className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold inline-block lg:mb-5 md:mb-4 mb-3'>${productDataById?.price} / sqft <p className='xl:text-sm inline-block text-xm leading-none font-bold'>(${productDataById?.sqft_in_box} sqft/Box)</p></h5>
+                        <h5 className='xl:text-3xl lg:text-2xl md:text-base text-2sm leading-none font-bold inline-block lg:mb-5 md:mb-4 mb-3'><span className="text-primary"> ${productDataById?.price}</span> / sqft <p className='xl:text-sm inline-block text-xm leading-none font-bold'>({productDataById?.sqft_in_box} sqft/Box)</p></h5>
                         <div className='flex items-center lg:gap-5 md:gap-4 gap-3 flex-wrap'>
                             {productDataById?.main_price && (
                                 <p className="xl:text-lg lg:text-base md:text-sm text-xs leading-none font-medium text-gray-500 line-through">

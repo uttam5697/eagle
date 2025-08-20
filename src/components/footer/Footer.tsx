@@ -6,20 +6,26 @@ import { useFooter } from "../../api/home";
 
 export default function Footer() {
    const { data: generaldata } = useFooter(false);
+   console.log("🚀 ~ Footer ~ generaldata:", generaldata)
    const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-black xl:py-[50px] lg:py-[40px] md:py-[30px] py-[20px] pb-8">
       <div className="container">
         <div className="grid grid-cols-12 gap-4 mb-8">
-          <div className="xl:col-span-7 lg:col-span-5 md:col-span-4 sm:col-span-2 col-span-12">
-            <img
-              src={Logo}
-              alt="Eagle Logo"
-              className="xl:h-[112px] lg:h-[92px] md:h-[72px] h-[52px]"
-            />
+          <div className="col-start-1 xl:col-end-7 lg:col-end-7 md:col-end-8 sm:col-end-10 col-end-13">
+            <div className="flex gap-4 md:flex-nowrap flex-wrap">
+              <img
+                src={Logo}
+                alt="Eagle Logo"
+                className="xl:h-[112px] flex-none lg:h-[92px] md:h-[72px] h-[52px]"
+              />
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3056.987947731492!2d-82.85781472419508!3d39.98637467151211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x883863b7d9ea60af%3A0x1c10a7c828d2e6dc!2s416%20Morrison%20Rd%2C%20Columbus%2C%20OH%2043213%2C%20USA!5e0!3m2!1sen!2sin!4v1755668434676!5m2!1sen!2sin" 
+                width="100%" height="112" allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
           </div>
-          <div className="xl:col-span-5 lg:col-span-7 md:col-span-8 sm:col-span-10 col-span-12 grid grid-cols-3">
+          <div className="xl:col-start-8 lg:col-start-8 md:col-start-8 sm:col-start-10 col-start-1 col-end-13 grid grid-cols-3">
             <div>
               <h3 className="lg:mb-[34px] md:mb-[24px] mb-[14px] leading-none 2xl:text-3xl xl:text-2xl lg:text-2xl md:text-xl text-base text-white font-playfairDisplay italic ">
                 Link
@@ -57,15 +63,15 @@ export default function Footer() {
               </h3>
               <ul className="space-y-2 navbar">
                 <li>
-                  <Link
-                    to={generaldata?.linkedin}
+                  <Link target="_blank"
+                    to={generaldata?.facebook}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
-                    LinkedIn
+                    Facebook
                   </Link>
                 </li>
                 <li>
-                  <Link
+                  <Link target="_blank"
                     to={generaldata?.instagram}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
@@ -73,11 +79,27 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link
+                  <Link target="_blank"
                     to={generaldata?.twitter}
                     className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
                   >
                     Twitter
+                  </Link>
+                </li>
+                <li>
+                  <Link target="_blank"
+                    to={generaldata?.tiktok}
+                    className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
+                  >
+                    TikTok
+                  </Link>
+                </li>
+                <li>
+                  <Link target="_blank"
+                    to={generaldata?.linkedin}
+                    className="text-white font-light before:!-bottom-1 after:!-bottom-1 transition-colors text-sm"
+                  >
+                    LinkedIn
                   </Link>
                 </li>
               </ul>

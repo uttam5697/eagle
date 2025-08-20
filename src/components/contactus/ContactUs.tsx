@@ -84,12 +84,12 @@ export default function ContactUs() {
               onSubmit={handleSubmit}
               className="max-w-[600px] w-full mx-auto bg-[#fdfcfb] rounded-md xl:space-y-6 lg:space-y-5 md:space-y-4 space-y-3"
             >
-              <h2 className="italic 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay xl:mb-10 lg:mb-8 md:mb-6 mb-4">
+              <h2 className="italic text-primary 2xl:text-5xl xl:text-4.5xl lg:text-4xl md:text-3xl text-2xl xl:leading-none leading-normal font-playfairDisplay xl:mb-10 lg:mb-8 md:mb-6 mb-4">
                 Contact Us
               </h2>
               <div className="flex lg:flex-row flex-col xl:gap-6 lg:gap-5 md:gap-4 gap-3">
                 <div className="flex items-center bg-white border border-black/30 rounded-full p-2 w-full">
-                  <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
+                  <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-primary rounded-full flex items-center justify-center flex-none">
                     <PiUserLight className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
                   </div>
                   <input
@@ -102,7 +102,7 @@ export default function ContactUs() {
                   />
                 </div>
                 <div className="flex items-center bg-white border border-black/30 rounded-full p-2 w-full">
-                  <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
+                  <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-primary rounded-full flex items-center justify-center flex-none">
                     <PiUserLight className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
                   </div>
                   <input
@@ -116,7 +116,7 @@ export default function ContactUs() {
                 </div>
               </div>
               <div className="flex items-center bg-white border border-black/30 rounded-full p-2">
-                <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
+                <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-primary rounded-full flex items-center justify-center flex-none">
                   <PiEnvelopeSimple className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
                 </div>
                 <input
@@ -129,7 +129,7 @@ export default function ContactUs() {
                 />
               </div>
               <div className="flex bg-white border border-black/30 rounded-[24px] p-2">
-                <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-black rounded-full flex items-center justify-center flex-none">
+                <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-primary rounded-full flex items-center justify-center flex-none">
                   <PiChatDots className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
                 </div>
                 <textarea
@@ -143,7 +143,7 @@ export default function ContactUs() {
               </div>
 
               <div className="flex justify-end">
-                <button className="flex justify-between black-btn group before:!hidden after:!hidden">
+                <button className="flex justify-between red-btn group before:!hidden after:!hidden">
                   <span className='leading-none'>Submit</span>
                   <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
                 </button>
