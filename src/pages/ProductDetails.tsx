@@ -18,9 +18,11 @@ import { useCart } from '../api/cart';
 
 export default function ProductDetailPage() {
     const { slug } = useParams();
-    const { refetch: refetchCart } = useCart(true);
+    const { data: cartdata, refetch: refetchCart } = useCart(true);
     const [boxes, setBoxes] = useState(1);
+    const [isBuyNowClicked, setIsBuyNowClicked] = useState(false);
     const [productGallery, setProductGallery] = useState([]);
+    const [cartLoading, setCartLoading] = useState(false); // Loader for cart actions
     const [sqft, setSqft] = useState(0);
     const [isWastageChecked, setIsWastageChecked] = useState(false);
     const [originalSqft, setOriginalSqft] = useState(0);
@@ -102,33 +104,32 @@ export default function ProductDetailPage() {
     // Recalculate boxes when wastage toggle changes
     useEffect(() => {
         getBoxesForSqft(sqft, productDataById?.sqft_in_box);
-
     }, []);
 
 
-// Set only once when product data is available
-useEffect(() => {
-    if (productDataById?.sqft_in_box) {
-        const initSqft = sqft === 0
-            ? Number(productDataById.sqft_in_box) || 0
-            : sqft;
-        setOriginalSqft(initSqft);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [productDataById?.sqft_in_box]); // no sqft dependency here
+    // Set only once when product data is available
+    useEffect(() => {
+        if (productDataById?.sqft_in_box) {
+            const initSqft = sqft === 0
+                ? Number(productDataById.sqft_in_box) || 0
+                : sqft;
+            setOriginalSqft(initSqft);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productDataById?.sqft_in_box]); // no sqft dependency here
 
-useEffect(() => {
-    console.log("isWastageChecked", isWastageChecked);
+    useEffect(() => {
+        console.log("isWastageChecked", isWastageChecked);
 
-    let baseSqft = isWastageChecked
-        ? originalSqft * 1.1 // +10%
-        : originalSqft
+        let baseSqft = isWastageChecked
+            ? originalSqft * 1.1 // +10%
+            : originalSqft
 
 
-    getBoxesForSqft(baseSqft, productDataById?.sqft_in_box);
-    handleSqftChange(baseSqft, productDataById?.sqft_in_box);
+        getBoxesForSqft(baseSqft, productDataById?.sqft_in_box);
+        handleSqftChange(baseSqft, productDataById?.sqft_in_box);
 
-}, [isWastageChecked, originalSqft, productDataById?.sqft_in_box]);
+    }, [isWastageChecked, originalSqft, productDataById?.sqft_in_box]);
 
 
     // useEffect(() => {
@@ -169,6 +170,16 @@ useEffect(() => {
     }, [slug])
 
     const handleAddToCart = async () => {
+        setCartLoading(true);
+        //  if(cartdata?.find((item: any) => item.product_id === productDataById?.product_id)) {
+        //       re  navigate("/my-cart");
+        //     }
+        if (cartdata?.some((item: any) => item.product_id === productDataById?.product_id)) {
+            setCartLoading(false);
+            setIsBuyNowClicked(false);
+            navigate("/my-cart");
+            return;
+        }
         if (authKey) {
             const formData = new FormData();
             formData.append('Usercarts[product_id]', productDataById?.product_id);
@@ -186,6 +197,7 @@ useEffect(() => {
 
                 if (response.status === 1) {
                     refetchCart();
+                    navigate(`${paths.mycart.path}`);
                     showToast("Product added to cart", "success");
                     // navigate(`${paths.home.path}`);
                 } else {
@@ -201,6 +213,8 @@ useEffect(() => {
             navigate(`${paths.login.path}?redirect=${window.location.pathname + window.location.search}`);
             showToast("Please login first");
         }
+        setCartLoading(false);
+        setIsBuyNowClicked(false);
     };
 
 
@@ -445,18 +459,59 @@ useEffect(() => {
                     </div>
                     <div className="grid grid-cols-2 gap-4 items-start mt-[84px]">
                         <button onClick={handleAddToCart} className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black xl:px-6 px-4 xl:py-[18px] py-[14px]">
-                            <span className='leading-none'> Add to Cart</span>
+                            <span className="flex items-center leading-none">
+                                {!isBuyNowClicked && cartLoading ? (
+                                    <>
+                                        <svg
+                                            className="animate-spin h-5 w-5 mr-2 text-black group-hover:text-white"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="4"
+                                                d="M4 12a8 8 0 018-8"
+                                            ></path>
+                                        </svg>
+                                        Going to Cart
+                                    </>
+                                ) : (
+                                    "Add to Cart"
+                                )}
+                            </span>
+
+
                             <FiShoppingCart className='text-2sm  duration-300 transition-all' />
                         </button>
-                        <Link to="/my-cart" className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
-                            <span className='leading-none'>Buy Now</span>
+                        <button onClick={() => {
+                            handleAddToCart();
+                            setIsBuyNowClicked(true);
+                        }} className="flex justify-between black-btn group before:!hidden after:!hidden xl:px-6 px-4 xl:py-[18px] py-[14px]">
+                            <span className='leading-none'>
+                                Buy Now
+                            </span>
                             <FiArrowUpRight className='text-2sm group-hover:rotate-45 duration-300 transition-all' />
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>
-            {productDataById?.product_specifications.length > 0 &&
-                <ProductSpecifications product_specifications={productDataById?.product_specifications} />}
-        </div>
+            {
+                productDataById?.product_specifications.length > 0 &&
+                <ProductSpecifications product_specifications={productDataById?.product_specifications} />
+            }
+        </div >
     );
 }

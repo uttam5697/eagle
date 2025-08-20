@@ -13,6 +13,7 @@ import CheckoutModal from "./CheckoutModal";
 
 
 export default function MyCart() {
+  const [deliveryType, setDeliveryType] = useState<"delivery" | "pickup">("delivery");
   const { data: fetchedCartItems = [], refetch } = useCart(true);
   const { data: addressAll } = useAddress();
   const authkey = useUser()?.authKey;
@@ -91,7 +92,7 @@ export default function MyCart() {
     return sum + price * qty;
   }, 0);
 
-  const greenPackaging = 2;
+  const greenPackaging = 0;
   const totalAmount = itemTotal + greenPackaging;
 
   const handleDelete = async (id: number) => {
@@ -117,10 +118,14 @@ export default function MyCart() {
   };
 
   const handleCheckout = async () => {
-    if (selectedId === 0) {
+    if (deliveryType === "delivery" && selectedId === 0) {
       showToast("Please select an address", "error");
       return;
     }
+    // if (selectedId === 0 ) {
+    //   showToast("Please select an address", "error");
+    //   return;
+    // }
     setIsCheckoutModalOpen(true);
   }
   return (
@@ -246,14 +251,14 @@ export default function MyCart() {
                       ${itemTotal.toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <span className="text-black font-light md:text-sm text-xs">
-                      Green packaging charge
+                      Delivery charge
                     </span>
                     <span className="font-semibold">
                       ${greenPackaging.toFixed(2)}
                     </span>
-                  </div>
+                  </div> */}
                   {/* <div className="flex justify-between">
                     <span className="text-black font-light md:text-sm text-xs">
                       Delivery Charges
@@ -279,33 +284,66 @@ export default function MyCart() {
                   </div>
                 </div>
 
-                {/* Delivery Info */}
+                {/* Delivery / Pickup Info */}
                 <div className="bg-white rounded-lg p-4 mb-6">
-                  <div className="flex space-x-3 items-center">
-                    <div className="flex items-center space-x-3">
-                      <div className="flex items-center space-x-2">
-                        <House />
+                  <div className="flex flex-col space-y-4">
+                    {/* Option select */}
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => setDeliveryType("delivery")}
+                        className={`px-4 py-2 rounded-lg border text-sm font-semibold transition 
+          ${deliveryType === "delivery" ? "bg-black text-white" : "bg-gray-100 text-black"}`}
+                      >
+                        Delivery
+                      </button>
+                      <button
+                        onClick={() => setDeliveryType("pickup")}
+                        className={`px-4 py-2 rounded-lg border text-sm font-semibold transition 
+          ${deliveryType === "pickup" ? "bg-black text-white" : "bg-gray-100 text-black"}`}
+                      >
+                        Pickup
+                      </button>
+                    </div>
+
+                    {/* Show info depending on selection */}
+                    {deliveryType === "delivery" ? (
+                      <div className="flex space-x-3 items-center">
+                        <div className="flex items-center space-x-3">
+                          <div className="flex items-center space-x-2">
+                            <House />
+                          </div>
+                          <div>
+                            <p className="text-black md:text-sm text-xs font-semibold">
+                              Delivery to
+                            </p>
+                            <p className="md:text-xs text-[12px] font-light">
+                              {addressAll?.length > 0 &&
+                                addressAll.find(
+                                  (address: any) => address.appuser_address_id === selectedId
+                                )?.address_line_1}
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setChangeModalOpen(true)}
+                          className="text-black !ml-auto md:text-sm text-xs underline font-semibold"
+                        >
+                          Add Address
+                        </button>
                       </div>
-                      <div>
+                    ) : (
+                      <div className="flex items-center space-x-2">
                         <p className="text-black md:text-sm text-xs font-semibold">
-                          Delivery to
+                          Pickup selected
                         </p>
                         <p className="md:text-xs text-[12px] font-light">
-                          {addressAll?.length > 0 &&
-                            addressAll.find((address: any) => address.appuser_address_id === selectedId)?.
-                              address_line_1
-                          }
+                          You can collect your order directly from our store.
                         </p>
                       </div>
-                    </div>
-                    <button
-                      onClick={() => setChangeModalOpen(true)}
-                      className="text-black !ml-auto md:text-sm text-xs underline font-semibold"
-                    >
-                      Add Address
-                    </button>
+                    )}
                   </div>
                 </div>
+
 
                 {/* Process Button */}
                 <button

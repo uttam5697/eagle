@@ -81,7 +81,7 @@ export default function CheckoutForm({
       throw error;
     }
   }
-  const greenPackaging = 2;
+  // const greenPackaging = 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -189,14 +189,14 @@ export default function CheckoutForm({
             </span>
           </div>
         ))}
-        <div className="flex text-black justify-between items-center md:text-[16px] text-[12px] mb-2">
+        {/* <div className="flex text-black justify-between items-center md:text-[16px] text-[12px] mb-2">
           <span>
             Green packaging charge
           </span>
           <span>
             ${greenPackaging.toFixed(2)}
           </span>
-        </div>
+        </div> */}
         <div
           style={{
             borderTop: "1px dashed #dadbdd",
