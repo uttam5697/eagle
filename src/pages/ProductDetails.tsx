@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
         const validSqft = Math.max(0, newSqft);
         setSqft(parseFloat(validSqft.toFixed(2))); // show user input
         setBoxes(getBoxesForSqft(validSqft, coverage));
-        setIsWastageChecked(false);
+        // setIsWastageChecked(false);
     };
 
     const { data: productDataById, refetch } = useQuery({
@@ -123,7 +123,6 @@ useEffect(() => {
     let baseSqft = isWastageChecked
         ? originalSqft * 1.1 // +10%
         : originalSqft
-    console.log("🚀 ~ ProductDetailPage ~ baseSqft:", baseSqft)
 
 
     getBoxesForSqft(baseSqft, productDataById?.sqft_in_box);
@@ -132,13 +131,13 @@ useEffect(() => {
 }, [isWastageChecked, originalSqft, productDataById?.sqft_in_box]);
 
 
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setIsWastageChecked(true);
-        }, 500); // Adjust the delay as needed
+    // useEffect(() => {
+    //     const timeoutId = setTimeout(() => {
+    //         setIsWastageChecked(true);
+    //     }, 500); // Adjust the delay as needed
 
-        return () => clearTimeout(timeoutId);
-    }, []);
+    //     return () => clearTimeout(timeoutId);
+    // }, []);
 
 
 
