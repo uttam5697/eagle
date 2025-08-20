@@ -37,14 +37,15 @@ export default function Login() {
 
   // 🚀 Redirect if already logged in
   useEffect(() => {
-    if (authKey) {
-      if (redirect) {
-        window.location.href = redirect; // external or internal
-      } else {
-        navigate(paths.home.path, { replace: true });
-      }
+  if (authKey) {
+    if (redirect) {
+      // redirect is relative path now (e.g. /products/xxx)
+      navigate(redirect, { replace: true });
+    } else {
+      navigate(paths.home.path, { replace: true });
     }
-  }, [authKey, redirect, navigate]);
+  }
+}, [authKey, redirect, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

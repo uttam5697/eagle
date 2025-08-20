@@ -23,6 +23,8 @@ export default function ProductDetailPage() {
     const [productGallery, setProductGallery] = useState([]);
     const [sqft, setSqft] = useState(0);
     const [isWastageChecked, setIsWastageChecked] = useState(false);
+    const [originalSqft, setOriginalSqft] = useState(0);
+
     const navigate = useNavigate();
     const authKey = useUser()?.authKey;
 
@@ -69,6 +71,8 @@ export default function ProductDetailPage() {
     }
 
     const getSqftFromBoxes = (boxCount: number, coverage: number | undefined) => {
+        setOriginalSqft(boxCount * Number(coverage));
+
         return parseFloat((boxCount * Number(coverage)).toFixed(2));
     };
 
@@ -76,6 +80,7 @@ export default function ProductDetailPage() {
     const handleBoxesChange = (newBoxes: number, coverage: number) => {
         const validBoxes = Math.max(1, newBoxes);
         setBoxes(validBoxes);
+        setOriginalSqft(validBoxes * Number(coverage));
         setSqft(getSqftFromBoxes(validBoxes, coverage));
     };
 
@@ -84,6 +89,7 @@ export default function ProductDetailPage() {
         const validSqft = Math.max(0, newSqft);
         setSqft(parseFloat(validSqft.toFixed(2))); // show user input
         setBoxes(getBoxesForSqft(validSqft, coverage));
+        setIsWastageChecked(false);
     };
 
     const { data: productDataById, refetch } = useQuery({
@@ -97,27 +103,34 @@ export default function ProductDetailPage() {
     useEffect(() => {
         getBoxesForSqft(sqft, productDataById?.sqft_in_box);
 
-    }, [sqft]);
+    }, []);
 
-    useEffect(() => {
-        console.log("isWastageChecked", isWastageChecked);
-        console.log("🚀 ~ ProductDetailPage ~ sqft:", sqft);
 
-        let baseSqft = sqft === 0
-            ? Number(productDataById?.sqft_in_box) || 0
+// Set only once when product data is available
+useEffect(() => {
+    if (productDataById?.sqft_in_box) {
+        const initSqft = sqft === 0
+            ? Number(productDataById.sqft_in_box) || 0
             : sqft;
+        setOriginalSqft(initSqft);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [productDataById?.sqft_in_box]); // no sqft dependency here
 
-        if (isWastageChecked) {
-            baseSqft = baseSqft * 1.1; // add 10% wastage
-        }
+useEffect(() => {
+    console.log("isWastageChecked", isWastageChecked);
 
-        console.log("🚀 ~ ProductDetailPage ~ effective:", baseSqft);
+    let baseSqft = isWastageChecked
+        ? originalSqft * 1.1 // +10%
+        : originalSqft
+    console.log("🚀 ~ ProductDetailPage ~ baseSqft:", baseSqft)
 
-        // These functions must not directly update dependencies in this effect
-        getBoxesForSqft(baseSqft, productDataById?.sqft_in_box);
-        handleSqftChange(baseSqft, productDataById?.sqft_in_box);
 
-    }, [isWastageChecked, productDataById?.sqft_in_box]); // removed sqft
+    getBoxesForSqft(baseSqft, productDataById?.sqft_in_box);
+    handleSqftChange(baseSqft, productDataById?.sqft_in_box);
+
+}, [isWastageChecked, originalSqft, productDataById?.sqft_in_box]);
+
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -186,7 +199,7 @@ export default function ProductDetailPage() {
                 showToast(error?.response?.data?.message || "An error occurred", "error");
             }
         } else {
-            navigate(`${paths.login.path}?redirect=${window.location.href}`);
+            navigate(`${paths.login.path}?redirect=${window.location.pathname + window.location.search}`);
             showToast("Please login first");
         }
     };

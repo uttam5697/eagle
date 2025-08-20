@@ -98,14 +98,15 @@ export default function SignUp() {
   };
 
     useEffect(() => {
-      if (authKey) {
-        if (redirect) {
-          window.location.href = redirect; // external or internal
-        } else {
-          navigate(paths.home.path, { replace: true });
-        }
-      }
-    }, [authKey, redirect, navigate]);
+  if (authKey) {
+    if (redirect) {
+      // redirect is always a relative path now
+      navigate(redirect, { replace: true });
+    } else {
+      navigate(paths.home.path, { replace: true });
+    }
+  }
+}, [authKey, redirect, navigate]);
 
   return (
     <div className="w-full lg:min-h-screen flex justify-center items-center flex-col py-4">
