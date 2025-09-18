@@ -438,7 +438,7 @@ useEffect(() => {
                                 />
                                 <div>
                                     <p className="font-semibold lg:text-base md:text-2sm text-sm">Add wastage (10%)</p>
-                                    <p className="lg:text-base md:text-2sm text-sm font-light">1 box - No wastage added. Ships in 1 pallet.</p>
+                                    <p className="lg:text-base md:text-2sm text-sm font-light">1 box - No wastage added.</p>
                                 </div>
                             </label>
                         </div>

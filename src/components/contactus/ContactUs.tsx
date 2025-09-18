@@ -6,6 +6,7 @@ import api from "../../lib/api";
 import { showToast } from "../../utils/toastUtils";
 import AnimatedSection from "../ui/AnimatedSection";
 import { useNavigate } from "react-router-dom";
+import type { number } from "zod";
 
 export default function ContactUs() {
   const navigate = useNavigate();
@@ -13,9 +14,11 @@ export default function ContactUs() {
     firstName: "",
     lastName: "",
     email: "",
+    number: "",
     message: "",
     subscribe: false,
   });
+  console.log("🚀 ~ ContactUs ~ formData:", formData)
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -45,6 +48,7 @@ export default function ContactUs() {
       contactus.append("Contactus[first_name]", formData.firstName);
       contactus.append("Contactus[last_name]", formData.lastName);
       contactus.append("Contactus[email]", formData.email);
+      contactus.append("Contactus[number]", formData.number);
       contactus.append("Contactus[message]", formData.message);
 
       const res = await api.post('/beforeauth/contactus', contactus);
@@ -54,6 +58,7 @@ export default function ContactUs() {
           firstName: "",
           lastName: "",
           email: "",
+          number: "",
           message: "",
           subscribe: false
         })
@@ -115,18 +120,33 @@ export default function ContactUs() {
                   />
                 </div>
               </div>
-              <div className="flex items-center bg-white border border-black/30 rounded-full p-2">
-                <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-primary rounded-full flex items-center justify-center flex-none">
-                  <PiEnvelopeSimple className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
+              <div className="flex lg:flex-row flex-col xl:gap-6 lg:gap-5 md:gap-4 gap-3">
+                <div className="flex items-center bg-white border border-black/30 rounded-full p-2 w-full">
+                  <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-primary rounded-full flex items-center justify-center flex-none">
+                    <PiEnvelopeSimple className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent"
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent"
-                  onChange={handleChange}
-                  required
-                />
+                <div className="flex items-center bg-white border border-black/30 rounded-full p-2 w-full">
+                  <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-primary rounded-full flex items-center justify-center flex-none">
+                    <PiUserLight className="text-white lg:text-[18px] md:text-[16px] text-[14px]" />
+                  </div>
+                  <input
+                    type="number"
+                    name="number"
+                    placeholder="Number"
+                    className="w-full border-none outline-none font-light placeholder:text-black ps-3 text-black bg-transparent"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
               <div className="flex bg-white border border-black/30 rounded-[24px] p-2">
                 <div className="lg:w-[42px] md:w-[32px] w-[24px] lg:h-[42px] md:h-[32px] h-[24px] bg-primary rounded-full flex items-center justify-center flex-none">
