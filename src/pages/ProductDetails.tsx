@@ -39,7 +39,7 @@ export default function ProductDetailPage() {
 
     useEffect(() => {
         if (productDataById?.sqft_in_box) {
-            setBaseSqft(Number(productDataById.sqft_in_box));
+            setBaseSqft(Number(productDataById.sqft_in_box ));
         }
     }, [productDataById]);
 
@@ -165,7 +165,7 @@ export default function ProductDetailPage() {
     const breadcrumbData = [
         { label: 'Home', href: '/' },
         { label: `${category?.title}`, href: `/products/category/${productDataById?.product_category_id}` },
-        { label: `${productDataById?.slug}` }
+        { label: `${productDataById?.title}` }
     ];
 
     useEffect(() => {

@@ -15,7 +15,6 @@ import CheckoutModal from "./CheckoutModal";
 export default function MyCart() {
   const [deliveryType, setDeliveryType] = useState<"Delivery" | "Pickup">("Delivery");
   const { data: fetchedCartItems = [], refetch, isLoading } = useCart(true);
-  const [loadingIds, setLoadingIds] = useState<Record<number, boolean>>({});
   const { data: addressAll } = useAddress();
   const authkey = useUser()?.authKey;
 
@@ -52,7 +51,7 @@ export default function MyCart() {
     const newQuantity = action === "increase" ? currentQty + 1 : currentQty - 1;
 
     setQuantities((prev) => ({ ...prev, [id]: newQuantity }));
-    setLoadingIds((prev) => ({ ...prev, [id]: true }));
+    // setLoadingIds((prev) => ({ ...prev, [id]: true }));
 
     const formData = new FormData();
     formData.append("user_carts_id", String(id));
@@ -78,7 +77,7 @@ export default function MyCart() {
       console.error("Error updating cart:", error);
       showToast(error?.response?.data?.message || "An error occurred", "error");
     } finally {
-      setLoadingIds((prev) => ({ ...prev, [id]: false }));
+      // setLoadingIds((prev) => ({ ...prev, [id]: false }));
     }
   };
 
