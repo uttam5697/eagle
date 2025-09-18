@@ -36,7 +36,7 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
   const handleAddNewAddress = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const { recipient, address1, postal, mobile, isDefault } = formData;
+    const { recipient, address1, postal, mobile, isDefault, address2 } = formData;
 
     // 🔽 Inline Validations
     if (!recipient.trim()) {
@@ -47,6 +47,12 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose }) => {
 
     if (!address1.trim()) {
       showToast("Please enter address line 1", "error");
+      setIsSubmitting(false);
+
+      return;
+    }
+    if (!address2.trim()) {
+      showToast("Please enter address line 2", "error");
       setIsSubmitting(false);
 
       return;

@@ -13,8 +13,9 @@ import CheckoutModal from "./CheckoutModal";
 
 
 export default function MyCart() {
-  const [deliveryType, setDeliveryType] = useState<"delivery" | "pickup">("delivery");
-  const { data: fetchedCartItems = [], refetch } = useCart(true);
+  const [deliveryType, setDeliveryType] = useState<"Delivery" | "Pickup">("Delivery");
+  const { data: fetchedCartItems = [], refetch, isLoading } = useCart(true);
+  const [loadingIds, setLoadingIds] = useState<Record<number, boolean>>({});
   const { data: addressAll } = useAddress();
   const authkey = useUser()?.authKey;
 
@@ -31,8 +32,7 @@ export default function MyCart() {
   const [isAddressModalOpen, setAddressModalOpen] = useState(false);
   const [isChangeModalOpen, setChangeModalOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
-
-  const [selectedId, setSelectedId] = useState<number>(addressAll?.length > 0 ? addressAll[0]?.appuser_address_id ?? 0 : 0);
+  const [selectedId, setSelectedId] = useState<number>(0);
 
   const updateQuantity = async (
     id: number,
@@ -52,6 +52,7 @@ export default function MyCart() {
     const newQuantity = action === "increase" ? currentQty + 1 : currentQty - 1;
 
     setQuantities((prev) => ({ ...prev, [id]: newQuantity }));
+    setLoadingIds((prev) => ({ ...prev, [id]: true }));
 
     const formData = new FormData();
     formData.append("user_carts_id", String(id));
@@ -76,15 +77,17 @@ export default function MyCart() {
     } catch (error: any) {
       console.error("Error updating cart:", error);
       showToast(error?.response?.data?.message || "An error occurred", "error");
+    } finally {
+      setLoadingIds((prev) => ({ ...prev, [id]: false }));
     }
   };
 
 
 
-  const handleQuantityChange = (id: number, value: string) => {
-    const num = Math.max(1, parseInt(value) || 1);
-    setQuantities((prev) => ({ ...prev, [id]: num }));
-  };
+  // const handleQuantityChange = (id: number, value: string) => {
+  //   const num = Math.max(1, parseInt(value) || 1);
+  //   setQuantities((prev) => ({ ...prev, [id]: num }));
+  // };
 
   const itemTotal = fetchedCartItems.reduce((sum: number, item: any) => {
     const price = parseFloat(item.product.price_per_box);
@@ -118,16 +121,23 @@ export default function MyCart() {
   };
 
   const handleCheckout = async () => {
-    if (deliveryType === "delivery" && selectedId === 0) {
+    if (deliveryType === "Delivery" && selectedId === 0) {
       showToast("Please select an address", "error");
       return;
     }
-    // if (selectedId === 0 ) {
-    //   showToast("Please select an address", "error");
-    //   return;
-    // }
     setIsCheckoutModalOpen(true);
   }
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="relative w-12 h-12">
+          <div className="absolute top-0 left-0 w-full h-full rounded-full border-t-2 border-b-2 border-[#C41A2C] animate-spin"></div>
+        </div>
+        <p className="ml-4">Loading your cart...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       {fetchedCartItems.length > 0 ? <div className="min-h-screen bg-light-white">
@@ -198,7 +208,7 @@ export default function MyCart() {
                               <input
                                 type="number"
                                 value={quantities[item.user_carts_id] ?? item.quantity}
-                                onChange={(e) => handleQuantityChange(item.user_carts_id, e.target.value)}
+                                // onChange={(e) => handleQuantityChange(item.user_carts_id, e.target.value)}
                                 className="w-[50px] px-0 text-center font-semibold text-black text-[12px] lg:text-sm sm:text-base outline-none bg-transparent"
                               />
                               <div className="flex items-center col-span-1 justify-start p-2">
@@ -290,23 +300,23 @@ export default function MyCart() {
                     {/* Option select */}
                     <div className="flex space-x-4">
                       <button
-                        onClick={() => setDeliveryType("delivery")}
+                        onClick={() => setDeliveryType("Delivery")}
                         className={`px-4 py-2 rounded-lg border text-sm font-semibold transition 
-          ${deliveryType === "delivery" ? "bg-black text-white" : "bg-gray-100 text-black"}`}
+          ${deliveryType === "Delivery" ? "bg-black text-white" : "bg-gray-100 text-black"}`}
                       >
                         Delivery
                       </button>
                       <button
-                        onClick={() => setDeliveryType("pickup")}
+                        onClick={() => setDeliveryType("Pickup")}
                         className={`px-4 py-2 rounded-lg border text-sm font-semibold transition 
-          ${deliveryType === "pickup" ? "bg-black text-white" : "bg-gray-100 text-black"}`}
+          ${deliveryType === "Pickup" ? "bg-black text-white" : "bg-gray-100 text-black"}`}
                       >
                         Pickup
                       </button>
                     </div>
 
                     {/* Show info depending on selection */}
-                    {deliveryType === "delivery" ? (
+                    {deliveryType === "Delivery" ? (
                       <div className="flex space-x-3 items-center">
                         <div className="flex items-center space-x-3">
                           <div className="flex items-center space-x-2">
@@ -403,7 +413,7 @@ export default function MyCart() {
         }}
         isAddressModalOpen={isAddressModalOpen}
       />
-      <CheckoutModal isOpen={isCheckoutModalOpen} onClose={() => setIsCheckoutModalOpen(false)} cartItems={fetchedCartItems} totalAmount={totalAmount} currentAddress={selectedId} />
+      <CheckoutModal deliveryType={deliveryType} isOpen={isCheckoutModalOpen} onClose={() => setIsCheckoutModalOpen(false)} cartItems={fetchedCartItems} totalAmount={totalAmount} currentAddress={selectedId} />
     </>
   );
 }

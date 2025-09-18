@@ -7,60 +7,66 @@ import QuantityInputGroup from '../components/ui/QuantityInputGroup';
 import { FiArrowUpRight, FiShoppingCart } from 'react-icons/fi';
 import { MdVideocam } from "react-icons/md";
 import { ProductSpecifications } from '../components';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery, type QueryFunctionContext } from '@tanstack/react-query';
 import api from '../lib/api';
 import { showToast } from '../utils/toastUtils';
 import { useUser } from '../components/context/UserContext';
 import { paths } from '../config/path';
 import { useCart } from '../api/cart';
 
-
 export default function ProductDetailPage() {
     const { slug } = useParams();
+    const { data: productDataById, refetch } = useQuery({
+        queryKey: ["product", slug],
+        queryFn: () => fetchProductById(slug as string),
+        enabled: false,
+    });
     const { data: cartdata, refetch: refetchCart } = useCart(true);
-    const [boxes, setBoxes] = useState(1);
+    const sqftPerBox = productDataById?.sqft_in_box; // 1 box covers 13.47 sqft
+    const [addWastage, setAddWastage] = useState(false);
+    const [baseSqft, setBaseSqft] = useState(0); // always without wastage
+    // const [boxes, setBoxes] = useState(1);
     const [isBuyNowClicked, setIsBuyNowClicked] = useState(false);
     const [productGallery, setProductGallery] = useState([]);
-    const [cartLoading, setCartLoading] = useState(false); // Loader for cart actions
-    const [sqft, setSqft] = useState(0);
-    const [isWastageChecked, setIsWastageChecked] = useState(false);
-    const [originalSqft, setOriginalSqft] = useState(0);
+    // const [sqft, setSqft] = useState(0);
+    const [cartLoading, setCartLoading] = useState(false); // Loader
+    // const [isWastageChecked, setIsWastageChecked] = useState(false);
+    // const [originalSqft, setOriginalSqft] = useState(0);
 
     const navigate = useNavigate();
     const authKey = useUser()?.authKey;
 
-    const getBoxesForSqft = (rawSqft: number, coverage: number) => {
+    useEffect(() => {
+        if (productDataById?.sqft_in_box) {
+            setBaseSqft(Number(productDataById.sqft_in_box));
+        }
+    }, [productDataById]);
 
-        const effective = rawSqft;
-
-        const boxesNeeded = Math.max(1, Math.ceil(effective / Number(coverage)));
-
-        setBoxes(boxesNeeded);
-        return boxesNeeded;
-    };
+    // const getBoxesForSqft = (rawSqft: number, coverage: number) => {
+    //     const effective = rawSqft;
+    //     const boxesNeeded = Math.max(1, Math.ceil(effective / Number(coverage)));
+    //     setBoxes(boxesNeeded);
+    //     return boxesNeeded;
+    // };
 
     function getYouTubeVideoID(url: any) {
         try {
             const parsedUrl = new URL(url);
             const hostname = parsedUrl.hostname;
-
             // Case: youtu.be/<id>
             if (hostname === 'youtu.be') {
                 return parsedUrl.pathname.slice(1);
             }
-
             // Case: youtube.com/watch?v=<id>
             if (parsedUrl.pathname === '/watch') {
                 return parsedUrl.searchParams.get('v');
             }
-
             // Case: youtube.com/shorts/<id>, /embed/<id>, /v/<id>
             const pathMatch = parsedUrl.pathname.match(/^\/(shorts|embed|v)\/([a-zA-Z0-9_-]{11})/);
             if (pathMatch) {
                 return pathMatch[2];
             }
-
             return null; // Not a valid YouTube video URL
         } catch (e) {
             return null; // Invalid URL format
@@ -72,64 +78,48 @@ export default function ProductDetailPage() {
         return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
     }
 
-    const getSqftFromBoxes = (boxCount: number, coverage: number | undefined) => {
-        setOriginalSqft(boxCount * Number(coverage));
 
-        return parseFloat((boxCount * Number(coverage)).toFixed(2));
-    };
 
     // Sync when boxes change
-    const handleBoxesChange = (newBoxes: number, coverage: number) => {
-        const validBoxes = Math.max(1, newBoxes);
-        setBoxes(validBoxes);
-        setOriginalSqft(validBoxes * Number(coverage));
-        setSqft(getSqftFromBoxes(validBoxes, coverage));
-    };
+    // const handleBoxesChange = (newBoxes: number, coverage: number) => {
+    //     const validBoxes = Math.max(1, newBoxes);
+    //     setBoxes(validBoxes);
+    //     setOriginalSqft(validBoxes * Number(coverage));
+    //     setSqft(getSqftFromBoxes(validBoxes, coverage));
+    // };
 
     // Sync when sqft change
-    const handleSqftChange = (newSqft: number, coverage: number) => {
-        const validSqft = Math.max(0, newSqft);
-        setSqft(parseFloat(validSqft.toFixed(2))); // show user input
-        setBoxes(getBoxesForSqft(validSqft, coverage));
-        // setIsWastageChecked(false);
-    };
+    // const handleSqftChange = (newSqft: number, coverage: number) => {
+    //     const validSqft = Math.max(0, newSqft);
+    //     setSqft(parseFloat(validSqft.toFixed(2))); // show user input
+    //     setBoxes(getBoxesForSqft(validSqft, coverage));
+    //     // setIsWastageChecked(false);
+    // };
 
-    const { data: productDataById, refetch } = useQuery({
-        queryKey: ["product", slug],
-        queryFn: () => fetchProductById(slug as string),
-        enabled: false,
-    });
-
+    // const { data: productDataById, refetch } = useQuery({
+    //     queryKey: ["product", slug],
+    //     queryFn: () => fetchProductById(slug as string),
+    //     enabled: false,
+    // });
 
     // Recalculate boxes when wastage toggle changes
-    useEffect(() => {
-        getBoxesForSqft(sqft, productDataById?.sqft_in_box);
-    }, []);
+    // useEffect(() => {
+    //     getBoxesForSqft(sqft, productDataById?.sqft_in_box);
+    // }, []);
 
 
     // Set only once when product data is available
-    useEffect(() => {
-        if (productDataById?.sqft_in_box) {
-            const initSqft = sqft === 0
-                ? Number(productDataById.sqft_in_box) || 0
-                : sqft;
-            setOriginalSqft(initSqft);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productDataById?.sqft_in_box]); // no sqft dependency here
-
-    useEffect(() => {
-        console.log("isWastageChecked", isWastageChecked);
-
-        let baseSqft = isWastageChecked
-            ? originalSqft * 1.1 // +10%
-            : originalSqft
 
 
-        getBoxesForSqft(baseSqft, productDataById?.sqft_in_box);
-        handleSqftChange(baseSqft, productDataById?.sqft_in_box);
+    // useEffect(() => {
+    //     let baseSqft = isWastageChecked
+    //         ? originalSqft * 1.1 // +10%
+    //         : originalSqft
 
-    }, [isWastageChecked, originalSqft, productDataById?.sqft_in_box]);
+    //     getBoxesForSqft(baseSqft, productDataById?.sqft_in_box);
+    //     handleSqftChange(baseSqft, productDataById?.sqft_in_box);
+
+    // }, [isWastageChecked, productDataById?.sqft_in_box]);
 
 
     // useEffect(() => {
@@ -139,8 +129,6 @@ export default function ProductDetailPage() {
 
     //     return () => clearTimeout(timeoutId);
     // }, []);
-
-
 
     // const [mainImage, setMainImage] = useState<string | undefined>();
     const [mainImage, setMainImage] = useState<any>();
@@ -152,16 +140,31 @@ export default function ProductDetailPage() {
         const formData = new FormData();
         formData.append('slug', slug);
         const { data } = await api.post(`/beforeauth/getproductdetails`, formData);
-        setSqft(Number(data?.sqft_in_box))
+        // setSqft(Number(data?.sqft_in_box))
         setProductGallery(data?.product_image);
         setMainImage(data?.product_image[0]);
         return data
     };
 
+    const getProductCategory = async (
+        _ctx: QueryFunctionContext<[string]>
+    ) => {
+        const { data } = await api.post('/beforeauth/getproductcategory');
+        return data;
+    };
+
+    const { data: productCategoryData } = useQuery({
+        queryKey: ['productCategory'],
+        queryFn: getProductCategory,
+        refetchOnWindowFocus: false,
+    });
+    const category = productCategoryData?.find((item: any) => item.product_category_id
+        === productDataById?.product_category_id);
+
 
     const breadcrumbData = [
         { label: 'Home', href: '/' },
-        { label: `${productDataById?.title}`, href: `/products/category/${productDataById?.product_category_id}` },
+        { label: `${category?.title}`, href: `/products/category/${productDataById?.product_category_id}` },
         { label: `${productDataById?.slug}` }
     ];
 
@@ -170,6 +173,11 @@ export default function ProductDetailPage() {
     }, [slug])
 
     const handleAddToCart = async () => {
+
+        if (displaySqft <= 0) {
+            showToast("Please enter sqft", "error");
+            return
+        }
         setCartLoading(true);
         //  if(cartdata?.find((item: any) => item.product_id === productDataById?.product_id)) {
         //       re  navigate("/my-cart");
@@ -186,7 +194,6 @@ export default function ProductDetailPage() {
             // formData.append('user_carts_id', productDataById?.id);
             formData.append('Usercarts[price]', productDataById?.price);
             formData.append('Usercarts[quantity]', boxes.toString());
-
             try {
                 const response = await api.post("/userauth/addeditusercarts", formData, {
                     headers: {
@@ -202,7 +209,6 @@ export default function ProductDetailPage() {
                     // navigate(`${paths.home.path}`);
                 } else {
                     showToast("Failed to add to cart", "error");
-
                 }
 
             } catch (error: any) {
@@ -216,13 +222,44 @@ export default function ProductDetailPage() {
         setCartLoading(false);
         setIsBuyNowClicked(false);
     };
+    // 📌 Update from sqft (manual typing or buttons)
+    const updateFromSqft = (newSqft: number) => {
+        // remove wastage if applied
+        let actualSqft = addWastage ? newSqft / 1.1 : newSqft;
+        setBaseSqft(actualSqft);
+    };
 
+    // 📌 Update from boxes
+    const updateFromBoxes = (newBoxes: number) => {
+        // Always back-calc base sqft (without wastage)
+        let newBaseSqft = newBoxes * sqftPerBox;
+        setBaseSqft(newBaseSqft);
+    };
+
+    // 📌 Displayed sqft (depends on wastage)
+    const displaySqft = addWastage
+        ? parseFloat((baseSqft * 1.1)?.toFixed(2))
+        : parseFloat(baseSqft?.toFixed(2));
+
+    // 📌 Boxes (calculated dynamically from displaySqft)
+    const boxes = Math.ceil(displaySqft / sqftPerBox);
+
+    // 📌 Toggle wastage
+    const handleWastageToggle = (checked: boolean) => {
+        setAddWastage(checked);
+    };
+    useEffect(() => {
+        if (productDataById?.sqft_in_box) {
+            setBaseSqft(Number(productDataById.sqft_in_box || 0));
+        }
+    }, [productDataById]);
 
 
     // THIS GOES RIGHT BEFORE YOUR NORMAL RETURN
     if (!productDataById) {
         return <div>Loading...</div>;
     }
+
     return (
         <div className="container xl:my-[60px] lg:my-[50px] md:my-[40px] my-[30px]">
             <Breadcrumbs items={breadcrumbData} />
@@ -402,10 +439,10 @@ export default function ProductDetailPage() {
                         <div className="col-span-2 ">
                             <QuantityInputGroup
                                 label="Enter Coverage in SQFT:"
-                                value={sqft}
-                                onDecrease={() => handleSqftChange(sqft - 1, productDataById?.sqft_in_box)}
-                                onIncrease={() => handleSqftChange(sqft + 1, productDataById?.sqft_in_box)}
-                                onChange={(newVal) => handleSqftChange(newVal, productDataById?.sqft_in_box)}
+                                value={displaySqft}
+                                onDecrease={() => updateFromSqft(Math.max(displaySqft - 1, 0))}
+                                onIncrease={() => updateFromSqft(displaySqft + 1)}
+                                onChange={(newVal) => updateFromSqft(Number(newVal))}
                                 iconType="arrow"
                             // unit="sqft"
                             />
@@ -419,9 +456,9 @@ export default function ProductDetailPage() {
                             <QuantityInputGroup
                                 label="# of Boxes"
                                 value={boxes}
-                                onDecrease={() => handleBoxesChange(boxes - 1, productDataById?.sqft_in_box)}
-                                onIncrease={() => handleBoxesChange(boxes + 1, productDataById?.sqft_in_box)}
-                                onChange={(newVal) => handleBoxesChange(newVal, productDataById?.sqft_in_box)}
+                                onDecrease={() => updateFromBoxes(Math.max(boxes - 1, 1))}
+                                onIncrease={() => updateFromBoxes(boxes + 1)}
+                                onChange={(newVal) => updateFromBoxes(Number(newVal))}
                                 iconType="plusminus"
                             // unit="box"
                             />
@@ -442,20 +479,23 @@ export default function ProductDetailPage() {
                                 </span>
                             </div>
                         </div> */}
-                        <div>
-                            <label className="inline-flex items-start gap-2">
-                                <input
-                                    type="checkbox"
-                                    className="mt-[6px] accent-black border-gray-300 h-[16px] w-[16px]"
-                                    checked={isWastageChecked}
-                                    onChange={(e) => setIsWastageChecked(e.target.checked)}
-                                />
-                                <div>
-                                    <p className="font-semibold lg:text-base md:text-2sm text-sm">Add wastage (10%)</p>
-                                    <p className="lg:text-base md:text-2sm text-sm font-light">1 box - No wastage added. Ships in 1 pallet.</p>
-                                </div>
-                            </label>
-                        </div>
+
+                        {displaySqft > 0 &&
+                            <div>
+                                <label className="inline-flex items-start gap-2">
+                                    <input
+                                        type="checkbox"
+                                        className="mt-[6px] accent-black border-gray-300 h-[16px] w-[16px]"
+                                        checked={addWastage}
+                                        onChange={(e) => handleWastageToggle(e.target.checked)}
+                                    />
+                                    <div>
+                                        <p className="font-semibold lg:text-base md:text-2sm text-sm">Add wastage (10%)</p>
+                                        <p className="lg:text-base md:text-2sm text-sm font-light">1 box - No wastage added. Ships in 1 pallet.</p>
+                                    </div>
+                                </label>
+                            </div>
+                        }
                     </div>
                     <div className="grid grid-cols-2 gap-4 items-start mt-[84px]">
                         <button onClick={handleAddToCart} className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black xl:px-6 px-4 xl:py-[18px] py-[14px]">

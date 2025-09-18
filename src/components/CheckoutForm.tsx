@@ -19,6 +19,7 @@ interface CartItem {
 
 interface CheckoutFormProps {
   totalAmount: number;
+  deliveryType: "Delivery" | "Pickup";
   cartItems: CartItem[];
   currentAddress: any;
   onSuccess: () => void;
@@ -26,19 +27,22 @@ interface CheckoutFormProps {
 }
 
 interface CheckoutPayload {
-  "Userorder[appuser_address_id]": string | number;
   "Userorder[payment_type]": string;
   "Userorder[payment_status]": string;
   "Userorder[payment_id]": string;
-  "Userorder[sub_total]": string | number;
-  "Userorder[total]": string | number;
+  "Userorder[sub_total]": number;
+  "Userorder[total]": number;
   "Userorder[order_status]": string;
+  "Userorder[delivery_type]": "Delivery" | "Pickup";
   "Userorder[user_carts_id]": string;
+  "Userorder[appuser_address_id]"?: string; // 👈 make optional
 }
+
 
 export default function CheckoutForm({
   totalAmount,
   cartItems,
+  deliveryType,
   currentAddress,
   onSuccess,
 }: CheckoutFormProps) {
@@ -132,13 +136,14 @@ export default function CheckoutForm({
 
         // Step 4: Call Checkout API
         await checkoutOrder({
-          "Userorder[appuser_address_id]": currentAddress,
+          "Userorder[appuser_address_id]": deliveryType === "Delivery" ? currentAddress : "",
           "Userorder[payment_type]": "Online",
           "Userorder[payment_status]": "succeeded",
           "Userorder[payment_id]": paymentIntent.id,
           "Userorder[sub_total]": totalAmount,
           "Userorder[total]": totalAmount,
           "Userorder[order_status]": "Confirm",
+          "Userorder[delivery_type]": deliveryType, // "Delivery" or "Pickup"
           "Userorder[user_carts_id]": cartItems
             ?.map((item: any) => item.user_carts_id)
             .join(","),

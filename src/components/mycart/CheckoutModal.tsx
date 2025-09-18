@@ -5,7 +5,7 @@ import { useState } from "react";
 import { showToast } from "../../utils/toastUtils";
 import { useNavigate } from "react-router-dom";
 
-export default function CheckoutModal({ isOpen, onClose, cartItems, totalAmount, currentAddress }: any) {
+export default function CheckoutModal({ deliveryType, isOpen, onClose, cartItems, totalAmount, currentAddress }: any) {
   const [thankYouOpen, setThankYouOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -16,6 +16,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, totalAmount,
         <div className="mx-auto relative w-[90%] max-w-[730px] bg-white rounded-[16px] md:rounded-[20px] lg:rounded-[24px] xl:rounded-[34px] p-4 md:p-[42px] lg:p-[52px] xl:p-[62px] transform transition-all duration-300 scale-100 opacity-100 checkout-modal">
           <button className="absolute top-3 right-3" onClick={onClose}><CgClose className="text-[20px] md:text-[24px] xl:text-[34px]" /></button>
           <CheckoutForm
+            deliveryType={deliveryType}
             totalAmount={totalAmount}
             cartItems={cartItems}
             currentAddress={currentAddress}
