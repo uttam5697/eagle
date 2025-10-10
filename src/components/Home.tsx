@@ -6,6 +6,7 @@ import WhatOurClients from "./whatourclients/WhatOurClients";
 import { useHome } from "../api/home";
 import AnimatedSection from "./ui/AnimatedSection";
 import { useLocation } from "react-router-dom";
+import ShoppingBrand from "./shoppingbrand/ShoppingBrand";
 
 const Home: React.FC = () => {
   const { data: homescreenData } = useHome(false);
@@ -31,6 +32,9 @@ const Home: React.FC = () => {
       <AnimatedSection direction="up" delay={0.3}>
         {/* Wrap the third section in a ref */}
         <WeeklyBestsellers />
+      </AnimatedSection>
+      <AnimatedSection direction="up" delay={0.3}>
+        <ShoppingBrand />
       </AnimatedSection>
 
       <AnimatedSection direction="up" delay={0.3}>

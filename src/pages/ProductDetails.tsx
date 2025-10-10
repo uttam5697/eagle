@@ -25,6 +25,7 @@ export default function ProductDetailPage() {
     const { data: cartdata, refetch: refetchCart } = useCart(true);
     const sqftPerBox = productDataById?.sqft_in_box; // 1 box covers 13.47 sqft
     const [addWastage, setAddWastage] = useState(false);
+    const [wastagePercent, setWastagePercent] = useState(1);
     const [baseSqft, setBaseSqft] = useState(0); // always without wastage
     // const [boxes, setBoxes] = useState(1);
     const [isBuyNowClicked, setIsBuyNowClicked] = useState(false);
@@ -39,7 +40,7 @@ export default function ProductDetailPage() {
 
     useEffect(() => {
         if (productDataById?.sqft_in_box) {
-            setBaseSqft(Number(productDataById.sqft_in_box ));
+            setBaseSqft(Number(productDataById.sqft_in_box));
         }
     }, [productDataById]);
 
@@ -225,7 +226,7 @@ export default function ProductDetailPage() {
     // 📌 Update from sqft (manual typing or buttons)
     const updateFromSqft = (newSqft: number) => {
         // remove wastage if applied
-        let actualSqft = addWastage ? newSqft / 1.1 : newSqft;
+        let actualSqft = addWastage ? newSqft / wastagePercent : newSqft;
         setBaseSqft(actualSqft);
     };
 
@@ -238,15 +239,16 @@ export default function ProductDetailPage() {
 
     // 📌 Displayed sqft (depends on wastage)
     const displaySqft = addWastage
-        ? parseFloat((baseSqft * 1.1)?.toFixed(2))
+        ? parseFloat((baseSqft * wastagePercent)?.toFixed(2))
         : parseFloat(baseSqft?.toFixed(2));
 
     // 📌 Boxes (calculated dynamically from displaySqft)
     const boxes = Math.ceil(displaySqft / sqftPerBox);
 
     // 📌 Toggle wastage
-    const handleWastageToggle = (checked: boolean) => {
+    const handleWastageToggle = (checked: boolean, value: number) => {
         setAddWastage(checked);
+        setWastagePercent(value);
     };
     useEffect(() => {
         if (productDataById?.sqft_in_box) {
@@ -429,10 +431,6 @@ export default function ProductDetailPage() {
                         <p className='custom-html  md:text-[14px] text-[12px] leading-none mt-[15px]' dangerouslySetInnerHTML={{ __html: productDataById?.description }} />
                     </div>
 
-                    {/* Shipping note */}
-
-
-
 
                     <div className="grid md:grid-cols-5 w-full items-center gap-4 bg-[#FAF8F6] p-4 rounded-md ">
                         {/* SQFT Input */}
@@ -480,22 +478,31 @@ export default function ProductDetailPage() {
                             </div>
                         </div> */}
 
-                        {displaySqft > 0 &&
-                            <div>
-                                <label className="inline-flex items-start gap-2">
-                                    <input
-                                        type="checkbox"
-                                        className="mt-[6px] accent-black border-gray-300 h-[16px] w-[16px]"
-                                        checked={addWastage}
-                                        onChange={(e) => handleWastageToggle(e.target.checked)}
-                                    />
-                                    <div>
-                                        <p className="font-semibold lg:text-base md:text-2sm text-sm">Add wastage (10%)</p>
-                                        <p className="lg:text-base md:text-2sm text-sm font-light">1 box - No wastage added. Ships in 1 pallet.</p>
-                                    </div>
-                                </label>
+                        {displaySqft > 0 && (
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+                                {[
+                                    { label: "No wastage", value: 1, desc: "Exact coverage, no extra added." },
+                                    { label: "Add wastage (5%)", value: 1.05, desc: "1 box - No wastage added." },
+                                    { label: "Add wastage (10%)", value: 1.10, desc: "1 box - No wastage added." },
+                                    { label: "Add wastage (15%)", value: 1.15, desc: "1 box - No wastage added." },
+                                ].map((option) => (
+                                    <button
+                                        key={option.value}
+                                        onClick={() =>
+                                            handleWastageToggle(option.value > 0, option.value)
+                                        }
+                                        className={`p-4 rounded-xl border text-left transition-all duration-200
+          ${wastagePercent === option.value
+                                                ? "border-primary bg-red-50 shadow-md"
+                                                : "border-gray-300 hover:border-red-400"}`}
+                                    >
+                                        <p className="font-semibold text-sm md:text-base">{option.label}</p>
+                                        <p className="text-xs md:text-sm text-gray-600">{option.desc}</p>
+                                    </button>
+                                ))}
                             </div>
-                        }
+                        )}
+
                     </div>
                     <div className="grid grid-cols-2 gap-4 items-start mt-[84px]">
                         <button onClick={handleAddToCart} className="flex justify-between white-btn border border-black group before:!hidden after:!hidden hover:bg-black xl:px-6 px-4 xl:py-[18px] py-[14px]">

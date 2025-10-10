@@ -10,11 +10,13 @@ import api from "../../lib/api";
 import { useUser } from "../context/UserContext";
 import { showToast } from "../../utils/toastUtils";
 import CheckoutModal from "./CheckoutModal";
+import { useFooter } from "../../api/home";
 
 
 export default function MyCart() {
   const [deliveryType, setDeliveryType] = useState<"Delivery" | "Pickup">("Delivery");
   const { data: fetchedCartItems = [], refetch, isLoading } = useCart(true);
+  const { data: generaldata } = useFooter(false);
   const { data: addressAll } = useAddress();
   const authkey = useUser()?.authKey;
 
@@ -41,7 +43,6 @@ export default function MyCart() {
     action: "increase" | "decrease"
   ) => {
     const currentQty = quantity || 1;
-
     // If decreasing last quantity → delete instead
     if (action === "decrease" && currentQty <= 1) {
       await handleDelete(id);
@@ -95,7 +96,9 @@ export default function MyCart() {
   }, 0);
 
   const greenPackaging = 0;
-  const totalAmount = itemTotal + greenPackaging;
+  const taxRate = 5 / 100; // 2%
+  const tax = itemTotal * taxRate;
+  const totalAmount = itemTotal + greenPackaging + tax;
 
   const handleDelete = async (id: number) => {
     try {
@@ -260,6 +263,16 @@ export default function MyCart() {
                       ${itemTotal.toFixed(2)}
                     </span>
                   </div>
+                  {
+                    generaldata?.tax !== null &&
+                    <div className="flex justify-between">
+                      <span className="text-black font-light md:text-sm text-xs">
+                        Estimated taxes
+                      </span>
+                      <span className="font-semibold">
+                        ${tax?.toFixed(2)}
+                      </span>
+                    </div>}
                   {/* <div className="flex justify-between">
                     <span className="text-black font-light md:text-sm text-xs">
                       Delivery charge
@@ -412,7 +425,7 @@ export default function MyCart() {
         }}
         isAddressModalOpen={isAddressModalOpen}
       />
-      <CheckoutModal deliveryType={deliveryType} isOpen={isCheckoutModalOpen} onClose={() => setIsCheckoutModalOpen(false)} cartItems={fetchedCartItems} totalAmount={totalAmount} currentAddress={selectedId} />
+      <CheckoutModal deliveryType={deliveryType} tax={tax} isOpen={isCheckoutModalOpen} onClose={() => setIsCheckoutModalOpen(false)} cartItems={fetchedCartItems} totalAmount={totalAmount} currentAddress={selectedId} />
     </>
   );
 }

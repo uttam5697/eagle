@@ -194,6 +194,21 @@ export default function CheckoutForm({
             </span>
           </div>
         ))}
+        {/* {
+        
+        <div
+          className="flex text-black justify-between items-center md:text-[16px] text-[12px] mb-2"
+        >
+          <span>
+            Estimated taxes
+          </span>
+
+          <span>
+            {tax?.toFixed(2)}
+          </span>
+
+
+        </div>} */}
         {/* <div className="flex text-black justify-between items-center md:text-[16px] text-[12px] mb-2">
           <span>
             Green packaging charge
