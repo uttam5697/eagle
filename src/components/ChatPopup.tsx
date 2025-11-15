@@ -34,7 +34,7 @@ const ChatPopup: React.FC = () => {
       return;
     }
 
-    const phoneNumber = "13233087262"; // Your WhatsApp number
+    const phoneNumber = "16149697322"; // Your WhatsApp number
     const text = `Hello, I want to enquire about your products.
       Name: ${formData.name}
       Email: ${formData.email}

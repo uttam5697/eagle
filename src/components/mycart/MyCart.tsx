@@ -12,7 +12,6 @@ import { showToast } from "../../utils/toastUtils";
 import CheckoutModal from "./CheckoutModal";
 import { useFooter } from "../../api/home";
 
-
 export default function MyCart() {
   const [deliveryType, setDeliveryType] = useState<"Delivery" | "Pickup">("Delivery");
   const { data: fetchedCartItems = [], refetch, isLoading } = useCart(true);
