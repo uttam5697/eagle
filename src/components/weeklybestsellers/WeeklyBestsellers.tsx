@@ -150,6 +150,7 @@ export default function WeeklyBestsellers() {
                                             slug={product.slug}
                                             price_per_box={product.price_per_box}
                                             price={product.price}
+                                            type={product.type}
                                         />
                                     </SwiperSlide>
                                 ))
